@@ -18,8 +18,8 @@
   <style>
     <_.fcp.MarkAnimation.true...style-rule element='animation'>
       <format attr='animation-on' value='ao-on' />
-      <format attr='animation-duration' value='0.5' />
-      <format attr='animation-style' value='as-phased' />
+      <format attr='animation-duration' value='1' />
+      <format attr='animation-style' value='as-synced' />
     </_.fcp.MarkAnimation.true...style-rule>
   </style>
   <datasources>
@@ -403,6 +403,16 @@
           <table-calc ordering-type='Rows' />
         </calculation>
       </column>
+      <column caption='RANK' datatype='integer' name='[Calculation_3938609005836410887]' role='measure' type='ordinal'>
+        <calculation class='tableau' formula='RANK_UNIQUE(SUM([Calculation_3858247898782969856]), &apos;desc&apos;)'>
+          <table-calc ordering-type='Rows' />
+        </calculation>
+      </column>
+      <column caption='Size' datatype='real' name='[Calculation_3938609005841272841]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='SUM([Calculation_3858247898782969856]) / WINDOW_MAX(SUM([Calculation_3858247898782969856]))'>
+          <table-calc ordering-type='Rows' />
+        </calculation>
+      </column>
       <column caption='Country (adjusted)' datatype='string' name='[Cases (adjusted) (Kopie)_3858247898783281153]' role='dimension' semantic-role='[Country].[Name]' type='nominal'>
         <calculation class='tableau' formula='IIF([Pivot-Feldwerte] = 0, NULL, [Country/Region])' />
         <semantic-values semantic-role='[Country].[Name]'>
@@ -422,6 +432,11 @@
       <column caption='Date' datatype='date' name='[Pivot-Feldnamen]' role='dimension' type='ordinal' />
       <column caption='Cases' datatype='integer' name='[Pivot-Feldwerte]' role='measure' type='quantitative' />
       <column datatype='string' name='[Province/State]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+      <column caption='RANK (copy)' datatype='integer' name='[RANK (copy)_3938609005849722893]' role='measure' type='ordinal'>
+        <calculation class='tableau' formula='RANK_UNIQUE(SUM([Pivot-Feldwerte]), &apos;desc&apos;)'>
+          <table-calc ordering-type='Rows' />
+        </calculation>
+      </column>
       <column caption='Status' datatype='string' name='[Table Name]' role='dimension' type='nominal'>
         <aliases>
           <alias key='&quot;time_series_19-covid-Confirmed.csv&quot;' value='confirmed' />
@@ -430,7 +445,7 @@
         </aliases>
       </column>
       <column-instance column='[Table Name]' derivation='None' name='[none:Table Name:nk]' pivot='key' type='nominal' />
-      <layout dim-ordering='alphabetic' dim-percentage='0.475177' measure-ordering='alphabetic' measure-percentage='0.524823' rowDisplayCount='5000' show-aliased-fields='true' show-structure='true' />
+      <layout dim-ordering='alphabetic' dim-percentage='0.438534' measure-ordering='alphabetic' measure-percentage='0.561466' rowDisplayCount='5000' show-aliased-fields='true' show-structure='true' />
       <style>
         <style-rule element='mark'>
           <encoding attr='color' field='[none:Table Name:nk]' type='palette'>
@@ -466,6 +481,11 @@
             <column caption='Cases (adjusted)' datatype='integer' name='[Calculation_3858247898782969856]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='IIF([Pivot-Feldwerte] = 0, NULL, [Pivot-Feldwerte])' />
             </column>
+            <column caption='RANK' datatype='integer' name='[Calculation_3938609005836410887]' role='measure' type='ordinal'>
+              <calculation class='tableau' formula='RANK_UNIQUE(SUM([Calculation_3858247898782969856]), &apos;desc&apos;)'>
+                <table-calc ordering-type='Rows' />
+              </calculation>
+            </column>
             <column caption='Country (adjusted)' datatype='string' name='[Cases (adjusted) (Kopie)_3858247898783281153]' role='dimension' semantic-role='[Country].[Name]' type='nominal'>
               <calculation class='tableau' formula='IIF([Pivot-Feldwerte] = 0, NULL, [Country/Region])' />
               <semantic-values semantic-role='[Country].[Name]'>
@@ -489,11 +509,21 @@
             <column-instance column='[Cases (adjusted) (Kopie)_3858247898783281153]' derivation='None' name='[none:Cases (adjusted) (Kopie)_3858247898783281153:nk]' pivot='key' type='nominal' />
             <column-instance column='[Table Name]' derivation='None' name='[none:Table Name:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_3858247898782969856]' derivation='Sum' name='[sum:Calculation_3858247898782969856:qk]' pivot='key' type='quantitative' />
-            <column-instance column='[Pivot-Feldnamen]' derivation='Year' name='[yr:Pivot-Feldnamen:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Pivot-Feldwerte]' derivation='Sum' name='[sum:Pivot-Feldwerte:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Pivot-Feldnamen]' derivation='Day-Trunc' name='[tdy:Pivot-Feldnamen:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Calculation_3938609005836410887]' derivation='User' name='[usr:Calculation_3938609005836410887:ok:2]' pivot='key' type='ordinal'>
+              <table-calc ordering-field='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[Cases (adjusted) (Kopie)_3858247898783281153]' ordering-type='Field' />
+            </column-instance>
           </datasource-dependencies>
-          <computed-sort column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Cases (adjusted) (Kopie)_3858247898783281153:nk]' direction='DESC' using='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Calculation_3858247898782969856:qk]' />
-          <filter class='categorical' column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' filter-group='3'>
-            <groupfilter function='member' level='[none:Table Name:nk]' member='&quot;time_series_19-covid-Deaths.csv&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          <computed-sort column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Cases (adjusted) (Kopie)_3858247898783281153:nk]' direction='DESC' using='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Pivot-Feldwerte:qk]' />
+          <filter class='categorical' column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' context='true' filter-group='4'>
+            <groupfilter function='member' level='[none:Table Name:nk]' member='&quot;time_series_19-covid-Confirmed.csv&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <filter class='categorical' column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[usr:Calculation_3938609005836410887:ok:2]' kind='hide'>
+            <groupfilter function='except' user:ui-domain='relevant' user:ui-enumeration='exclusive' user:ui-manual-selection='true' user:ui-manual-selection-all-when-empty='true' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[usr:Calculation_3938609005836410887:ok:2]' />
+              <groupfilter function='member' level='[usr:Calculation_3938609005836410887:ok:2]' member='%null%' />
+            </groupfilter>
           </filter>
           <slices>
             <column>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]</column>
@@ -502,12 +532,39 @@
         </view>
         <style>
           <style-rule element='axis'>
-            <format attr='display' class='0' field='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Calculation_3858247898782969856:qk]' scope='cols' value='true' />
+            <format attr='tick-color' value='#00000000' />
+            <format attr='stroke-size' value='0' />
+            <format attr='line-visibility' value='off' />
+            <format attr='display' class='0' field='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Calculation_3858247898782969856:qk]' scope='cols' value='false' />
             <encoding attr='space' class='0' field='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Calculation_3858247898782969856:qk]' field-type='quantitative' scale='log' scope='cols' type='space' />
+          </style-rule>
+          <style-rule element='header'>
+            <format attr='border-width' data-class='total' value='0' />
+            <format attr='border-style' data-class='total' value='none' />
+          </style-rule>
+          <style-rule element='pane'>
+            <format attr='border-width' data-class='total' value='0' />
+            <format attr='border-style' data-class='total' value='none' />
           </style-rule>
           <style-rule element='worksheet'>
             <format attr='display-field-labels' scope='rows' value='false' />
             <format attr='font-family' value='Arial' />
+          </style-rule>
+          <style-rule element='dropline'>
+            <format attr='stroke-size' value='0' />
+            <format attr='line-visibility' value='off' />
+          </style-rule>
+          <style-rule element='refline'>
+            <format attr='stroke-size' value='0' />
+            <format attr='line-visibility' value='off' />
+          </style-rule>
+          <style-rule element='gridline'>
+            <format attr='stroke-size' scope='cols' value='0' />
+            <format attr='line-visibility' scope='cols' value='off' />
+          </style-rule>
+          <style-rule element='zeroline'>
+            <format attr='stroke-size' value='0' />
+            <format attr='line-visibility' value='off' />
           </style-rule>
         </style>
         <panes>
@@ -517,13 +574,48 @@
             </view>
             <mark class='Automatic' />
             <encodings>
+              <text column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Calculation_3858247898782969856:qk]' />
               <color column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' />
-              <lod column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[yr:Pivot-Feldnamen:ok]' />
+              <text column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Cases (adjusted) (Kopie)_3858247898783281153:nk]' />
             </encodings>
+            <customized-label>
+              <formatted-text>
+                <run>&lt;</run>
+                <run>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Cases (adjusted) (Kopie)_3858247898783281153:nk]</run>
+                <run>&gt;, &lt;</run>
+                <run>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Calculation_3858247898782969856:qk]</run>
+                <run>&gt;</run>
+              </formatted-text>
+            </customized-label>
+            <style>
+              <style-rule element='cell'>
+                <format attr='vertical-align' value='center' />
+                <format attr='text-align' value='right' />
+              </style-rule>
+              <style-rule element='datalabel'>
+                <format attr='color-mode' value='auto' />
+                <format attr='font-size' value='8' />
+              </style-rule>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+              </style-rule>
+              <style-rule element='pane'>
+                <format attr='minheight' value='-1' />
+                <format attr='maxheight' value='-1' />
+              </style-rule>
+              <style-rule element='trendline'>
+                <format attr='stroke-size' value='0' />
+                <format attr='line-visibility' value='off' />
+              </style-rule>
+            </style>
           </pane>
         </panes>
-        <rows>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Cases (adjusted) (Kopie)_3858247898783281153:nk]</rows>
+        <rows>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[usr:Calculation_3938609005836410887:ok:2]</rows>
         <cols>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Calculation_3858247898782969856:qk]</cols>
+        <pages>
+          <column>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[tdy:Pivot-Feldnamen:ok]</column>
+        </pages>
       </table>
       <simple-id uuid='{1ED03AAC-0510-4C20-983A-519731C2C2E5}' />
     </worksheet>
@@ -543,8 +635,13 @@
             <column caption='LOG(SUM([Cases (adjusted)]))' datatype='real' name='[Calculation_3938609004732534785]' role='measure' type='quantitative' user:unnamed='MAP 01'>
               <calculation class='tableau' formula='LOG(SUM([Calculation_3858247898782969856]))' />
             </column>
-            <column caption='Rank' datatype='integer' name='[Calculation_3938609004958609414]' role='measure' type='ordinal'>
-              <calculation class='tableau' formula='RANK(LOG(SUM([Calculation_3858247898782969856])))'>
+            <column caption='RANK' datatype='integer' name='[Calculation_3938609005836410887]' role='measure' type='ordinal'>
+              <calculation class='tableau' formula='RANK_UNIQUE(SUM([Calculation_3858247898782969856]), &apos;desc&apos;)'>
+                <table-calc ordering-type='Rows' />
+              </calculation>
+            </column>
+            <column caption='Size' datatype='real' name='[Calculation_3938609005841272841]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='SUM([Calculation_3858247898782969856]) / WINDOW_MAX(SUM([Calculation_3858247898782969856]))'>
                 <table-calc ordering-type='Rows' />
               </calculation>
             </column>
@@ -573,8 +670,11 @@
             <column-instance column='[Calculation_3858247898782969856]' derivation='Sum' name='[sum:Calculation_3858247898782969856:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Pivot-Feldnamen]' derivation='Day-Trunc' name='[tdy:Pivot-Feldnamen:ok]' pivot='key' type='ordinal' />
             <column-instance column='[Calculation_3938609004732534785]' derivation='User' name='[usr:Calculation_3938609004732534785:qk]' pivot='key' type='quantitative' />
-            <column-instance column='[Calculation_3938609004958609414]' derivation='User' name='[usr:Calculation_3938609004958609414:ok]' pivot='key' type='ordinal'>
-              <table-calc ordering-type='Columns' />
+            <column-instance column='[Calculation_3938609005836410887]' derivation='User' name='[usr:Calculation_3938609005836410887:ok:2]' pivot='key' type='ordinal'>
+              <table-calc ordering-field='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[Cases (adjusted) (Kopie)_3858247898783281153]' ordering-type='Field' />
+            </column-instance>
+            <column-instance column='[Calculation_3938609005841272841]' derivation='User' name='[usr:Calculation_3938609005841272841:qk:3]' pivot='key' type='quantitative'>
+              <table-calc ordering-field='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[Cases (adjusted) (Kopie)_3858247898783281153]' ordering-type='Field' />
             </column-instance>
           </datasource-dependencies>
           <filter class='categorical' column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Cases (adjusted) (Kopie)_3858247898783281153:nk]'>
@@ -584,8 +684,8 @@
             </groupfilter>
           </filter>
           <computed-sort column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Cases (adjusted) (Kopie)_3858247898783281153:nk]' direction='DESC' using='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[usr:Calculation_3938609004732534785:qk]' />
-          <filter class='categorical' column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' filter-group='3'>
-            <groupfilter function='member' level='[none:Table Name:nk]' member='&quot;time_series_19-covid-Deaths.csv&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          <filter class='categorical' column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' context='true' filter-group='4'>
+            <groupfilter function='member' level='[none:Table Name:nk]' member='&quot;time_series_19-covid-Confirmed.csv&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
           </filter>
           <slices>
             <column>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]</column>
@@ -596,7 +696,6 @@
         <style>
           <style-rule element='axis'>
             <format attr='tick-color' value='#00000000' />
-            <format attr='display' class='0' field='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[usr:Calculation_3938609004732534785:qk]' scope='cols' value='false' />
           </style-rule>
           <style-rule element='cell'>
             <format attr='height' field='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Cases (adjusted) (Kopie)_3858247898783281153:nk]' value='30' />
@@ -605,9 +704,6 @@
             <format attr='border-width' data-class='total' value='0' />
             <format attr='border-style' data-class='total' value='none' />
             <format attr='width' field='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Cases (adjusted) (Kopie)_3858247898783281153:nk]' value='120' />
-          </style-rule>
-          <style-rule element='label'>
-            <format attr='display' field='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[usr:Calculation_3938609004958609414:ok]' value='false' />
           </style-rule>
           <style-rule element='mark'>
             <encoding attr='color' field='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Calculation_3858247898782969856:qk]' num-steps='5' symmetric='false' type='custom-interpolated'>
@@ -747,8 +843,8 @@
             <mark-sizing mark-sizing-setting='marks-scaling-off' />
             <encodings>
               <color column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' />
-              <size column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[usr:Calculation_3938609004732534785:qk]' />
               <text column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Calculation_3858247898782969856:qk]' />
+              <text column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Cases (adjusted) (Kopie)_3858247898783281153:nk]' />
             </encodings>
             <style>
               <style-rule element='cell'>
@@ -776,8 +872,8 @@
             </style>
           </pane>
         </panes>
-        <rows>([federated.1p9yyvu0zczjts1dub7kq14bjeqj].[usr:Calculation_3938609004958609414:ok] / [federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Cases (adjusted) (Kopie)_3858247898783281153:nk])</rows>
-        <cols>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[usr:Calculation_3938609004732534785:qk]</cols>
+        <rows>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[usr:Calculation_3938609005836410887:ok:2]</rows>
+        <cols>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[usr:Calculation_3938609005841272841:qk:3]</cols>
         <pages>
           <column>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[tdy:Pivot-Feldnamen:ok]</column>
         </pages>
@@ -929,8 +1025,8 @@
             <column-instance column='[Calculation_3938609004732534785]' derivation='User' name='[usr:Calculation_3938609004732534785:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_3938609004732596226]' derivation='User' name='[usr:Calculation_3938609004732596226:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' filter-group='3'>
-            <groupfilter function='member' level='[none:Table Name:nk]' member='&quot;time_series_19-covid-Deaths.csv&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          <filter class='categorical' column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' context='true' filter-group='4'>
+            <groupfilter function='member' level='[none:Table Name:nk]' member='&quot;time_series_19-covid-Confirmed.csv&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
           </filter>
           <slices>
             <column>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]</column>
@@ -1214,6 +1310,143 @@
       </table>
       <simple-id uuid='{AA7FD69E-41F4-4D4B-B7CB-EC5CE1DB0468}' />
     </worksheet>
+    <worksheet name='Sheet 7'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='time_series_19-covid-Confirmed' name='federated.1p9yyvu0zczjts1dub7kq14bjeqj' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1p9yyvu0zczjts1dub7kq14bjeqj'>
+            <column datatype='string' name='[Country/Region]' role='dimension' semantic-role='[Country].[ISO3166_2]' type='nominal'>
+              <semantic-values semantic-role='[Country].[Name]'>
+                <semantic-value key='&quot;Mainland China&quot;' value='&quot;China&quot;' />
+              </semantic-values>
+            </column>
+            <column caption='Date' datatype='date' name='[Pivot-Feldnamen]' role='dimension' type='ordinal' />
+            <column caption='Cases' datatype='integer' name='[Pivot-Feldwerte]' role='measure' type='quantitative' />
+            <column caption='RANK (copy)' datatype='integer' name='[RANK (copy)_3938609005849722893]' role='measure' type='ordinal'>
+              <calculation class='tableau' formula='RANK_UNIQUE(SUM([Pivot-Feldwerte]), &apos;desc&apos;)'>
+                <table-calc ordering-type='Rows' />
+              </calculation>
+            </column>
+            <column caption='Status' datatype='string' name='[Table Name]' role='dimension' type='nominal'>
+              <aliases>
+                <alias key='&quot;time_series_19-covid-Confirmed.csv&quot;' value='confirmed' />
+                <alias key='&quot;time_series_19-covid-Deaths.csv&quot;' value='deaths' />
+                <alias key='&quot;time_series_19-covid-Recovered.csv&quot;' value='recovered' />
+              </aliases>
+            </column>
+            <column-instance column='[Country/Region]' derivation='None' name='[none:Country/Region:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Table Name]' derivation='None' name='[none:Table Name:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Pivot-Feldwerte]' derivation='Sum' name='[sum:Pivot-Feldwerte:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Pivot-Feldnamen]' derivation='Day-Trunc' name='[tdy:Pivot-Feldnamen:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[RANK (copy)_3938609005849722893]' derivation='User' name='[usr:RANK (copy)_3938609005849722893:ok:3]' pivot='key' type='ordinal'>
+              <table-calc ordering-field='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[Country/Region]' ordering-type='Field' />
+            </column-instance>
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' context='true' filter-group='4'>
+            <groupfilter function='member' level='[none:Table Name:nk]' member='&quot;time_series_19-covid-Confirmed.csv&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <slices>
+            <column>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' field='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Pivot-Feldwerte:qk]' field-type='quantitative' scale='log' scope='cols' type='space' />
+          </style-rule>
+          <style-rule element='worksheet'>
+            <format attr='display-field-labels' scope='rows' value='false' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' />
+              <text column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Country/Region:nk]' />
+              <text column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Pivot-Feldwerte:qk]' />
+              <lod column='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Country/Region:nk]' />
+            </encodings>
+            <customized-label>
+              <formatted-text>
+                <run fontcolor='#555555' fontname='Arial' fontsize='8'>&lt;</run>
+                <run fontcolor='#555555' fontname='Arial' fontsize='8'>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Pivot-Feldwerte:qk]</run>
+                <run fontcolor='#555555' fontname='Arial' fontsize='8'>&gt; (&lt;</run>
+                <run fontcolor='#555555' fontname='Arial' fontsize='8'>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Country/Region:nk]</run>
+                <run fontcolor='#555555' fontname='Arial' fontsize='8'>&gt;)</run>
+              </formatted-text>
+            </customized-label>
+            <style>
+              <style-rule element='cell'>
+                <format attr='text-align' value='right' />
+                <format attr='vertical-align' value='center' />
+              </style-rule>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[usr:RANK (copy)_3938609005849722893:ok:3]</rows>
+        <cols>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Pivot-Feldwerte:qk]</cols>
+        <pages>
+          <column>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[tdy:Pivot-Feldnamen:ok]</column>
+        </pages>
+      </table>
+      <simple-id uuid='{F633D2C0-8AEA-422F-9462-84256DFFA2C0}' />
+    </worksheet>
+    <worksheet name='Sheet 8'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='time_series_19-covid-Confirmed' name='federated.1p9yyvu0zczjts1dub7kq14bjeqj' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1p9yyvu0zczjts1dub7kq14bjeqj'>
+            <column caption='Cases (adjusted)' datatype='integer' name='[Calculation_3858247898782969856]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='IIF([Pivot-Feldwerte] = 0, NULL, [Pivot-Feldwerte])' />
+            </column>
+            <column caption='Country (adjusted)' datatype='string' name='[Cases (adjusted) (Kopie)_3858247898783281153]' role='dimension' semantic-role='[Country].[Name]' type='nominal'>
+              <calculation class='tableau' formula='IIF([Pivot-Feldwerte] = 0, NULL, [Country/Region])' />
+              <semantic-values semantic-role='[Country].[Name]'>
+                <semantic-value key='&quot;Mainland China&quot;' value='&quot;China&quot;' />
+              </semantic-values>
+            </column>
+            <column datatype='string' name='[Country/Region]' role='dimension' semantic-role='[Country].[ISO3166_2]' type='nominal'>
+              <semantic-values semantic-role='[Country].[Name]'>
+                <semantic-value key='&quot;Mainland China&quot;' value='&quot;China&quot;' />
+              </semantic-values>
+            </column>
+            <column caption='Date' datatype='date' name='[Pivot-Feldnamen]' role='dimension' type='ordinal' />
+            <column caption='Cases' datatype='integer' name='[Pivot-Feldwerte]' role='measure' type='quantitative' />
+            <column-instance column='[Cases (adjusted) (Kopie)_3858247898783281153]' derivation='None' name='[none:Cases (adjusted) (Kopie)_3858247898783281153:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Calculation_3858247898782969856]' derivation='Sum' name='[sum:Calculation_3858247898782969856:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Pivot-Feldnamen]' derivation='Day-Trunc' name='[tdy:Pivot-Feldnamen:ok]' pivot='key' type='ordinal' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+          </pane>
+        </panes>
+        <rows>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Cases (adjusted) (Kopie)_3858247898783281153:nk]</rows>
+        <cols>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[sum:Calculation_3858247898782969856:qk]</cols>
+        <pages>
+          <column>[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[tdy:Pivot-Feldnamen:ok]</column>
+        </pages>
+      </table>
+      <simple-id uuid='{93C7084B-3EC5-4A25-B39F-C6B3347BA027}' />
+    </worksheet>
   </worksheets>
   <dashboards>
     <dashboard name='Dashboard'>
@@ -1233,8 +1466,19 @@
         <column-instance column='[Table Name]' derivation='None' name='[none:Table Name:nk]' pivot='key' type='nominal' />
       </datasource-dependencies>
       <zones>
+        <zone h='100000' id='12' type='layout-basic' w='100000' x='0' y='0'>
+          <zone h='98358' id='15' param='horz' type='layout-flow' w='99000' x='500' y='821'>
+            <zone h='98358' id='13' type='layout-basic' w='99000' x='500' y='821' />
+          </zone>
+          <zone-style>
+            <format attr='border-color' value='#000000' />
+            <format attr='border-style' value='none' />
+            <format attr='border-width' value='0' />
+            <format attr='margin' value='8' />
+          </zone-style>
+        </zone>
         <zone h='6154' id='3' name='ICON' show-title='false' w='3750' x='96250' y='0' />
-        <zone h='66667' id='4' name='MAP 01' show-title='false' w='68750' x='0' y='30769'>
+        <zone h='76923' id='4' name='MAP 01' show-title='false' w='68750' x='0' y='20513'>
           <zone-style>
             <format attr='border-color' value='#555555' />
             <format attr='border-style' value='solid' />
@@ -1242,9 +1486,8 @@
           </zone-style>
         </zone>
         <zone h='10256' id='5' mode='radiolist' name='MAP 01' param='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' show-all='false' type='filter' w='10000' x='6000' y='7385' />
-        <zone count='2' h='7282' id='9' looped='0' name='MAP 01' name1='BAR 02' name2='Sheet 6' show-title='false' synchronized='1' trailctrls='0' type='currpage' w='12500' x='18188' y='6769' />
-        <zone h='66667' id='10' name='BAR 02' show-title='false' w='28125' x='68750' y='30769' />
-        <zone h='32205' id='11' name='Sheet 6' show-title='false' w='30250' x='34125' y='8410' />
+        <zone count='1' h='7282' id='9' looped='0' name='MAP 01' name1='BAR 01' show-title='false' synchronized='1' trailctrls='0' type='currpage' w='12500' x='18188' y='6769' />
+        <zone h='76923' id='10' name='BAR 01' show-title='false' w='28125' x='68750' y='20513' />
       </zones>
       <simple-id uuid='{DEE79804-6D9E-4C17-A405-75A5F92C621F}' />
     </dashboard>
@@ -1252,12 +1495,13 @@
   <windows source-height='30'>
     <window class='dashboard' name='Dashboard'>
       <viewpoints>
-        <viewpoint name='BAR 02'>
+        <viewpoint name='BAR 01'>
           <current-page>
             <multibucket>
-              <bucket>#2020-02-28 00:00:00#</bucket>
+              <bucket>#2020-02-19 00:00:00#</bucket>
             </multibucket>
           </current-page>
+          <zoom type='entire-view' />
         </viewpoint>
         <viewpoint name='ICON'>
           <zoom type='entire-view' />
@@ -1265,22 +1509,14 @@
         <viewpoint name='MAP 01'>
           <current-page>
             <multibucket>
-              <bucket>#2020-02-28 00:00:00#</bucket>
+              <bucket>#2020-02-19 00:00:00#</bucket>
             </multibucket>
           </current-page>
           <zoom type='entire-view' />
           <default-map-tool-selection tool='1' />
         </viewpoint>
-        <viewpoint name='Sheet 6'>
-          <current-page>
-            <multibucket>
-              <bucket>#2020-02-28 00:00:00#</bucket>
-            </multibucket>
-          </current-page>
-          <zoom type='entire-view' />
-        </viewpoint>
       </viewpoints>
-      <active id='10' />
+      <active id='-1' />
       <simple-id uuid='{0140E2A8-828A-4960-951D-2D7F58184AC5}' />
     </window>
     <window class='worksheet' name='ICON'>
@@ -1343,7 +1579,7 @@
       </viewpoint>
       <simple-id uuid='{72129972-5246-402D-95E9-3ADB7975334A}' />
     </window>
-    <window class='worksheet' maximized='true' name='BAR 02'>
+    <window class='worksheet' name='BAR 02'>
       <cards>
         <edge name='left'>
           <strip size='170'>
@@ -1365,14 +1601,13 @@
             <card mode='radiolist' param='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' type='filter' />
             <card type='currpage' />
             <card pane-specification-id='6' param='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' type='color' />
-            <card pane-specification-id='6' param='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[usr:Calculation_3938609004732534785:qk]' type='size' />
           </strip>
         </edge>
       </cards>
       <viewpoint>
         <current-page>
           <multibucket>
-            <bucket>#2020-02-28 00:00:00#</bucket>
+            <bucket>#2020-01-22 00:00:00#</bucket>
           </multibucket>
         </current-page>
         <zoom type='entire-view' />
@@ -1400,10 +1635,16 @@
         <edge name='right'>
           <strip size='170'>
             <card pane-specification-id='0' param='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' type='color' />
+            <card type='currpage' />
           </strip>
         </edge>
       </cards>
       <viewpoint>
+        <current-page>
+          <multibucket>
+            <bucket>#2020-02-07 00:00:00#</bucket>
+          </multibucket>
+        </current-page>
         <zoom type='entire-view' />
       </viewpoint>
       <simple-id uuid='{3B663838-74E0-424D-A65F-48004FC81D7F}' />
@@ -1466,6 +1707,66 @@
         </current-page>
       </viewpoint>
       <simple-id uuid='{5E95DEB0-140A-4413-A431-ED1346A76AE8}' />
+    </window>
+    <window class='worksheet' name='Sheet 7'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card type='currpage' />
+            <card pane-specification-id='0' param='[federated.1p9yyvu0zczjts1dub7kq14bjeqj].[none:Table Name:nk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <default-map-tool-selection tool='2' />
+      </viewpoint>
+      <simple-id uuid='{9555B042-3BAF-47D2-A3C1-B4F23E4C7891}' />
+    </window>
+    <window class='worksheet' maximized='true' name='Sheet 8'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card type='currpage' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{136698F9-7041-4965-AEC3-9332D87F1F5F}' />
     </window>
   </windows>
   <external>
