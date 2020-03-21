@@ -8,6 +8,7 @@ library(readr)
 
 
 
+## >>>>>>>>>>>>>>>>>>>>>>>
 # Load CoViD-19 data from GitHub.
 dd_org_confirmed = read_csv(url("https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv")) %>% 
   select(., -c("Province/State")) %>% 
@@ -31,6 +32,8 @@ dd <- dd_org_confirmed %>%
 write.csv(dd, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/COVID_Time_series_TMM.csv")
 
 
+
+## >>>>>>>>>>>>>>>>>>>>>>>
 ## Load supplementary data from Worldbank from local folder.
 
 # GDP (US$).
@@ -38,49 +41,96 @@ dd_org_gdp = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~Cl
                       skip = 3) %>% 
   select(., -c("Indicator Code", "Indicator Name")) %>% 
   rename(., "2020" = "X65") %>% 
-  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "GDP_current_USDollar")
+  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "GDP_current_USDollar") %>% 
+  mutate(description_gdp = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_GDP_Meta.csv")$SOURCE_NOTE)
 
 # Life expectancy at birth in years.
 dd_org_LifeExpect = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_LifeExpectancy.csv",
                       skip = 3) %>% 
   select(., -c("Indicator Code", "Indicator Name")) %>% 
   rename(., "2020" = "X65") %>% 
-  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "LifeExpectBirth")
+  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "LifeExpectBirth") %>% 
+  mutate(description_LifeExpect = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_LifeExpectancy_Meta.csv")$SOURCE_NOTE)
 
 # Health expenditure as % GDP.
 dd_org_HealthExp_relGDP = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_HealthExpenditure.csv",
                              skip = 3) %>% 
   select(., -c("Indicator Code", "Indicator Name")) %>% 
   rename(., "2020" = "X65") %>% 
-  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "HealthExp_relGDP")
+  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "HealthExp_relGDP") %>% 
+  mutate(description_HealthExp_relGDP = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_HealthExpenditure_Meta.csv")$SOURCE_NOTE)
 
 # Health expenditure per capita.
 dd_org_HealthExp_perCapita = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_HealthExpenditurePerCapita.csv",
                             skip = 3) %>% 
   select(., -c("Indicator Code", "Indicator Name")) %>% 
   rename(., "2020" = "X65") %>% 
-  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "HealthExp_perCapita")
+  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "HealthExp_perCapita") %>% 
+  mutate(description_HealthExp_perCapita = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_HealthExpenditurePerCapita_Meta.csv")$SOURCE_NOTE)
 
 # Total population numbers.
 dd_org_TotalPop = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_TotalPop.csv",
                                       skip = 3) %>% 
   select(., -c("Indicator Code", "Indicator Name")) %>% 
   rename(., "2020" = "X65") %>% 
-  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "TotalPop")
+  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "TotalPop") %>% 
+  mutate(description_TotalPop = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_TotalPop_Meta.csv")$SOURCE_NOTE)
 
 # Fertility rare: briths per woman.
 dd_org_FertilityRate = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_FertilityRate.csv",
                            skip = 3) %>% 
   select(., -c("Indicator Code", "Indicator Name")) %>% 
   rename(., "2020" = "X65") %>% 
-  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "FertilityRate")
+  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "FertilityRate") %>% 
+  mutate(description_FertilityRate = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_FertilityRate_Meta.csv")$SOURCE_NOTE)
 
 # Access to electricity in %.
 dd_org_AccessElect = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_AccessElectricity.csv",
                                 skip = 3) %>% 
   select(., -c("Indicator Code", "Indicator Name")) %>% 
   rename(., "2020" = "X65") %>% 
-  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "AccessElect")
+  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "AccessElect") %>% 
+  mutate(description_AccessElect = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_AccessElectricity_Meta.csv")$SOURCE_NOTE)
+
+# Age dependent ratio of old people in %.
+dd_org_AgeDepRatio_old = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_AgeDepRatio_old.csv",
+                              skip = 3) %>% 
+  select(., -c("Indicator Code", "Indicator Name")) %>% 
+  rename(., "2020" = "X65") %>% 
+  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "AgeDepRatio_old") %>% 
+  mutate(description_AgeDepRatio_old = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_AgeDepRatio_old_Meta.csv")$SOURCE_NOTE)
+
+# Age dependent ratio of young people in %.
+dd_org_AgeDepRatio_young = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_AgeDepRatio_young.csv",
+                                  skip = 3) %>% 
+  select(., -c("Indicator Code", "Indicator Name")) %>% 
+  rename(., "2020" = "X65") %>% 
+  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "AgeDepRatio_young") %>% 
+  mutate(description_AgeDepRatio_young = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_AgeDepRatio_young_Meta.csv")$SOURCE_NOTE)
+
+# Electric power consumption.
+dd_org_ElectPowerConsump = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_ElectPowerConsumpt.csv",
+                              skip = 3) %>% 
+  select(., -c("Indicator Code", "Indicator Name")) %>% 
+  rename(., "2020" = "X65") %>% 
+  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "ElectPowerConsump") %>% 
+  mutate(description_ElectPowerConsump = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_ElectPowerConsumpt_Meta.csv")$SOURCE_NOTE)
+
+# GINI index.
+dd_org_GINI = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_GINI.csv",
+                              skip = 3) %>% 
+  select(., -c("Indicator Code", "Indicator Name")) %>% 
+  rename(., "2020" = "X65") %>% 
+  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "GINI") %>% 
+  mutate(description_GINI = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_GINI_Meta.csv")$SOURCE_NOTE)
+
+# GINI index.
+dd_org_TranspCorrupt = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_TranspCorrupt.csv",
+                       skip = 3) %>% 
+  select(., -c("Indicator Code", "Indicator Name")) %>% 
+  rename(., "2020" = "X65") %>% 
+  pivot_longer(., cols = -c("Country Name", "Country Code"), names_to = "Year", values_to = "TranspCorrupt") %>% 
+  mutate(description_TranspCorrupt = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_TranspCorrupt_Meta.csv")$SOURCE_NOTE)
 
 # Counry metadata.
 dd_org_meta = read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/Worldbank_Metadata_Countries.csv",
@@ -95,6 +145,11 @@ dd_supple <- dd_org_TotalPop %>%
   left_join(., dd_org_gdp, by = c("Country Name", "Country Code", "Year"), keep = FALSE) %>% 
   left_join(., dd_org_FertilityRate, by = c("Country Name", "Country Code", "Year"), keep = FALSE) %>% 
   left_join(., dd_org_AccessElect, by = c("Country Name", "Country Code", "Year"), keep = FALSE) %>% 
+  left_join(., dd_org_AgeDepRatio_old, by = c("Country Name", "Country Code", "Year"), keep = FALSE) %>% 
+  left_join(., dd_org_AgeDepRatio_young, by = c("Country Name", "Country Code", "Year"), keep = FALSE) %>% 
+  left_join(., dd_org_ElectPowerConsump, by = c("Country Name", "Country Code", "Year"), keep = FALSE) %>% 
+  left_join(., dd_org_GINI, by = c("Country Name", "Country Code", "Year"), keep = FALSE) %>% 
+  left_join(., dd_org_TranspCorrupt, by = c("Country Name", "Country Code", "Year"), keep = FALSE) %>% 
   left_join(., dd_org_meta, by = c("Country Code" = "Country Code"), keep = FALSE)
 
 # Export to .csv file.
