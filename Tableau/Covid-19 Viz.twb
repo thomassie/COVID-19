@@ -815,10 +815,10 @@
         </groupfilter>
       </group>
       <extract count='-1' enabled='true' units='records'>
-        <connection access_mode='readonly' authentication='auth-none' author-locale='en_GB' class='hyper' dbname='/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Tableau/Countries_SupplementaryInformation_TMM.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='03/24/2020 07:18:11 AM' username='tableau_internal_user'>
+        <connection access_mode='readonly' authentication='auth-none' author-locale='en_GB' class='hyper' dbname='/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Tableau/Countries_SupplementaryInformation_TMM.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='03/25/2020 08:25:26 AM' username='tableau_internal_user'>
           <relation name='Extract' table='[Extract].[Extract]' type='table' />
           <refresh>
-            <refresh-event add-from-file-path='Countries_SupplementaryInformation_TMM' increment-value='%null%' refresh-type='create' rows-inserted='16104' timestamp-start='2020-03-24 07:18:11.479' />
+            <refresh-event add-from-file-path='Countries_SupplementaryInformation_TMM' increment-value='%null%' refresh-type='create' rows-inserted='16104' timestamp-start='2020-03-25 08:25:26.599' />
           </refresh>
           <metadata-records>
             <metadata-record class='column'>
@@ -2557,10 +2557,10 @@
         </drill-path>
       </drill-paths>
       <extract count='-1' enabled='true' units='records'>
-        <connection access_mode='readonly' authentication='auth-none' author-locale='en_GB' class='hyper' dbname='/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Tableau/time_series_19-covid-Confirmed.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='03/24/2020 07:05:21 PM' username='tableau_internal_user'>
+        <connection access_mode='readonly' authentication='auth-none' author-locale='en_GB' class='hyper' dbname='/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Tableau/time_series_19-covid-Confirmed.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='03/25/2020 08:25:39 AM' username='tableau_internal_user'>
           <relation name='Extract' table='[Extract].[Extract]' type='table' />
           <refresh>
-            <refresh-event add-from-file-path='time_series_19-covid-Confirmed' increment-value='%null%' refresh-type='create' rows-inserted='124248' timestamp-start='2020-03-24 19:05:21.289' />
+            <refresh-event add-from-file-path='time_series_19-covid-Confirmed' increment-value='%null%' refresh-type='create' rows-inserted='124248' timestamp-start='2020-03-25 08:25:39.719' />
           </refresh>
           <metadata-records>
             <metadata-record class='column'>
@@ -2586,7 +2586,7 @@
               <family>COVID_Time_series_TMM.csv</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
-              <approx-count>626</approx-count>
+              <approx-count>530</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LDE_RDE' />
             </metadata-record>
@@ -2600,7 +2600,7 @@
               <family>COVID_Time_series_TMM.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>1694</approx-count>
+              <approx-count>1529</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2613,7 +2613,7 @@
               <family>COVID_Time_series_TMM.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>1601</approx-count>
+              <approx-count>1422</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2653,7 +2653,7 @@
               <family>COVID_Time_series_TMM.csv</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>1359</approx-count>
+              <approx-count>1537</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2680,7 +2680,7 @@
               <family>World population by country.csv</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LDE_RDE' />
             </metadata-record>
@@ -2694,7 +2694,7 @@
               <family>World population by country.csv</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2721,7 +2721,7 @@
               <family>World population by country.csv</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>30</approx-count>
+              <approx-count>22</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2734,7 +2734,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2747,7 +2747,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2760,7 +2760,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2773,7 +2773,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2786,7 +2786,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2799,7 +2799,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2812,7 +2812,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2825,7 +2825,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2838,7 +2838,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2851,7 +2851,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2864,7 +2864,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2877,7 +2877,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2890,7 +2890,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2903,7 +2903,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2916,7 +2916,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2929,7 +2929,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2942,7 +2942,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2955,7 +2955,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2968,7 +2968,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2981,7 +2981,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -2994,7 +2994,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3007,7 +3007,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3020,7 +3020,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3033,7 +3033,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3046,7 +3046,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3059,7 +3059,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3072,7 +3072,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3085,7 +3085,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3098,7 +3098,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3111,7 +3111,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3124,7 +3124,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3137,7 +3137,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3150,7 +3150,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3163,7 +3163,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3176,7 +3176,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3189,7 +3189,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3202,7 +3202,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3215,7 +3215,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3228,7 +3228,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3241,7 +3241,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3254,7 +3254,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3267,7 +3267,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3280,7 +3280,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3293,7 +3293,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3306,7 +3306,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3319,7 +3319,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3332,7 +3332,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3345,7 +3345,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3358,7 +3358,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3371,7 +3371,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3384,7 +3384,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3397,7 +3397,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3410,7 +3410,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3423,7 +3423,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3436,7 +3436,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3449,7 +3449,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3462,7 +3462,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3475,7 +3475,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3488,7 +3488,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3501,7 +3501,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3514,7 +3514,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3527,7 +3527,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3540,7 +3540,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3553,7 +3553,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3566,7 +3566,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3579,7 +3579,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3592,7 +3592,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3605,7 +3605,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3618,7 +3618,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3631,7 +3631,7 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
             <metadata-record class='column'>
@@ -3644,13 +3644,13 @@
               <family>World population by country.csv</family>
               <local-type>real</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>588</approx-count>
+              <approx-count>485</approx-count>
               <contains-null>true</contains-null>
             </metadata-record>
           </metadata-records>
         </connection>
       </extract>
-      <layout dim-ordering='alphabetic' dim-percentage='0.379845' group-percentage='0.0297158' measure-ordering='alphabetic' measure-percentage='0.400517' parameter-percentage='0.189922' rowDisplayCount='5000' show-aliased-fields='true' show-structure='true' />
+      <layout dim-ordering='alphabetic' dim-percentage='0.391528' group-percentage='0.0308087' measure-ordering='alphabetic' measure-percentage='0.38896' parameter-percentage='0.188703' rowDisplayCount='5000' show-aliased-fields='true' show-structure='true' />
       <style>
         <style-rule element='mark'>
           <encoding attr='color' field='[:Measure Names]' type='palette'>
@@ -6003,7 +6003,7 @@
           <map-navigation value='1' />
         </viewpoint>
       </viewpoints>
-      <active id='-1' />
+      <active id='4' />
       <simple-id uuid='{0140E2A8-828A-4960-951D-2D7F58184AC5}' />
     </window>
     <window class='worksheet' hidden='true' name='AREA 01 proportional' tab-color='#dec77b'>
