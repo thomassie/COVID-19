@@ -10,15 +10,15 @@ library(readr)
 
 ## >>>>>>>>>>>>>>>>>>>>>>>
 # Load CoViD-19 data from GitHub.
-dd_org_confirmed = read_csv(url("https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv")) %>% 
+dd_org_confirmed = read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")) %>% 
   select(., -c("Province/State")) %>% 
   pivot_longer(., cols = -c("Country/Region", "Lat", "Long"), names_to = "Date", values_to = "confirmed")
 
-dd_org_deaths = read_csv(url("https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv")) %>% 
+dd_org_deaths = read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv")) %>% 
   select(., -c("Province/State")) %>% 
   pivot_longer(., cols = -c("Country/Region", "Lat", "Long"), names_to = "Date", values_to = "deaths") 
 
-dd_org_recovered = read_csv(url("https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv")) %>% 
+dd_org_recovered = read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv")) %>% 
   select(., -c("Province/State")) %>% 
   pivot_longer(., cols = -c("Country/Region", "Lat", "Long"), names_to = "Date", values_to = "recovered") 
 
