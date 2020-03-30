@@ -5,28 +5,37 @@ rm(list = ls())
 # Load packages
 library(tidyverse)
 library(readr)
+library(janitor)
 
 
 
 ## >>>>>>>>>>>>>>>>>>>>>>>
 # Load CoViD-19 data from GitHub.
 dd_org_confirmed = read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")) %>% 
-  select(., -c("Province/State")) %>% 
-  pivot_longer(., cols = -c("Country/Region", "Lat", "Long"), names_to = "Date", values_to = "confirmed")
+  # select(., -c("Province/State")) %>% 
+  pivot_longer(., cols = -c("Country/Region", "Province/State", "Lat", "Long"), names_to = "Date", values_to = "confirmed")
 
 dd_org_deaths = read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv")) %>% 
-  select(., -c("Province/State")) %>% 
-  pivot_longer(., cols = -c("Country/Region", "Lat", "Long"), names_to = "Date", values_to = "deaths") 
+  # select(., -c("Province/State")) %>% 
+  pivot_longer(., cols = -c("Country/Region", "Province/State", "Lat", "Long"), names_to = "Date", values_to = "deaths") 
 
 dd_org_recovered = read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv")) %>% 
-  select(., -c("Province/State")) %>% 
-  pivot_longer(., cols = -c("Country/Region", "Lat", "Long"), names_to = "Date", values_to = "recovered") 
+  # select(., -c("Province/State")) %>% 
+  pivot_longer(., cols = -c("Country/Region", "Province/State", "Lat", "Long"), names_to = "Date", values_to = "recovered") 
 
-# Build combined dataset.
 dd <- dd_org_confirmed %>% 
-  mutate(., deaths = dd_org_deaths$deaths, recovered = dd_org_recovered$recovered) %>% 
-  mutate(., active = confirmed - deaths - recovered) %>% 
-  pivot_longer(., cols = c(confirmed, deaths, recovered, active), names_to = "Status", values_to = "Cases")
+  left_join(., dd_org_deaths, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
+  left_join(., dd_org_recovered, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
+  mutate(active = confirmed - deaths - recovered) %>% 
+  pivot_longer(., cols = c(confirmed, deaths, recovered, active), names_to = "status", values_to = "cases") %>% 
+  clean_names()
+
+
+# # Build combined dataset.
+# dd <- dd_org_confirmed %>% 
+#   mutate(., deaths = dd_org_deaths$deaths, recovered = dd_org_recovered$recovered) %>% 
+#   mutate(., active = confirmed - deaths - recovered) %>% 
+#   pivot_longer(., cols = c(confirmed, deaths, recovered, active), names_to = "Status", values_to = "Cases")
 
 # Export to .csv file.
 write.csv(dd, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/COVID_Time_series_TMM.csv")
