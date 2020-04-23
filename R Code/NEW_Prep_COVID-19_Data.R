@@ -8,6 +8,8 @@ library(readr)
 library(janitor)
 library(lubridate)
 library(plotly)
+library(drc)
+library(growthmodels)
 
 
 
@@ -41,80 +43,3 @@ write.csv(dd, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/
 
 
 
-
-
-dd_pop <- read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/WorldPop_2018.csv")
-
-
-# dd_test <- dd %>%
-#   filter(., cases != 0) %>%
-#   select(., -c(long, lat, province_state)) %>%
-#   group_by(., country_region, status) %>% 
-#   mutate(., time_ind = as.numeric(difftime(date, min(date), units = "days")))
-#   # mutate(., time_diff = difftime(date, min(date), "days"))
-
-param_crit <- 17
-
-ddd_test <- dd %>% 
-  group_by(., date, country_region, status) %>% 
-  summarise(., cases_all = sum(cases)) %>% 
-  left_join(., dd_pop, by = c("country_region" = "country")) %>% 
-  mutate(., cases_all_diff = cases_all - lag(cases_all)) %>% 
-  mutate(., cases_all_rel_ck = cases_all / population_total *100000) %>% 
-  mutate(., cases_all_diff_rel_ck = cases_all_rel_ck - lag(cases_all_rel_ck)) %>%
-  # filter(., cases_all != 0) %>%
-  filter(., cases_all >= param_crit) %>%
-  group_by(., country_region, status) %>% 
-  mutate(., time_ind = as.numeric(difftime(date, min(date), units = "days"))) %>% 
-  arrange(., country_region, date, status)
-
-str(ddd_test)
-
-p1 <- ggplot(ddd_test,
-       aes(time_ind, cases_all, group = as.factor(country_region))) +
-  geom_line(aes(colour = status)) +
-  facet_wrap(~ status) +
-  theme_void() +
-  annotation_logticks() +
-  scale_y_log10(); ggplotly(p1)
-
-p1_lin <- ggplot(ddd_test,
-             aes(time_ind, cases_all, group = as.factor(country_region))) +
-  geom_line(aes(colour = status)) +
-  facet_wrap(~ status) +
-  theme_void(); ggplotly(p1_lin)
-
-p2 <- ggplot(ddd_test,
-             aes(time_ind, cases_all_diff, group = as.factor(country_region))) +
-  geom_line(aes(colour = status)) +
-  facet_wrap(~ status) +
-  theme_void(); ggplotly(p2)
-
-p3 <- ggplot(ddd_test,
-             aes(time_ind, cases_all_rel_ck, group = as.factor(country_region))) +
-  geom_line(aes(colour = status)) +
-  facet_wrap(~ status) +
-  theme_void() +
-  scale_y_log10(); ggplotly(p3)
-
-p3_lin <- ggplot(ddd_test,
-             aes(time_ind, cases_all_rel_ck, group = as.factor(country_region))) +
-  geom_line(aes(colour = status)) +
-  facet_wrap(~ status) +
-  theme_void(); ggplotly(p3_lin)
-
-p4 <- ggplot(ddd_test,
-             aes(time_ind, cases_all_diff_rel_ck, group = as.factor(country_region))) +
-  geom_line(aes(colour = status)) +
-  facet_wrap(~ status) +
-  theme_void(); p4
-ggplotly(p4)
-
-
-
-# 
-# lmodel_Germany <- lm(log(na.omit(filter(dd_Germany, status == "confirmed")$cases)) ~ na.omit(filter(dd_Germany, status == "confirmed")$date))
-
-plot(filter(dd_Germany, status == "confirmed")$date, log(na.omit(filter(dd_Germany, status == "confirmed")$cases)))
-plot(filter(dd_Germany, status == "confirmed")$date, filter(dd_Germany, status == "confirmed")$cases)
-     
