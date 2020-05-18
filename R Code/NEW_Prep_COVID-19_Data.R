@@ -8,8 +8,6 @@ library(readr)
 library(janitor)
 library(lubridate)
 library(plotly)
-library(drc)
-library(growthmodels)
 
 
 

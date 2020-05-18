@@ -126,8 +126,8 @@ ggplotly(p_test)
 
 
 #Fit sigmoidal model!!!
-t_max <- 80
-selected_country <- "Spain"
+t_max <- 300
+selected_country <- "Germany"
 selected_status <- "deaths"
 time_pred <- seq(0, t_max, 1)
 
@@ -311,10 +311,6 @@ mselect(model_LL.4)
 
 
 
-dd_saturation <- filter(dd_base, time_ind >= 60)
-
-
-
 
 
 
@@ -331,11 +327,12 @@ model_predictions      <- list()
 
 dd_actual_cases_temp <-  list()
 
+max_steps <- 15
 
 # for (n in 1:length(model_type)) {
 for (n in 1:6) {
   
-  for (i in 1:10) {
+  for (i in 1:max_steps) {
     
     # Define the set of models used.
     dd_temp <- filter(dd_selected, time_ind <= i*step_size)
@@ -386,15 +383,16 @@ for (n in 1:6) {
 
 
 dd_pred_coef <- as_tibble(reduce(dd_pred, rbind)) %>% 
-  clean_names()
+  clean_names(.) %>% 
+  arrange(., step)
 write_csv(dd_pred_coef, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/pred_coefficients.csv")
 
 dd_model_pred <- as_tibble(reduce(model_predictions, rbind)) %>% 
-  clean_names()
+  clean_names(.)
 write_csv(dd_model_pred, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/model_predictions.csv")
 
 dd_actual_cases <- as_tibble(reduce(dd_actual_cases_temp, rbind)) %>% 
-  clean_names()
+  clean_names(.)
 write_csv(dd_actual_cases, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/actual_cases.csv")
 
 
@@ -412,13 +410,13 @@ ggplot(data = dd_model_pred) +
   geom_point(data = dd_actual_cases,
              aes(x = time_ind, y = cases_all, group = step),
              fill = "#FFFFFF", colour = "transparent", alpha = 0.7,
-             shape = 19, size = 3) +
+             shape = 19, size = 2) +
   # geom_line(data = dd_actual_cases,
   #           aes(x = time_ind, y = cases_all, group = step), 
   #           colour = "#FFFFFF", colour = "transparent", alpha = 0.9,
   #           size = 3) +
   geom_line(aes(x = time_pred, y = prediction, colour = model_used)) +
-  scale_y_log10() +
+  # scale_y_log10() +
   # facet_wrap(~ model_name) +
   # scale_colour_manual(dd_predicted$model_name, c("#45EE78", "#99EF12", "#01EEF9")) +
   theme_TMM_01_light +
@@ -429,32 +427,41 @@ ggplot(data = dd_model_pred) +
         legend.position = "none")
 
 
-
-
-
-
-ggplotly(ggplot(data = ddd,
-                aes(x = time,
-                    y = max_value,
-                    colour = model)) +
-           geom_line() +
-           themes_TMM_01)
-
-ggplotly(ggplot(data = ddd,
-                aes(x = time,
-                    y = aic,
-                    colour = model)) +
-           geom_line() +
-           themes_TMM_01)
-
-ggplot(data = ddd,
-       aes(x = time,
-           y = aic,
-           colour = model)) +
-  geom_line() +
+ggplot(data = filter(dd_model_pred, step >= 0)) +
+  geom_line(aes(x = time_pred, y = max_value),
+            linetype = "dotted",
+            size = 0.5, colour = "#3B4457") +
+  geom_text(aes(x = min(time_pred), y = max_value, 
+                label = paste("max =", round((max_value),0),"&", "AIC", "=", round((aic), 0))), 
+            check_overlap = TRUE, size = 2, vjust = -0.8, hjust = -0.15) +
+  geom_ribbon(aes(x = time_pred, y = prediction, ymin = lower, ymax = upper,
+                  fill = model_used), 
+              alpha = 0.5) +
+  geom_point(data = filter(dd_actual_cases, step >= 0),
+             aes(x = time_ind, y = cases_all, group = step),
+             fill = "#FFFFFF", colour = "transparent", alpha = 0.7,
+             shape = 19, size = 2) +
+  # geom_line(data = dd_actual_cases,
+  #           aes(x = time_ind, y = cases_all, group = step), 
+  #           colour = "#FFFFFF", colour = "transparent", alpha = 0.9,
+  #           size = 3) +
+  geom_line(aes(x = time_pred, y = prediction, colour = model_used)) +
+  # scale_y_log10() +
+  # facet_wrap(~ model_name) +
+  # scale_colour_manual(dd_predicted$model_name, c("#45EE78", "#99EF12", "#01EEF9")) +
   theme_TMM_01_light +
   scale_colour_manual(values = palettes_long$pals_01,
-                      aesthetics = c("colour", "fill"))
+                      aesthetics = c("colour", "fill")) +
+  facet_grid(model_used ~ step, scales='free') +
+  theme(strip.background = element_blank(),
+        legend.position = "none")
+
+
+dd_model_best <- dd_pred_coef %>% 
+  group_by(., step) %>% 
+  filter(., aic == min(aic))
+
+
 
 
 
