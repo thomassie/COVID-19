@@ -41,3 +41,43 @@ write.csv(dd, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/
 
 
 
+
+
+
+# Experimental... ;)
+library(gganimate)
+library(viridis)
+
+plot <- dd %>% 
+  filter(., status == "confirmed" & date == "2020-03-22") %>% 
+  ggplot(aes(x = cases, fill = cases)) +
+  geom_histogram(bins = 100) +
+  theme_minimal() +
+  scale_y_log10() +
+  scale_x_continuous(trans = 'log2') 
+# scale_x_log10() 
+# scale_size(guide = FALSE) # no legend for size
+
+plot <- dd %>% 
+  filter(., status == "confirmed") %>% 
+  ggplot(aes(x = cases, fill = cases)) +
+  geom_density() +
+  theme_minimal() +
+  scale_y_log10() +
+  scale_x_continuous(trans = 'log2')+
+  coord_cartesian(ylim = c(0.000001, 1))
+# scale_x_log10()
+
+plot + transition_time(date) +
+  labs(title = "Date: {frame_time}", 
+       wrap = FALSE)
+
+# 
+# plot + transition_states(states = date,
+#                          transition_length = 3,
+#                          state_length = 1,
+#                          wrap = FALSE)
+
+ggplotly(plot)
+
+
