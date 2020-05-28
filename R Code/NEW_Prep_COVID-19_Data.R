@@ -8,6 +8,8 @@ library(readr)
 library(janitor)
 library(lubridate)
 library(plotly)
+library(htmlwidgets)
+library(wesanderson)
 
 
 
@@ -35,9 +37,26 @@ dd <- dd_org_confirmed %>%
   clean_names() 
 
 str(dd)
+head(dd)
+
+
+# Quick graphical check.
+p_01 <- ggplotly(dd %>% 
+                   filter(., country_region == "Germany") %>% 
+                   ggplot(aes(x = date, y = cases, colour = status)) +
+                   geom_line() +
+                   labs(title = "CoViD-19 cases for Germany") +
+                   xlab("") +
+                   ylab("") +
+                   scale_colour_manual(values = c("#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+                   theme_minimal() +
+                   theme(legend.title = element_blank())); p_01
+
 
 # Export to .csv file.
-write.csv(dd, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/NEW_COVID_Time_series_TMM.csv")
+write.csv(dd, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Time series --- global/NEW_COVID_Time_series_TMM.csv")
+
+
 
 
 
