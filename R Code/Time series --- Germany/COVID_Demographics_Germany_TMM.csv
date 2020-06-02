@@ -1,402 +1,352 @@
-id_landkreis,name,type,year_most_recent,population
-1001,Flensburg,kreisfreie Stadt,2018,89504
-1002,Kiel,kreisfreie Stadt,2018,247548
-1003,Lübeck,kreisfreie Stadt,2018,217198
-1004,Neumünster,kreisfreie Stadt,2018,79487
-1051,Dithmarschen,Landkreis,2018,133210
-1053,Herzogtum Lauenburg,Landkreis,2018,197264
-1054,Nordfriesland,Landkreis,2018,165507
-1055,Ostholstein,Landkreis,2018,200581
-1056,Pinneberg,Landkreis,2018,314391
-1057,Plön,Landkreis,2018,128647
-1058,Rendsburg-Eckernförde,Landkreis,2018,272775
-1059,Schleswig-Flensburg,Landkreis,2018,200025
-1060,Segeberg,Landkreis,2018,276032
-1061,Steinburg,Landkreis,2018,131347
-1062,Stormarn,Landkreis,2018,243196
-2000,Hamburg,kreisfreie Stadt,2018,1841179
-3101,Braunschweig,kreisfreie Stadt,2018,248292
-3102,Salzgitter,kreisfreie Stadt,2018,104948
-3103,Wolfsburg,kreisfreie Stadt,2018,124151
-3151,Gifhorn,Landkreis,2018,175920
-3153,Goslar,Landkreis,2018,137014
-3154,Helmstedt,Landkreis,2018,91307
-3155,Northeim,Landkreis,2018,132765
-3157,Peine,Landkreis,2018,133965
-3158,Wolfenbüttel,Landkreis,2018,119960
-3159,Göttingen,Landkreis,2017,328036
-3241,Region Hannover,Landkreis,2018,1157624
-3251,Diepholz,Landkreis,2018,216886
-3252,Hameln-Pyrmont,Landkreis,2018,148559
-3254,Hildesheim,Landkreis,2018,276594
-3255,Holzminden,Landkreis,2018,70975
-3256,Nienburg (Weser),Landkreis,2018,121386
-3257,Schaumburg,Landkreis,2018,157781
-3351,Celle,Landkreis,2018,178936
-3352,Cuxhaven,Landkreis,2018,198213
-3353,Harburg,Landkreis,2018,252776
-3354,Lüchow-Dannenberg,Landkreis,2018,48424
-3355,Lüneburg,Landkreis,2018,183372
-3356,Osterholz,Landkreis,2018,113517
-3357,Rotenburg (Wümme),Landkreis,2018,163455
-3358,Heidekreis,NA,2018,139755
-3359,Stade,Landkreis,2018,203102
-3360,Uelzen,Landkreis,2018,92572
-3361,Verden,Landkreis,2018,136792
-3401,Delmenhorst,kreisfreie Stadt,2018,77607
-3402,Emden,kreisfreie Stadt,2018,50195
-3403,Oldenburg (Oldenburg),kreisfreie Stadt,2018,168210
-3404,Osnabrück,kreisfreie Stadt,2018,164748
-3405,Wilhelmshaven,kreisfreie Stadt,2018,76278
-3451,Ammerland,Landkreis,2018,124071
-3452,Aurich,Landkreis,2018,189848
-3453,Cloppenburg,Landkreis,2018,169348
-3454,Emsland,Landkreis,2018,325657
-3455,Friesland,Landkreis,2018,98460
-3456,Grafschaft Bentheim,Landkreis,2018,136511
-3457,Leer,Landkreis,2018,169809
-3458,Oldenburg,Landkreis,2018,130144
-3459,Osnabrück,Landkreis,2018,357343
-3460,Vechta,Landkreis,2018,141598
-3461,Wesermarsch,Landkreis,2018,88624
-3462,Wittmund,Landkreis,2018,56882
-4011,Bremen,kreisfreie Stadt,2018,569352
-4012,Bremerhaven,kreisfreie Stadt,2018,113634
-5111,Düsseldorf,kreisfreie Stadt,2018,619294
-5112,Duisburg,kreisfreie Stadt,2018,498590
-5113,Essen,kreisfreie Stadt,2018,583109
-5114,Krefeld,kreisfreie Stadt,2018,227020
-5116,Mönchengladbach,kreisfreie Stadt,2018,261454
-5117,Mülheim an der Ruhr,kreisfreie Stadt,2018,170880
-5119,Oberhausen,kreisfreie Stadt,2018,210829
-5120,Remscheid,kreisfreie Stadt,2018,110994
-5122,Solingen,kreisfreie Stadt,2018,159360
-5124,Wuppertal,kreisfreie Stadt,2018,354382
-5154,Kleve,Landkreis,2018,310974
-5158,Mettmann,Landkreis,2018,485684
-5162,Rhein-Kreis Neuss,NA,2018,451007
-5166,Viersen,Landkreis,2018,298935
-5170,Wesel,Landkreis,2018,459809
-5314,Bonn,kreisfreie Stadt,2018,327258
-5315,Köln,kreisfreie Stadt,2018,1085664
-5316,Leverkusen,kreisfreie Stadt,2018,163838
-5334,Städteregion Aachen,Landkreis,2018,555465
-5358,Düren,Landkreis,2018,263722
-5362,Rhein-Erft-Kreis,NA,2018,470089
-5366,Euskirchen,Landkreis,2018,192840
-5370,Heinsberg,Landkreis,2018,254322
-5374,Oberbergischer Kreis,NA,2018,272471
-5378,Rheinisch-Bergischer Kreis,NA,2018,283455
-5382,Rhein-Sieg-Kreis,NA,2018,599780
-5512,Bottrop,kreisfreie Stadt,2018,117383
-5513,Gelsenkirchen,kreisfreie Stadt,2018,260654
-5515,Münster,kreisfreie Stadt,2018,314319
-5554,Borken,Landkreis,2018,370676
-5558,Coesfeld,Landkreis,2018,219929
-5562,Recklinghausen,Landkreis,2018,615261
-5566,Steinfurt,Landkreis,2018,447614
-5570,Warendorf,Landkreis,2018,277783
-5711,Bielefeld,kreisfreie Stadt,2018,333786
-5754,Gütersloh,Landkreis,2018,364083
-5758,Herford,Landkreis,2018,250783
-5762,Höxter,Landkreis,2018,140667
-5766,Lippe,Landkreis,2018,348391
-5770,Minden-Lübbecke,Landkreis,2018,310710
-5774,Paderborn,Landkreis,2018,306890
-5911,Bochum,kreisfreie Stadt,2018,364628
-5913,Dortmund,kreisfreie Stadt,2018,587010
-5914,Hagen,kreisfreie Stadt,2018,188814
-5915,Hamm,kreisfreie Stadt,2018,179111
-5916,Herne,kreisfreie Stadt,2018,156374
-5954,Ennepe-Ruhr-Kreis,NA,2018,324296
-5958,Hochsauerlandkreis,NA,2018,260475
-5962,Märkischer Kreis,NA,2018,412120
-5966,Olpe,Landkreis,2018,134775
-5970,Siegen-Wittgenstein,Landkreis,2018,278210
-5974,Soest,Landkreis,2018,301902
-5978,Unna,Landkreis,2018,394782
-6411,Darmstadt,kreisfreie Stadt,2018,159207
-6412,Frankfurt am Main,kreisfreie Stadt,2018,753056
-6413,Offenbach am Main,kreisfreie Stadt,2018,128744
-6414,Wiesbaden,kreisfreie Stadt,2018,278342
-6431,Bergstraße,Landkreis,2018,269694
-6432,Darmstadt-Dieburg,Landkreis,2018,297399
-6433,Groß-Gerau,Landkreis,2018,274526
-6434,Hochtaunuskreis,NA,2018,236564
-6435,Main-Kinzig-Kreis,NA,2018,418950
-6436,Main-Taunus-Kreis,NA,2018,237735
-6437,Odenwaldkreis,NA,2018,96798
-6438,Offenbach,Landkreis,2018,354092
-6439,Rheingau-Taunus-Kreis,NA,2018,187157
-6440,Wetteraukreis,NA,2018,306460
-6531,Gießen,Landkreis,2018,268876
-6532,Lahn-Dill-Kreis,NA,2018,253777
-6533,Limburg-Weilburg,Landkreis,2018,172083
-6534,Marburg-Biedenkopf,Landkreis,2018,246648
-6535,Vogelsbergkreis,NA,2018,105878
-6611,Kassel,kreisfreie Stadt,2018,201585
-6631,Fulda,Landkreis,2018,222584
-6632,Hersfeld-Rotenburg,Landkreis,2018,120829
-6633,Kassel,Landkreis,2018,236633
-6634,Schwalm-Eder-Kreis,NA,2018,180222
-6635,Waldeck-Frankenberg,Landkreis,2018,156953
-6636,Werra-Meißner-Kreis,NA,2018,101017
-7111,Koblenz,kreisfreie Stadt,2018,114024
-7131,Ahrweiler,Landkreis,2018,129727
-7132,Altenkirchen (Westerwald),Landkreis,2018,128705
-7133,Bad Kreuznach,Landkreis,2018,158080
-7134,Birkenfeld,Landkreis,2018,80720
-7135,Cochem-Zell,Landkreis,2018,61587
-7137,Mayen-Koblenz,Landkreis,2018,214259
-7138,Neuwied,Landkreis,2018,181941
-7140,Rhein-Hunsrück-Kreis,NA,2018,102937
-7141,Rhein-Lahn-Kreis,NA,2018,122308
-7143,Westerwaldkreis,NA,2018,201597
-7211,Trier,kreisfreie Stadt,2018,110636
-7231,Bernkastel-Wittlich,Landkreis,2018,112262
-7232,Eifelkreis Bitburg-Prüm,NA,2018,98561
-7233,Vulkaneifel,Landkreis,2018,60603
-7235,Trier-Saarburg,Landkreis,2018,148945
-7311,Frankenthal (Pfalz),kreisfreie Stadt,2018,48561
-7312,Kaiserslautern,kreisfreie Stadt,2018,99845
-7313,Landau in der Pfalz,kreisfreie Stadt,2018,46677
-7314,Ludwigshafen am Rhein,kreisfreie Stadt,2018,171061
-7315,Mainz,kreisfreie Stadt,2018,217118
-7316,Neustadt an der Weinstraße,kreisfreie Stadt,2018,53148
-7317,Pirmasens,kreisfreie Stadt,2018,40403
-7318,Speyer,kreisfreie Stadt,2018,50378
-7319,Worms,kreisfreie Stadt,2018,83330
-7320,Zweibrücken,kreisfreie Stadt,2018,34209
-7331,Alzey-Worms,Landkreis,2018,129244
-7332,Bad Dürkheim,Landkreis,2018,132660
-7333,Donnersbergkreis,NA,2018,75101
-7334,Germersheim,Landkreis,2018,129075
-7335,Kaiserslautern,Landkreis,2018,106057
-7336,Kusel,Landkreis,2018,70526
-7337,Südliche Weinstraße,Landkreis,2018,110356
-7338,Rhein-Pfalz-Kreis,NA,2018,154201
-7339,Mainz-Bingen,Landkreis,2018,210889
-7340,Südwestpfalz,Landkreis,2018,95113
-8111,Stuttgart,kreisfreie Stadt,2018,634830
-8115,Böblingen,Landkreis,2018,391640
-8116,Esslingen,Landkreis,2018,533859
-8117,Göppingen,Landkreis,2018,257253
-8118,Ludwigsburg,Landkreis,2018,543984
-8119,Rems-Murr-Kreis,NA,2018,426158
-8121,Heilbronn,kreisfreie Stadt,2018,125960
-8125,Heilbronn,Landkreis,2018,343068
-8126,Hohenlohekreis,NA,2018,112010
-8127,Schwäbisch Hall,Landkreis,2018,195861
-8128,Main-Tauber-Kreis,NA,2018,132321
-8135,Heidenheim,Landkreis,2018,132472
-8136,Ostalbkreis,NA,2018,314002
-8211,Baden-Baden,kreisfreie Stadt,2018,55123
-8212,Karlsruhe,kreisfreie Stadt,2018,313092
-8215,Karlsruhe,Landkreis,2018,444232
-8216,Rastatt,Landkreis,2018,231018
-8221,Heidelberg,kreisfreie Stadt,2018,160355
-8222,Mannheim,kreisfreie Stadt,2018,309370
-8225,Neckar-Odenwald-Kreis,NA,2018,143535
-8226,Rhein-Neckar-Kreis,NA,2018,547625
-8231,Pforzheim,kreisfreie Stadt,2018,125542
-8235,Calw,Landkreis,2018,158397
-8236,Enzkreis,NA,2018,198905
-8237,Freudenstadt,Landkreis,2018,117935
-8311,Freiburg im Breisgau,kreisfreie Stadt,2018,230241
-8315,Breisgau-Hochschwarzwald,Landkreis,2018,262795
-8316,Emmendingen,Landkreis,2018,165383
-8317,Ortenaukreis,NA,2018,429479
-8325,Rottweil,Landkreis,2018,139455
-8326,Schwarzwald-Baar-Kreis,NA,2018,212381
-8327,Tuttlingen,Landkreis,2018,140152
-8335,Konstanz,Landkreis,2018,285325
-8336,Lörrach,Landkreis,2018,228639
-8337,Waldshut,Landkreis,2018,170619
-8415,Reutlingen,Landkreis,2018,286748
-8416,Tübingen,Landkreis,2018,227331
-8417,Zollernalbkreis,NA,2018,188935
-8421,Ulm,kreisfreie Stadt,2018,126329
-8425,Alb-Donau-Kreis,NA,2018,196047
-8426,Biberach,Landkreis,2018,199742
-8435,Bodenseekreis,NA,2018,216227
-8436,Ravensburg,Landkreis,2018,284285
-8437,Sigmaringen,Landkreis,2018,130873
-9161,Ingolstadt,kreisfreie Stadt,2018,136981
-9162,München,kreisfreie Stadt,2018,1471508
-9163,Rosenheim,kreisfreie Stadt,2018,63324
-9171,Altötting,Landkreis,2018,111210
-9172,Berchtesgadener Land,Landkreis,2018,105722
-9173,Bad Tölz-Wolfratshausen,Landkreis,2018,127227
-9174,Dachau,Landkreis,2018,153884
-9175,Ebersberg,Landkreis,2018,142142
-9176,Eichstätt,Landkreis,2018,132341
-9177,Erding,Landkreis,2018,137660
-9178,Freising,Landkreis,2018,179116
-9179,Fürstenfeldbruck,Landkreis,2018,219320
-9180,Garmisch-Partenkirchen,Landkreis,2018,88467
-9181,Landsberg am Lech,Landkreis,2018,120071
-9182,Miesbach,Landkreis,2018,99726
-9183,Mühldorf am Inn,Landkreis,2018,115250
-9184,München,Landkreis,2018,348871
-9185,Neuburg-Schrobenhausen,Landkreis,2018,96680
-9186,Pfaffenhofen an der Ilm,Landkreis,2018,127151
-9187,Rosenheim,Landkreis,2018,260983
-9188,Starnberg,Landkreis,2018,136092
-9189,Traunstein,Landkreis,2018,177089
-9190,Weilheim-Schongau,Landkreis,2018,135348
-9261,Landshut,kreisfreie Stadt,2018,72404
-9262,Passau,kreisfreie Stadt,2018,52469
-9263,Straubing,kreisfreie Stadt,2018,47794
-9271,Deggendorf,Landkreis,2018,119326
-9272,Freyung-Grafenau,Landkreis,2018,78355
-9273,Kelheim,Landkreis,2018,122258
-9274,Landshut,Landkreis,2018,158698
-9275,Passau,Landkreis,2018,192043
-9276,Regen,Landkreis,2018,77656
-9277,Rottal-Inn,Landkreis,2018,120659
-9278,Straubing-Bogen,Landkreis,2018,100649
-9279,Dingolfing-Landau,Landkreis,2018,96217
-9361,Amberg,kreisfreie Stadt,2018,41970
-9362,Regensburg,kreisfreie Stadt,2018,152610
-9363,Weiden in der Oberpfalz,kreisfreie Stadt,2018,42520
-9371,Amberg-Sulzbach,Landkreis,2018,103109
-9372,Cham,Landkreis,2018,127882
-9373,Neumarkt in der Oberpfalz,Landkreis,2018,133561
-9374,Neustadt an der Waldnaab,Landkreis,2018,94352
-9375,Regensburg,Landkreis,2018,193572
-9376,Schwandorf,Landkreis,2018,147189
-9377,Tirschenreuth,Landkreis,2018,72504
-9461,Bamberg,kreisfreie Stadt,2018,77592
-9462,Bayreuth,kreisfreie Stadt,2018,74657
-9463,Coburg,kreisfreie Stadt,2018,41249
-9464,Hof,kreisfreie Stadt,2018,45930
-9471,Bamberg,Landkreis,2018,147086
-9472,Bayreuth,Landkreis,2018,103656
-9473,Coburg,Landkreis,2018,86906
-9474,Forchheim,Landkreis,2018,116099
-9475,Hof,Landkreis,2018,95311
-9476,Kronach,Landkreis,2018,67135
-9477,Kulmbach,Landkreis,2018,71845
-9478,Lichtenfels,Landkreis,2018,66838
-9479,Wunsiedel im Fichtelgebirge,Landkreis,2018,73178
-9561,Ansbach,kreisfreie Stadt,2018,41847
-9562,Erlangen,kreisfreie Stadt,2018,111962
-9563,Fürth,kreisfreie Stadt,2018,127748
-9564,Nürnberg,kreisfreie Stadt,2018,518365
-9565,Schwabach,kreisfreie Stadt,2018,40792
-9571,Ansbach,Landkreis,2018,183949
-9572,Erlangen-Höchstadt,Landkreis,2018,136271
-9573,Fürth,Landkreis,2018,117387
-9574,Nürnberger Land,Landkreis,2018,170365
-9575,Neustadt an der Aisch-Bad Windsheim,Landkreis,2018,100364
-9576,Roth,Landkreis,2018,126958
-9577,Weißenburg-Gunzenhausen,Landkreis,2018,94393
-9661,Aschaffenburg,kreisfreie Stadt,2018,70527
-9662,Schweinfurt,kreisfreie Stadt,2018,54032
-9663,Würzburg,kreisfreie Stadt,2018,127880
-9671,Aschaffenburg,Landkreis,2018,174208
-9672,Bad Kissingen,Landkreis,2018,103218
-9673,Rhön-Grabfeld,Landkreis,2018,79690
-9674,Haßberge,Landkreis,2018,84599
-9675,Kitzingen,Landkreis,2018,90909
-9676,Miltenberg,Landkreis,2018,128756
-9677,Main-Spessart,Landkreis,2018,126365
-9678,Schweinfurt,Landkreis,2018,115106
-9679,Würzburg,Landkreis,2018,161834
-9761,Augsburg,kreisfreie Stadt,2018,295135
-9762,Kaufbeuren,kreisfreie Stadt,2018,43893
-9763,Kempten (Allgäu),kreisfreie Stadt,2018,68907
-9764,Memmingen,kreisfreie Stadt,2018,43837
-9771,Aichach-Friedberg,Landkreis,2018,133596
-9772,Augsburg,Landkreis,2018,251534
-9773,Dillingen an der Donau,Landkreis,2018,96021
-9774,Günzburg,Landkreis,2018,125747
-9775,Neu-Ulm,Landkreis,2018,174200
-9776,Lindau (Bodensee),Landkreis,2018,81669
-9777,Ostallgäu,Landkreis,2018,140316
-9778,Unterallgäu,Landkreis,2018,144041
-9779,Donau-Ries,Landkreis,2018,133496
-9780,Oberallgäu,Landkreis,2018,155362
-10041,Regionalverband Saarbrücken,Landkreis,2018,329708
-10042,Merzig-Wadern,Landkreis,2018,103366
-10043,Neunkirchen,Landkreis,2018,132206
-10044,Saarlouis,Landkreis,2018,195201
-10045,Saarpfalz-Kreis,NA,2018,142631
-10046,Sankt Wendel,Landkreis,2018,87397
-11000,Berlin,kreisfreie Stadt,2018,3644826
-12051,Brandenburg an der Havel,kreisfreie Stadt,2018,72124
-12052,Cottbus,kreisfreie Stadt,2018,100219
-12053,Frankfurt (Oder),kreisfreie Stadt,2018,57873
-12054,Potsdam,kreisfreie Stadt,2018,178089
-12060,Barnim,Landkreis,2018,182760
-12061,Dahme-Spreewald,Landkreis,2018,169067
-12062,Elbe-Elster,Landkreis,2018,102638
-12063,Havelland,Landkreis,2018,161909
-12064,Märkisch-Oderland,Landkreis,2018,194328
-12065,Oberhavel,Landkreis,2018,211249
-12066,Oberspreewald-Lausitz,Landkreis,2018,110476
-12067,Oder-Spree,Landkreis,2018,178658
-12068,Ostprignitz-Ruppin,Landkreis,2018,99078
-12069,Potsdam-Mittelmark,Landkreis,2018,214664
-12070,Prignitz,Landkreis,2018,76508
-12071,Spree-Neiße,Landkreis,2018,114429
-12072,Teltow-Fläming,Landkreis,2018,168296
-12073,Uckermark,Landkreis,2018,119552
-13003,Rostock,kreisfreie Stadt,2018,208886
-13004,Schwerin,kreisfreie Stadt,2018,95818
-13071,Mecklenburgische Seenplatte,Landkreis,2018,259130
-13072,Rostock,Landkreis,2018,215113
-13073,Vorpommern-Rügen,Landkreis,2018,224684
-13074,Nordwestmecklenburg,Landkreis,2018,156729
-13075,Vorpommern-Greifswald,Landkreis,2018,236697
-13076,Ludwigslust-Parchim,Landkreis,2018,212618
-14511,Chemnitz,kreisfreie Stadt,2018,247237
-14521,Erzgebirgskreis,NA,2018,337696
-14522,Mittelsachsen,Landkreis,2018,306185
-14523,Vogtlandkreis,NA,2018,227796
-14524,Zwickau,Landkreis,2018,317531
-14612,Dresden,kreisfreie Stadt,2018,554649
-14625,Bautzen,Landkreis,2018,300880
-14626,Görlitz,Landkreis,2018,254894
-14627,Meißen,Landkreis,2018,242165
-14628,Sächsische Schweiz-Osterzgebirge,Landkreis,2018,245611
-14713,Leipzig,kreisfreie Stadt,2018,587857
-14729,Leipzig,Landkreis,2018,257763
-14730,Nordsachsen,Landkreis,2018,197673
-15001,Dessau-Roßlau,kreisfreie Stadt,2018,81237
-15002,Halle (Saale),kreisfreie Stadt,2018,239257
-15003,Magdeburg,kreisfreie Stadt,2018,238697
-15081,Altmarkkreis Salzwedel,NA,2018,83765
-15082,Anhalt-Bitterfeld,Landkreis,2018,159854
-15083,Börde,Landkreis,2018,171734
-15084,Burgenlandkreis,NA,2018,180190
-15085,Harz,Landkreis,2018,214446
-15086,Jerichower Land,Landkreis,2018,89928
-15087,Mansfeld-Südharz,Landkreis,2018,136249
-15088,Saalekreis,NA,2018,184582
-15089,Salzlandkreis,NA,2018,190560
-15090,Stendal,Landkreis,2018,111982
-15091,Wittenberg,Landkreis,2018,125840
-16051,Erfurt,kreisfreie Stadt,2018,213699
-16052,Gera,kreisfreie Stadt,2018,94152
-16053,Jena,kreisfreie Stadt,2018,111407
-16054,Suhl,kreisfreie Stadt,2018,34835
-16055,Weimar,kreisfreie Stadt,2018,65090
-16056,Eisenach,kreisfreie Stadt,2018,42370
-16061,Eichsfeld,Landkreis,2018,100380
-16062,Nordhausen,Landkreis,2018,83822
-16063,Wartburgkreis,NA,2018,123025
-16064,Unstrut-Hainich-Kreis,NA,2018,102912
-16065,Kyffhäuserkreis,NA,2018,75009
-16066,Schmalkalden-Meiningen,Landkreis,2018,122347
-16067,Gotha,Landkreis,2018,135452
-16068,Sömmerda,Landkreis,2018,69655
-16069,Hildburghausen,Landkreis,2018,63553
-16070,Ilm-Kreis,NA,2018,108742
-16071,Weimarer Land,Landkreis,2018,81947
-16072,Sonneberg,Landkreis,2018,56196
-16073,Saalfeld-Rudolstadt,Landkreis,2018,106356
-16074,Saale-Holzland-Kreis,NA,2018,83051
-16075,Saale-Orla-Kreis,NA,2018,80868
-16076,Greiz,Landkreis,2018,98159
-16077,Altenburger Land,Landkreis,2018,90118
+id_landkreis,name,type,population,year_most_recent
+1001,Flensburg,kreisfreie Stadt,89504,2018
+1002,Kiel,kreisfreie Stadt,247548,2018
+1003,Lübeck,kreisfreie Stadt,217198,2018
+1004,Neumünster,kreisfreie Stadt,79487,2018
+1051,Dithmarschen,Landkreis,133210,2018
+1053,Herzogtum Lauenburg,Landkreis,197264,2018
+1054,Nordfriesland,Landkreis,165507,2018
+1055,Ostholstein,Landkreis,200581,2018
+1056,Pinneberg,Landkreis,314391,2018
+1057,Plön,Landkreis,128647,2018
+1058,Rendsburg-Eckernförde,Landkreis,272775,2018
+1059,Schleswig-Flensburg,Landkreis,200025,2018
+1060,Segeberg,Landkreis,276032,2018
+1061,Steinburg,Landkreis,131347,2018
+1062,Stormarn,Landkreis,243196,2018
+2000,Hamburg,kreisfreie Stadt,1841179,2018
+3101,Braunschweig,kreisfreie Stadt,248292,2018
+3102,Salzgitter,kreisfreie Stadt,104948,2018
+3103,Wolfsburg,kreisfreie Stadt,124151,2018
+3151,Gifhorn,Landkreis,175920,2018
+3153,Goslar,Landkreis,137014,2018
+3154,Helmstedt,Landkreis,91307,2018
+3155,Northeim,Landkreis,132765,2018
+3157,Peine,Landkreis,133965,2018
+3158,Wolfenbüttel,Landkreis,119960,2018
+3159,Göttingen,Landkreis,328036,2017
+3241,Region Hannover,Landkreis,1157624,2018
+3251,Diepholz,Landkreis,216886,2018
+3252,Hameln-Pyrmont,Landkreis,148559,2018
+3254,Hildesheim,Landkreis,276594,2018
+3255,Holzminden,Landkreis,70975,2018
+3256,Nienburg (Weser),Landkreis,121386,2018
+3257,Schaumburg,Landkreis,157781,2018
+3351,Celle,Landkreis,178936,2018
+3352,Cuxhaven,Landkreis,198213,2018
+3353,Harburg,Landkreis,252776,2018
+3354,Lüchow-Dannenberg,Landkreis,48424,2018
+3355,Lüneburg,Landkreis,183372,2018
+3356,Osterholz,Landkreis,113517,2018
+3357,Rotenburg (Wümme),Landkreis,163455,2018
+3359,Stade,Landkreis,203102,2018
+3360,Uelzen,Landkreis,92572,2018
+3361,Verden,Landkreis,136792,2018
+3401,Delmenhorst,kreisfreie Stadt,77607,2018
+3402,Emden,kreisfreie Stadt,50195,2018
+3403,Oldenburg (Oldenburg),kreisfreie Stadt,168210,2018
+3404,Osnabrück,kreisfreie Stadt,164748,2018
+3405,Wilhelmshaven,kreisfreie Stadt,76278,2018
+3451,Ammerland,Landkreis,124071,2018
+3452,Aurich,Landkreis,189848,2018
+3453,Cloppenburg,Landkreis,169348,2018
+3454,Emsland,Landkreis,325657,2018
+3455,Friesland,Landkreis,98460,2018
+3456,Grafschaft Bentheim,Landkreis,136511,2018
+3457,Leer,Landkreis,169809,2018
+3458,Oldenburg,Landkreis,130144,2018
+3459,Osnabrück,Landkreis,357343,2018
+3460,Vechta,Landkreis,141598,2018
+3461,Wesermarsch,Landkreis,88624,2018
+3462,Wittmund,Landkreis,56882,2018
+4011,Bremen,kreisfreie Stadt,569352,2018
+4012,Bremerhaven,kreisfreie Stadt,113634,2018
+5111,Düsseldorf,kreisfreie Stadt,619294,2018
+5112,Duisburg,kreisfreie Stadt,498590,2018
+5113,Essen,kreisfreie Stadt,583109,2018
+5114,Krefeld,kreisfreie Stadt,227020,2018
+5116,Mönchengladbach,kreisfreie Stadt,261454,2018
+5117,Mülheim an der Ruhr,kreisfreie Stadt,170880,2018
+5119,Oberhausen,kreisfreie Stadt,210829,2018
+5120,Remscheid,kreisfreie Stadt,110994,2018
+5122,Solingen,kreisfreie Stadt,159360,2018
+5124,Wuppertal,kreisfreie Stadt,354382,2018
+5154,Kleve,Landkreis,310974,2018
+5158,Mettmann,Landkreis,485684,2018
+5166,Viersen,Landkreis,298935,2018
+5170,Wesel,Landkreis,459809,2018
+5314,Bonn,kreisfreie Stadt,327258,2018
+5315,Köln,kreisfreie Stadt,1085664,2018
+5316,Leverkusen,kreisfreie Stadt,163838,2018
+5334,Städteregion Aachen,Landkreis,555465,2018
+5358,Düren,Landkreis,263722,2018
+5366,Euskirchen,Landkreis,192840,2018
+5370,Heinsberg,Landkreis,254322,2018
+5512,Bottrop,kreisfreie Stadt,117383,2018
+5513,Gelsenkirchen,kreisfreie Stadt,260654,2018
+5515,Münster,kreisfreie Stadt,314319,2018
+5554,Borken,Landkreis,370676,2018
+5558,Coesfeld,Landkreis,219929,2018
+5562,Recklinghausen,Landkreis,615261,2018
+5566,Steinfurt,Landkreis,447614,2018
+5570,Warendorf,Landkreis,277783,2018
+5711,Bielefeld,kreisfreie Stadt,333786,2018
+5754,Gütersloh,Landkreis,364083,2018
+5758,Herford,Landkreis,250783,2018
+5762,Höxter,Landkreis,140667,2018
+5766,Lippe,Landkreis,348391,2018
+5770,Minden-Lübbecke,Landkreis,310710,2018
+5774,Paderborn,Landkreis,306890,2018
+5911,Bochum,kreisfreie Stadt,364628,2018
+5913,Dortmund,kreisfreie Stadt,587010,2018
+5914,Hagen,kreisfreie Stadt,188814,2018
+5915,Hamm,kreisfreie Stadt,179111,2018
+5916,Herne,kreisfreie Stadt,156374,2018
+5966,Olpe,Landkreis,134775,2018
+5970,Siegen-Wittgenstein,Landkreis,278210,2018
+5974,Soest,Landkreis,301902,2018
+5978,Unna,Landkreis,394782,2018
+6411,Darmstadt,kreisfreie Stadt,159207,2018
+6412,Frankfurt am Main,kreisfreie Stadt,753056,2018
+6413,Offenbach am Main,kreisfreie Stadt,128744,2018
+6414,Wiesbaden,kreisfreie Stadt,278342,2018
+6431,Bergstraße,Landkreis,269694,2018
+6432,Darmstadt-Dieburg,Landkreis,297399,2018
+6433,Groß-Gerau,Landkreis,274526,2018
+6438,Offenbach,Landkreis,354092,2018
+6531,Gießen,Landkreis,268876,2018
+6533,Limburg-Weilburg,Landkreis,172083,2018
+6534,Marburg-Biedenkopf,Landkreis,246648,2018
+6611,Kassel,kreisfreie Stadt,201585,2018
+6631,Fulda,Landkreis,222584,2018
+6632,Hersfeld-Rotenburg,Landkreis,120829,2018
+6633,Kassel,Landkreis,236633,2018
+6635,Waldeck-Frankenberg,Landkreis,156953,2018
+7111,Koblenz,kreisfreie Stadt,114024,2018
+7131,Ahrweiler,Landkreis,129727,2018
+7132,Altenkirchen (Westerwald),Landkreis,128705,2018
+7133,Bad Kreuznach,Landkreis,158080,2018
+7134,Birkenfeld,Landkreis,80720,2018
+7135,Cochem-Zell,Landkreis,61587,2018
+7137,Mayen-Koblenz,Landkreis,214259,2018
+7138,Neuwied,Landkreis,181941,2018
+7211,Trier,kreisfreie Stadt,110636,2018
+7231,Bernkastel-Wittlich,Landkreis,112262,2018
+7233,Vulkaneifel,Landkreis,60603,2018
+7235,Trier-Saarburg,Landkreis,148945,2018
+7311,Frankenthal (Pfalz),kreisfreie Stadt,48561,2018
+7312,Kaiserslautern,kreisfreie Stadt,99845,2018
+7313,Landau in der Pfalz,kreisfreie Stadt,46677,2018
+7314,Ludwigshafen am Rhein,kreisfreie Stadt,171061,2018
+7315,Mainz,kreisfreie Stadt,217118,2018
+7316,Neustadt an der Weinstraße,kreisfreie Stadt,53148,2018
+7317,Pirmasens,kreisfreie Stadt,40403,2018
+7318,Speyer,kreisfreie Stadt,50378,2018
+7319,Worms,kreisfreie Stadt,83330,2018
+7320,Zweibrücken,kreisfreie Stadt,34209,2018
+7331,Alzey-Worms,Landkreis,129244,2018
+7332,Bad Dürkheim,Landkreis,132660,2018
+7334,Germersheim,Landkreis,129075,2018
+7335,Kaiserslautern,Landkreis,106057,2018
+7336,Kusel,Landkreis,70526,2018
+7337,Südliche Weinstraße,Landkreis,110356,2018
+7339,Mainz-Bingen,Landkreis,210889,2018
+7340,Südwestpfalz,Landkreis,95113,2018
+8111,Stuttgart,kreisfreie Stadt,634830,2018
+8115,Böblingen,Landkreis,391640,2018
+8116,Esslingen,Landkreis,533859,2018
+8117,Göppingen,Landkreis,257253,2018
+8118,Ludwigsburg,Landkreis,543984,2018
+8121,Heilbronn,kreisfreie Stadt,125960,2018
+8125,Heilbronn,Landkreis,343068,2018
+8127,Schwäbisch Hall,Landkreis,195861,2018
+8135,Heidenheim,Landkreis,132472,2018
+8211,Baden-Baden,kreisfreie Stadt,55123,2018
+8212,Karlsruhe,kreisfreie Stadt,313092,2018
+8215,Karlsruhe,Landkreis,444232,2018
+8216,Rastatt,Landkreis,231018,2018
+8221,Heidelberg,kreisfreie Stadt,160355,2018
+8222,Mannheim,kreisfreie Stadt,309370,2018
+8231,Pforzheim,kreisfreie Stadt,125542,2018
+8235,Calw,Landkreis,158397,2018
+8237,Freudenstadt,Landkreis,117935,2018
+8311,Freiburg im Breisgau,kreisfreie Stadt,230241,2018
+8315,Breisgau-Hochschwarzwald,Landkreis,262795,2018
+8316,Emmendingen,Landkreis,165383,2018
+8325,Rottweil,Landkreis,139455,2018
+8327,Tuttlingen,Landkreis,140152,2018
+8335,Konstanz,Landkreis,285325,2018
+8336,Lörrach,Landkreis,228639,2018
+8337,Waldshut,Landkreis,170619,2018
+8415,Reutlingen,Landkreis,286748,2018
+8416,Tübingen,Landkreis,227331,2018
+8421,Ulm,kreisfreie Stadt,126329,2018
+8426,Biberach,Landkreis,199742,2018
+8436,Ravensburg,Landkreis,284285,2018
+8437,Sigmaringen,Landkreis,130873,2018
+9161,Ingolstadt,kreisfreie Stadt,136981,2018
+9162,München,kreisfreie Stadt,1471508,2018
+9163,Rosenheim,kreisfreie Stadt,63324,2018
+9171,Altötting,Landkreis,111210,2018
+9172,Berchtesgadener Land,Landkreis,105722,2018
+9173,Bad Tölz-Wolfratshausen,Landkreis,127227,2018
+9174,Dachau,Landkreis,153884,2018
+9175,Ebersberg,Landkreis,142142,2018
+9176,Eichstätt,Landkreis,132341,2018
+9177,Erding,Landkreis,137660,2018
+9178,Freising,Landkreis,179116,2018
+9179,Fürstenfeldbruck,Landkreis,219320,2018
+9180,Garmisch-Partenkirchen,Landkreis,88467,2018
+9181,Landsberg am Lech,Landkreis,120071,2018
+9182,Miesbach,Landkreis,99726,2018
+9183,Mühldorf am Inn,Landkreis,115250,2018
+9184,München,Landkreis,348871,2018
+9185,Neuburg-Schrobenhausen,Landkreis,96680,2018
+9186,Pfaffenhofen an der Ilm,Landkreis,127151,2018
+9187,Rosenheim,Landkreis,260983,2018
+9188,Starnberg,Landkreis,136092,2018
+9189,Traunstein,Landkreis,177089,2018
+9190,Weilheim-Schongau,Landkreis,135348,2018
+9261,Landshut,kreisfreie Stadt,72404,2018
+9262,Passau,kreisfreie Stadt,52469,2018
+9263,Straubing,kreisfreie Stadt,47794,2018
+9271,Deggendorf,Landkreis,119326,2018
+9272,Freyung-Grafenau,Landkreis,78355,2018
+9273,Kelheim,Landkreis,122258,2018
+9274,Landshut,Landkreis,158698,2018
+9275,Passau,Landkreis,192043,2018
+9276,Regen,Landkreis,77656,2018
+9277,Rottal-Inn,Landkreis,120659,2018
+9278,Straubing-Bogen,Landkreis,100649,2018
+9279,Dingolfing-Landau,Landkreis,96217,2018
+9361,Amberg,kreisfreie Stadt,41970,2018
+9362,Regensburg,kreisfreie Stadt,152610,2018
+9363,Weiden in der Oberpfalz,kreisfreie Stadt,42520,2018
+9371,Amberg-Sulzbach,Landkreis,103109,2018
+9372,Cham,Landkreis,127882,2018
+9373,Neumarkt in der Oberpfalz,Landkreis,133561,2018
+9374,Neustadt an der Waldnaab,Landkreis,94352,2018
+9375,Regensburg,Landkreis,193572,2018
+9376,Schwandorf,Landkreis,147189,2018
+9377,Tirschenreuth,Landkreis,72504,2018
+9461,Bamberg,kreisfreie Stadt,77592,2018
+9462,Bayreuth,kreisfreie Stadt,74657,2018
+9463,Coburg,kreisfreie Stadt,41249,2018
+9464,Hof,kreisfreie Stadt,45930,2018
+9471,Bamberg,Landkreis,147086,2018
+9472,Bayreuth,Landkreis,103656,2018
+9473,Coburg,Landkreis,86906,2018
+9474,Forchheim,Landkreis,116099,2018
+9475,Hof,Landkreis,95311,2018
+9476,Kronach,Landkreis,67135,2018
+9477,Kulmbach,Landkreis,71845,2018
+9478,Lichtenfels,Landkreis,66838,2018
+9479,Wunsiedel im Fichtelgebirge,Landkreis,73178,2018
+9561,Ansbach,kreisfreie Stadt,41847,2018
+9562,Erlangen,kreisfreie Stadt,111962,2018
+9563,Fürth,kreisfreie Stadt,127748,2018
+9564,Nürnberg,kreisfreie Stadt,518365,2018
+9565,Schwabach,kreisfreie Stadt,40792,2018
+9571,Ansbach,Landkreis,183949,2018
+9572,Erlangen-Höchstadt,Landkreis,136271,2018
+9573,Fürth,Landkreis,117387,2018
+9574,Nürnberger Land,Landkreis,170365,2018
+9575,Neustadt an der Aisch-Bad Windsheim,Landkreis,100364,2018
+9576,Roth,Landkreis,126958,2018
+9577,Weißenburg-Gunzenhausen,Landkreis,94393,2018
+9661,Aschaffenburg,kreisfreie Stadt,70527,2018
+9662,Schweinfurt,kreisfreie Stadt,54032,2018
+9663,Würzburg,kreisfreie Stadt,127880,2018
+9671,Aschaffenburg,Landkreis,174208,2018
+9672,Bad Kissingen,Landkreis,103218,2018
+9673,Rhön-Grabfeld,Landkreis,79690,2018
+9674,Haßberge,Landkreis,84599,2018
+9675,Kitzingen,Landkreis,90909,2018
+9676,Miltenberg,Landkreis,128756,2018
+9677,Main-Spessart,Landkreis,126365,2018
+9678,Schweinfurt,Landkreis,115106,2018
+9679,Würzburg,Landkreis,161834,2018
+9761,Augsburg,kreisfreie Stadt,295135,2018
+9762,Kaufbeuren,kreisfreie Stadt,43893,2018
+9763,Kempten (Allgäu),kreisfreie Stadt,68907,2018
+9764,Memmingen,kreisfreie Stadt,43837,2018
+9771,Aichach-Friedberg,Landkreis,133596,2018
+9772,Augsburg,Landkreis,251534,2018
+9773,Dillingen an der Donau,Landkreis,96021,2018
+9774,Günzburg,Landkreis,125747,2018
+9775,Neu-Ulm,Landkreis,174200,2018
+9776,Lindau (Bodensee),Landkreis,81669,2018
+9777,Ostallgäu,Landkreis,140316,2018
+9778,Unterallgäu,Landkreis,144041,2018
+9779,Donau-Ries,Landkreis,133496,2018
+9780,Oberallgäu,Landkreis,155362,2018
+10041,Regionalverband Saarbrücken,Landkreis,329708,2018
+10042,Merzig-Wadern,Landkreis,103366,2018
+10043,Neunkirchen,Landkreis,132206,2018
+10044,Saarlouis,Landkreis,195201,2018
+10046,Sankt Wendel,Landkreis,87397,2018
+11000,Berlin,kreisfreie Stadt,3644826,2018
+12051,Brandenburg an der Havel,kreisfreie Stadt,72124,2018
+12052,Cottbus,kreisfreie Stadt,100219,2018
+12053,Frankfurt (Oder),kreisfreie Stadt,57873,2018
+12054,Potsdam,kreisfreie Stadt,178089,2018
+12060,Barnim,Landkreis,182760,2018
+12061,Dahme-Spreewald,Landkreis,169067,2018
+12062,Elbe-Elster,Landkreis,102638,2018
+12063,Havelland,Landkreis,161909,2018
+12064,Märkisch-Oderland,Landkreis,194328,2018
+12065,Oberhavel,Landkreis,211249,2018
+12066,Oberspreewald-Lausitz,Landkreis,110476,2018
+12067,Oder-Spree,Landkreis,178658,2018
+12068,Ostprignitz-Ruppin,Landkreis,99078,2018
+12069,Potsdam-Mittelmark,Landkreis,214664,2018
+12070,Prignitz,Landkreis,76508,2018
+12071,Spree-Neiße,Landkreis,114429,2018
+12072,Teltow-Fläming,Landkreis,168296,2018
+12073,Uckermark,Landkreis,119552,2018
+13003,Rostock,kreisfreie Stadt,208886,2018
+13004,Schwerin,kreisfreie Stadt,95818,2018
+13071,Mecklenburgische Seenplatte,Landkreis,259130,2018
+13072,Rostock,Landkreis,215113,2018
+13073,Vorpommern-Rügen,Landkreis,224684,2018
+13074,Nordwestmecklenburg,Landkreis,156729,2018
+13075,Vorpommern-Greifswald,Landkreis,236697,2018
+13076,Ludwigslust-Parchim,Landkreis,212618,2018
+14511,Chemnitz,kreisfreie Stadt,247237,2018
+14522,Mittelsachsen,Landkreis,306185,2018
+14524,Zwickau,Landkreis,317531,2018
+14612,Dresden,kreisfreie Stadt,554649,2018
+14625,Bautzen,Landkreis,300880,2018
+14626,Görlitz,Landkreis,254894,2018
+14627,Meißen,Landkreis,242165,2018
+14628,Sächsische Schweiz-Osterzgebirge,Landkreis,245611,2018
+14713,Leipzig,kreisfreie Stadt,587857,2018
+14729,Leipzig,Landkreis,257763,2018
+14730,Nordsachsen,Landkreis,197673,2018
+15001,Dessau-Roßlau,kreisfreie Stadt,81237,2018
+15002,Halle (Saale),kreisfreie Stadt,239257,2018
+15003,Magdeburg,kreisfreie Stadt,238697,2018
+15082,Anhalt-Bitterfeld,Landkreis,159854,2018
+15083,Börde,Landkreis,171734,2018
+15085,Harz,Landkreis,214446,2018
+15086,Jerichower Land,Landkreis,89928,2018
+15087,Mansfeld-Südharz,Landkreis,136249,2018
+15090,Stendal,Landkreis,111982,2018
+15091,Wittenberg,Landkreis,125840,2018
+16051,Erfurt,kreisfreie Stadt,213699,2018
+16052,Gera,kreisfreie Stadt,94152,2018
+16053,Jena,kreisfreie Stadt,111407,2018
+16054,Suhl,kreisfreie Stadt,34835,2018
+16055,Weimar,kreisfreie Stadt,65090,2018
+16056,Eisenach,kreisfreie Stadt,42370,2018
+16061,Eichsfeld,Landkreis,100380,2018
+16062,Nordhausen,Landkreis,83822,2018
+16066,Schmalkalden-Meiningen,Landkreis,122347,2018
+16067,Gotha,Landkreis,135452,2018
+16068,Sömmerda,Landkreis,69655,2018
+16069,Hildburghausen,Landkreis,63553,2018
+16071,Weimarer Land,Landkreis,81947,2018
+16072,Sonneberg,Landkreis,56196,2018
+16073,Saalfeld-Rudolstadt,Landkreis,106356,2018
+16076,Greiz,Landkreis,98159,2018
+16077,Altenburger Land,Landkreis,90118,2018

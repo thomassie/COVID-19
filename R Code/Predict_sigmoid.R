@@ -249,7 +249,7 @@ plot_pred_log <- ggplot() +
   scale_y_log10() +
   geom_hline(yintercept = max(dd_model$cases_all)) +
   # facet_wrap(~ model_name) +
-  theme_TMM_01_light +
+  themes_TMM_01 +
   scale_colour_manual(values = palettes_long$pals_01,
                       aesthetics = c("colour", "fill")) +
   labs(x = "Days", 
