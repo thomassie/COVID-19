@@ -14,8 +14,8 @@ write_csv(dd_case, "/Users/thomasmassie/Library/Mobile Documents/com~apple~Cloud
 
 
 dd_pop <- read_csv2("~/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/12411-0015_flat.csv") %>% 
-  clean_names() %>% 
-  select(., -c(statistik_code, statistik_label, zeit_code, zeit_label, x1_merkmal_code, x1_merkmal_label)) %>% 
+  janitor::clean_names(.) %>% 
+  dplyr::select(., -c(statistik_code, statistik_label, zeit_code, zeit_label, x1_merkmal_code, x1_merkmal_label)) %>% 
   rename(., id_landkreis = x1_auspraegung_code,
          name_landkreis = x1_auspraegung_label,
          population = bevstd_bevoelkerungsstand_anzahl) %>% 
@@ -23,12 +23,12 @@ dd_pop <- read_csv2("~/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Dem
   separate(., name_landkreis, into = c("name", "type"), sep = "\\, ", remove = TRUE) %>% 
   filter(., !is.na(population)) %>% 
   filter(., !str_detect(type, "\\(b")) %>% 
-  group_by(., name) %>% 
+  group_by(name) %>% 
   filter(., population != "-") %>% 
   filter(., year == max(year) & population != "-") %>% 
   ungroup() %>% 
   rename(., year_most_recent = year) %>% 
-  select(., -zeit) %>% 
+  dplyr::select(., -zeit) %>% 
   arrange(., id_landkreis)
 
 
