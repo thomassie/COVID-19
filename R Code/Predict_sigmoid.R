@@ -13,6 +13,67 @@ library(growthmodels)
 
 
 
+# Colour pallettes
+palettes <- list(
+  pal_01 = c("#262406", "#BAA135", "#CE9133", "#C95B26", "#C84A22"),
+  pal_02 = c("#E16C80", "#546B72", "#EBC553", "#D4BEA0", "#EEDDCB"),
+  pal_03 = c("#981F27", "#26343F", "#E27B30", "#E1662B", "#7E933B"),
+  pal_04 = c("#B8BFB6", "#627F33", "#FFC941", "#263140", "#E56032"),
+  pal_05 = c("#BF9648", "#7A787F", "#F9F9F9", "#3E4040", "#177CB5"),
+  pal_06 = c("#5A6D70", "#26291F", "#A4A8A7", "#BD5152", "#918F75"),
+  pal_07 = c("#ECD074", "#595652", "#848A91", "#B0AFAB", "#82412F"),
+  pal_08 = c("#DE314A", "#C72B54", "#D7CDC1", "#CE8F54", "#CD837A"),
+  pal_09 = c("#C84A4F", "#801921", "#C72B34", "#CF983A", "#E5C547"),
+  pal_10 = c("#", "#", "#", "#", "#"))
+
+palettes_long <- list(
+  pals_01 = c("#262406", "#BAA135", "#CE9133", "#C95B26", "#C84A22", "#E16C80", "#546B72", "#EBC553", "#D4BEA0", "#EEDDCB"),
+  pals_02 = c("#981F27", "#26343F", "#E27B30", "#E1662B", "#7E933B", "#B8BFB6", "#627F33", "#FFC941", "#263140", "#E56032"),
+  pals_03 = c("#BF9648", "#7A787F", "#F9F9F9", "#3E4040", "#177CB5", "#5A6D70", "#26291F", "#A4A8A7", "#BD5152", "#918F75"),
+  pals_04 = c("#ECD074", "#595652", "#848A91", "#B0AFAB", "#82412F", "#DE314A", "#C72B54", "#D7CDC1", "#CE8F54", "#CD837A"),
+  pals_05 = c("#C84A4F", "#801921", "#C72B34", "#CF983A", "#E5C547", "#", "#", "#", "#", "#"))
+
+
+# Background colour
+cols_background_dark  <- c("#D7D8D8", "#7B8381", "#585550", "#", "#", "#", "#", "#", "#", "#", "#", "#")
+cols_background_light <- c("#D8D6D1", "#F1EAE0", "#D7CDC1", "#D8D4CD", "#", "#", "#", "#", "#", "#", "#", "#")
+
+col_background <- cols_background_light[4]
+col_grid_ticks <- cols_background_light[3]
+
+
+# Custom theme
+theme_TMM_base() <- function() {
+  theme(
+    # axis.text = element_text(family = "Varela Round"),
+    # text = element_text(family = "Montserrat-Light"),
+    text = element_text(family = "Lato-Regular"),
+    axis.text.x = element_text(size = 10, colour = "#3C3C3C", face = "bold", vjust = 1),
+    axis.text.y = element_text(size = 10, colour = "#3C3C3C", face = "bold", vjust = 0.5),
+    axis.ticks = element_line(colour = col_grid_ticks, size = 0.2),
+    axis.ticks.length = unit(3, "mm"),
+    axis.line = element_blank(),
+    plot.title = element_text(face = "bold", hjust = 0, vjust = -0, colour = "#3C3C3C", size = 20),
+    plot.subtitle = element_text(hjust = 0, vjust = -1, colour = "#3C3C3C", size = 10),
+    plot.caption = element_text(size = 8, hjust = 1, vjust = -0.1, colour = "#7F8182"),
+    panel.background = element_rect(fill = col_background),
+    panel.border = element_blank(),
+    plot.background = element_rect(fill = col_background, colour = col_background),
+    panel.grid.major = element_line(colour = col_grid_ticks, size = 0.2),
+    panel.grid.minor = element_line(colour = col_grid_ticks, size = 0.2),
+    legend.title = element_blank(),
+    # legend.justification = c(0,0),
+    legend.position = "none",
+    # legend.position = c(0.0, 0.1),
+    legend.background = element_blank(),
+    legend.key = element_blank(),
+    legend.text = element_text(size = 8))
+  # complete = FALSE)
+}
+
+
+
+
 ## >>>>>>>>>>>>>>>>>>>>>>>
 # Load data from prepping file.
 
@@ -127,7 +188,7 @@ ggplotly(p_test)
 
 #Fit sigmoidal model!!!
 t_max <- 300
-selected_country <- "Germany"
+selected_country <- "Sweden"
 selected_status <- "deaths"
 time_pred <- seq(0, t_max, 1)
 
@@ -249,7 +310,7 @@ plot_pred_log <- ggplot() +
   scale_y_log10() +
   geom_hline(yintercept = max(dd_model$cases_all)) +
   # facet_wrap(~ model_name) +
-  themes_TMM_01 +
+  theme_TMM_base() +
   scale_colour_manual(values = palettes_long$pals_01,
                       aesthetics = c("colour", "fill")) +
   labs(x = "Days", 
@@ -267,7 +328,7 @@ plot_pred_lin <- ggplot() +
   geom_hline(yintercept = max(dd_model$cases_all)) +
   # facet_wrap(~ model_name) +
   # scale_colour_manual(dd_predicted$model_name, c("#45EE78", "#99EF12", "#01EEF9")) +
-  themes_TMM_01 +
+  theme_TMM_base() +
   labs(x = "Days", 
        y = "Reported cases",
        title = "Comparison of models",
@@ -289,7 +350,7 @@ plot_pred_lin <- ggplot() +
              shape = 19, size = 3) +
   # facet_wrap(~ model_name) +
   # scale_colour_manual(dd_predicted$model_name, c("#45EE78", "#99EF12", "#01EEF9")) +
-  theme_TMM_01_light +
+  theme_TMM_base() +
   scale_colour_manual(values = palettes_long$pals_01,
                       aesthetics = c("colour", "fill")) +
   labs(x = "Days", 
@@ -301,7 +362,7 @@ plot_pred_lin <- ggplot() +
 
 ggsave("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Predicted deaths.png",
        plot = plot_pred_lin,
-       width = 25, height = 20, units = "cm", dpi = 300,)
+       width = 30, height = 22, units = "cm", dpi = 300)
 
 
 
@@ -419,7 +480,7 @@ ggplot(data = dd_model_pred) +
   # scale_y_log10() +
   # facet_wrap(~ model_name) +
   # scale_colour_manual(dd_predicted$model_name, c("#45EE78", "#99EF12", "#01EEF9")) +
-  theme_TMM_01_light +
+  theme_TMM_base() +
   scale_colour_manual(values = palettes_long$pals_01,
                       aesthetics = c("colour", "fill")) +
   facet_grid(model_used ~ step, scales='free') +
@@ -449,7 +510,7 @@ ggplot(data = filter(dd_model_pred, step >= 0)) +
   # scale_y_log10() +
   # facet_wrap(~ model_name) +
   # scale_colour_manual(dd_predicted$model_name, c("#45EE78", "#99EF12", "#01EEF9")) +
-  theme_TMM_01_light +
+  theme_TMM_base() +
   scale_colour_manual(values = palettes_long$pals_01,
                       aesthetics = c("colour", "fill")) +
   facet_grid(model_used ~ step, scales='free') +
@@ -462,6 +523,42 @@ dd_model_best <- dd_pred_coef %>%
   filter(., aic == min(aic))
 
 
+plot_pred_lin <- ggplot() +
+  geom_hline(yintercept = max(filter(dd_model_best, step == max(dd_model_best$step))$max_value),
+             linetype = "dotted") +
+  geom_line(data = dd_predicted, 
+            aes(x = time_pred, y = prediction, colour = model_name)) +
+  geom_point(data = dd_model,
+             aes(x = time_ind, y = cases_all), 
+             fill = "#3476A2", colour = "transparent", alpha = 0.5,
+             shape = 19, size = 3) +
+  geom_text(aes(x = max(dd_model_pred$time_pred), 
+                y = max(filter(dd_model_best, step == max(dd_model_best$step))$max_value),
+                label = round(max(filter(dd_model_best, step == max(dd_model_best$step))$max_value), 0)),
+            vjust = unit(1.8, "mm"),
+            hjust = unit(-0.5, "mm"),
+            size = 2.5) +
+  geom_text(aes(x = max(dd_model_pred$time_pred), 
+                y = max(filter(dd_model_best, step == max(dd_model_best$step))$max_value),
+                label = filter(dd_model_best, step == max(dd_model_best$step))$model),
+            vjust = unit(-1.2, "mm"),
+            hjust = unit(-0.3, "mm"),
+            size = 2.5) +
+  coord_cartesian(xlim = c(0, 320)) +
+  # facet_wrap(~ model_name) +
+  # scale_colour_manual(dd_predicted$model_name, c("#45EE78", "#99EF12", "#01EEF9")) +
+  theme_TMM_base() +
+  scale_colour_manual(values = palettes_long$pals_01,
+                      aesthetics = c("colour", "fill")) +
+  labs(x = "Days", 
+       y = "",
+       title = paste("Comparison of models for", selected_country),
+       subtitle = expression("How do various sigmoid models describe and predict fatalities?"),
+       caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank"); plot_pred_lin
 
+
+ggsave(paste("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Predicted deaths for ", selected_country, ".png", sep = ""),
+       plot = plot_pred_lin,
+       width = 30, height = 22, units = "cm", dpi = 300)
 
 

@@ -56,47 +56,70 @@ p_01 <- ggplotly(dd %>%
 # Export to .csv file.
 write.csv(dd, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Time series --- global/NEW_COVID_Time_series_TMM.csv")
 
+sessionInfo()
 
 
+single_mutate <- quote({
+  dd <- dd_org_confirmed %>% 
+    left_join(., dd_org_deaths, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
+    left_join(., dd_org_recovered, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
+    mutate(active = confirmed - deaths - recovered,
+           Date = mdy(Date)) %>% 
+           # country_check = ifelse("Country/Region" %in% "Germany", "Yes, it's Germany!", "Unfortunately not, sorry!"),
+           # counry_check_diff = ifelse(grepl("not", country_check), "hot")) %>% 
+    pivot_longer(., cols = c(confirmed, deaths, recovered, active), names_to = "status", values_to = "cases") %>% 
+    clean_names() 
+})
 
+multiple_mutate <- quote({
+  dd <- dd_org_confirmed %>% 
+    left_join(., dd_org_deaths, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
+    left_join(., dd_org_recovered, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
+    mutate(active = confirmed - deaths - recovered) %>% 
+    mutate(Date = mdy(Date)) %>% 
+    # mutate(country_check = ifelse("Country/Region" %in% "Germany", "Yes, it's Germany!", "Unfortunately not, sorry!")) %>% 
+    # mutate(counry_check_diff = ifelse(grepl("not", country_check), "hot")) %>% 
+    pivot_longer(., cols = c(confirmed, deaths, recovered, active), names_to = "status", values_to = "cases") %>% 
+    clean_names() 
+})
 
-
-
-
-# Experimental... ;)
-library(gganimate)
-library(viridis)
-
-plot <- dd %>% 
-  filter(., status == "confirmed" & date == "2020-03-22") %>% 
-  ggplot(aes(x = cases, fill = cases)) +
-  geom_histogram(bins = 100) +
-  theme_minimal() +
-  scale_y_log10() +
-  scale_x_continuous(trans = 'log2') 
-# scale_x_log10() 
-# scale_size(guide = FALSE) # no legend for size
-
-plot <- dd %>% 
-  filter(., status == "confirmed") %>% 
-  ggplot(aes(x = cases, fill = cases)) +
-  geom_density() +
-  theme_minimal() +
-  scale_y_log10() +
-  scale_x_continuous(trans = 'log2')+
-  coord_cartesian(ylim = c(0.000001, 1))
-# scale_x_log10()
-
-plot + transition_time(date) +
-  labs(title = "Date: {frame_time}", 
-       wrap = FALSE)
+microbenchmark::microbenchmark(single_mutate, multiple_mutate)
 
 # 
-# plot + transition_states(states = date,
-#                          transition_length = 3,
-#                          state_length = 1,
-#                          wrap = FALSE)
-
-ggplotly(plot)
-
-
+# # Experimental... ;)
+# library(gganimate)
+# library(viridis)
+# 
+# plot <- dd %>% 
+#   filter(., status == "confirmed" & date == "2020-03-22") %>% 
+#   ggplot(aes(x = cases, fill = cases)) +
+#   geom_histogram(bins = 100) +
+#   theme_minimal() +
+#   scale_y_log10() +
+#   scale_x_continuous(trans = 'log2') 
+# # scale_x_log10() 
+# # scale_size(guide = FALSE) # no legend for size
+# 
+# plot <- dd %>% 
+#   filter(., status == "confirmed") %>% 
+#   ggplot(aes(x = cases, fill = cases)) +
+#   geom_density() +
+#   theme_minimal() +
+#   scale_y_log10() +
+#   scale_x_continuous(trans = 'log2')+
+#   coord_cartesian(ylim = c(0.000001, 1))
+# # scale_x_log10()
+# 
+# plot + transition_time(date) +
+#   labs(title = "Date: {frame_time}", 
+#        wrap = FALSE)
+# 
+# # 
+# # plot + transition_states(states = date,
+# #                          transition_length = 3,
+# #                          state_length = 1,
+# #                          wrap = FALSE)
+# 
+# ggplotly(plot)
+# 
+# 
