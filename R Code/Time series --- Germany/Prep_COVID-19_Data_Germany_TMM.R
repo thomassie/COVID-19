@@ -51,7 +51,7 @@ dd_pop <- read_csv2("~/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Dem
 
 write_csv(dd_pop, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Time series --- Germany/COVID_Demographics_Germany_TMM.csv")
 
-
+str(dd_pop)
 
 
 # # My credentials:

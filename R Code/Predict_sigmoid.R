@@ -43,11 +43,11 @@ col_grid_ticks <- cols_background_light[3]
 
 
 # Custom theme
-theme_TMM_base() <- function() {
+theme_TMM_base <- function() {
   theme(
     # axis.text = element_text(family = "Varela Round"),
     # text = element_text(family = "Montserrat-Light"),
-    text = element_text(family = "Lato-Regular"),
+    text = element_text(family = "Lato"),
     axis.text.x = element_text(size = 10, colour = "#3C3C3C", face = "bold", vjust = 1),
     axis.text.y = element_text(size = 10, colour = "#3C3C3C", face = "bold", vjust = 0.5),
     axis.ticks = element_line(colour = col_grid_ticks, size = 0.2),
@@ -133,51 +133,52 @@ p3 <- ggplot(dd_base,
 
 
 
-# Graphical settings...
-
-# Colour pallettes
-pal_01 <- c("", "", "", "", "")
-pal_02 <- c("", "", "", "", "")
-pal_03 <- c("", "", "", "", "")
-
-# Custom theme
-themes_TMM_01 <- theme_bw() +
-  theme(
-    # axis.text = element_text(family = "Varela Round"),
-    axis.text.x = element_text(size = 11, colour = "#3C3C3C", face = "bold", vjust = 1),
-    axis.text.y = element_text(size = 11, colour = "#3C3C3C", face = "bold", vjust = 0.5),
-    axis.ticks = element_line(colour = "#D7D8D8", size = 0.2),
-    axis.ticks.length = unit(5, "mm"),
-    axis.line = element_blank(),
-    plot.title = element_text(face = "bold", hjust = 0, vjust = -0.8, colour = "#3C3C3C", size = 20),
-    plot.subtitle = element_text(hjust = 0, vjust = -1, colour = "#3C3C3C", size = 11),
-    plot.caption = element_text(size = 8, hjust = 1.6, vjust = -0.1, colour = "#7F8182"),
-    panel.background = element_rect(fill = "#FAFAF2"),
-    panel.border = element_blank(),
-    plot.background = element_rect(fill = "#FAFAF2", colour = "#FAFAF2"),
-    panel.grid.major = element_line(colour = "#D7D8D8", size = 0.2),
-    panel.grid.minor = element_line(colour = "#D7D8D8", size = 0.2),
-    legend.title = element_blank(),
-    legend.justification=c(0,1),
-    legend.position=c(1.02, 0.3),
-    legend.background = element_blank(),
-    legend.key = element_blank(),
-    legend.text = element_text(size = 10),
-    complete = FALSE)
-
+# # Graphical settings...
+# 
+# # Colour pallettes
+# pal_01 <- c("", "", "", "", "")
+# pal_02 <- c("", "", "", "", "")
+# pal_03 <- c("", "", "", "", "")
+# 
+# # Custom theme
+# themes_TMM_01 <- theme_bw() +
+#   theme(
+#     # axis.text = element_text(family = "Varela Round"),
+#     axis.text.x = element_text(size = 11, colour = "#3C3C3C", face = "bold", vjust = 1),
+#     axis.text.y = element_text(size = 11, colour = "#3C3C3C", face = "bold", vjust = 0.5),
+#     axis.ticks = element_line(colour = "#D7D8D8", size = 0.2),
+#     axis.ticks.length = unit(5, "mm"),
+#     axis.line = element_blank(),
+#     plot.title = element_text(face = "bold", hjust = 0, vjust = -0.8, colour = "#3C3C3C", size = 20),
+#     plot.subtitle = element_text(hjust = 0, vjust = -1, colour = "#3C3C3C", size = 11),
+#     plot.caption = element_text(size = 8, hjust = 1.6, vjust = -0.1, colour = "#7F8182"),
+#     panel.background = element_rect(fill = "#FAFAF2"),
+#     panel.border = element_blank(),
+#     plot.background = element_rect(fill = "#FAFAF2", colour = "#FAFAF2"),
+#     panel.grid.major = element_line(colour = "#D7D8D8", size = 0.2),
+#     panel.grid.minor = element_line(colour = "#D7D8D8", size = 0.2),
+#     legend.title = element_blank(),
+#     legend.justification=c(0,1),
+#     legend.position=c(1.02, 0.3),
+#     legend.background = element_blank(),
+#     legend.key = element_blank(),
+#     legend.text = element_text(size = 10),
+#     complete = FALSE)
+# 
 
 
 p_test <- ggplot(dd_base,
                  aes(time_ind, cases_all, group = as.factor(country_region))) +
   geom_line(aes(colour = status)) +
   scale_y_log10() +
+  scale_colour_manual(values = c("#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
   facet_wrap(~ status, scales = "free") +
   labs(x = "Days", 
        y = "Reported cases",
        title = "How do countries compare for each status?",
        subtitle = expression("Here goes the subtitle!"),
        caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The world Bank") +
-  themes_TMM_01; p_test
+  theme_TMM_base(); p_test
 ggplotly(p_test)
 
 
@@ -187,8 +188,8 @@ ggplotly(p_test)
 
 
 #Fit sigmoidal model!!!
-t_max <- 300
-selected_country <- "Sweden"
+t_max <- 200
+selected_country <- "Brazil"
 selected_status <- "deaths"
 time_pred <- seq(0, t_max, 1)
 
@@ -318,7 +319,7 @@ plot_pred_log <- ggplot() +
        title = "Comparing sigmoid models",
        subtitle = expression("How do logistic, log-logistic and Weibull perform in terms of matching cases?"),
        caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank"); plot_pred_log
-ggplotly(plot_pred_log)
+# ggplotly(plot_pred_log)
 
 plot_pred_lin <- ggplot() +
   geom_point(data = dd_model,
@@ -329,12 +330,14 @@ plot_pred_lin <- ggplot() +
   # facet_wrap(~ model_name) +
   # scale_colour_manual(dd_predicted$model_name, c("#45EE78", "#99EF12", "#01EEF9")) +
   theme_TMM_base() +
+  scale_colour_manual(values = palettes_long$pals_01,
+                      aesthetics = c("colour", "fill")) +
   labs(x = "Days", 
        y = "Reported cases",
        title = "Comparison of models",
        subtitle = expression("How do various sigmoid models describe reported cases?"),
        caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank"); plot_pred_lin
-ggplotly(plot_pred_lin)
+# ggplotly(plot_pred_lin)
 
 
 
@@ -353,7 +356,7 @@ plot_pred_lin <- ggplot() +
   theme_TMM_base() +
   scale_colour_manual(values = palettes_long$pals_01,
                       aesthetics = c("colour", "fill")) +
-  labs(x = "Days", 
+  labs(x = "Days since first reported case", 
        y = "",
        title = "Comparison of models",
        subtitle = expression("How do various sigmoid models describe reported cases?"),
@@ -544,13 +547,13 @@ plot_pred_lin <- ggplot() +
             vjust = unit(-1.2, "mm"),
             hjust = unit(-0.3, "mm"),
             size = 2.5) +
-  coord_cartesian(xlim = c(0, 320)) +
+  coord_cartesian(xlim = c(0, 250)) +
   # facet_wrap(~ model_name) +
   # scale_colour_manual(dd_predicted$model_name, c("#45EE78", "#99EF12", "#01EEF9")) +
   theme_TMM_base() +
   scale_colour_manual(values = palettes_long$pals_01,
                       aesthetics = c("colour", "fill")) +
-  labs(x = "Days", 
+  labs(x = "Days since min 20 cases confirmed for the first time", 
        y = "",
        title = paste("Comparison of models for", selected_country),
        subtitle = expression("How do various sigmoid models describe and predict fatalities?"),
