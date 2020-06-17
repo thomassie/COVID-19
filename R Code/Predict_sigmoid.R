@@ -4,7 +4,6 @@ rm(list = ls())
 
 # Load packages
 library(tidyverse)
-library(readr)
 library(janitor)
 library(lubridate)
 library(plotly)
@@ -36,10 +35,10 @@ palettes_long <- list(
 
 # Background colour
 cols_background_dark  <- c("#D7D8D8", "#7B8381", "#585550", "#", "#", "#", "#", "#", "#", "#", "#", "#")
-cols_background_light <- c("#D8D6D1", "#F1EAE0", "#D7CDC1", "#D8D4CD", "#", "#", "#", "#", "#", "#", "#", "#")
+cols_background_light <- c("#D8D6D1", "#F1EAE0", "#D7CDC1", "#D8D4CD", "#F0ECE7", "#", "#", "#", "#", "#", "#", "#")
 
 col_background <- cols_background_light[4]
-col_grid_ticks <- cols_background_light[3]
+col_grid_ticks <- cols_background_light[5]
 
 
 # Custom theme
@@ -47,14 +46,16 @@ theme_TMM_base <- function() {
   theme(
     # axis.text = element_text(family = "Varela Round"),
     # text = element_text(family = "Montserrat-Light"),
-    text = element_text(family = "Lato"),
-    axis.text.x = element_text(size = 10, colour = "#3C3C3C", face = "bold", vjust = 1),
-    axis.text.y = element_text(size = 10, colour = "#3C3C3C", face = "bold", vjust = 0.5),
+    # text = element_text(family = "Lato"),
+    text = element_text(family = "SF Pro Rounded"),
+    # axis.text.x = element_text(size = 9, colour = "#7F8182", face = "plain", vjust = 1),
+    axis.text.x = element_text(size = 9, colour = "#7F8182", vjust = 1),
+    axis.text.y = element_text(size = 9, colour = "#7F8182", vjust = 0.5),
     axis.ticks = element_line(colour = col_grid_ticks, size = 0.2),
     axis.ticks.length = unit(3, "mm"),
     axis.line = element_blank(),
-    plot.title = element_text(face = "bold", hjust = 0, vjust = -0, colour = "#3C3C3C", size = 20),
-    plot.subtitle = element_text(hjust = 0, vjust = -1, colour = "#3C3C3C", size = 10),
+    plot.title = element_text(face = "plain", hjust = 0, vjust = -0, colour = "#3C3C3C", size = 30, margin=margin(0,0,8,0)),
+    plot.subtitle = element_text(hjust = 0, vjust = -1, colour = "#3C3C3C", size = 12, margin=margin(0,0,20,0)),
     plot.caption = element_text(size = 8, hjust = 1, vjust = -0.1, colour = "#7F8182"),
     panel.background = element_rect(fill = col_background),
     panel.border = element_blank(),
@@ -86,7 +87,7 @@ param_crit <- 20
 dd_base <- dd %>% 
   group_by(., date, country_region, status) %>% 
   summarise(., cases_all = sum(cases)) %>% 
-  left_join(., dd_pop, by = c("country_region" = "country")) %>% 
+  left_join(., dd_pop, by = c("country_region" = "country")) %>%  # Check that all coutries are matched!!!
   mutate(., cases_all_diff = cases_all - lag(cases_all)) %>% 
   mutate(., cases_all_rel_ck = cases_all / population_total *100000) %>% 
   mutate(., cases_all_diff_rel_ck = cases_all_rel_ck - lag(cases_all_rel_ck)) %>%
@@ -184,17 +185,90 @@ ggplotly(p_test)
 
 
 
-
+# ---------------------------------------------------
 
 
 #Fit sigmoidal model!!!
 t_max <- 200
-selected_country <- "Brazil"
+selected_country <- "US"
 selected_status <- "deaths"
 time_pred <- seq(0, t_max, 1)
 
 dd_model <- filter(dd_base, country_region == selected_country & status == selected_status) %>% 
   dplyr::select(., time_ind, cases_all)
+
+
+# Plotting the country selected against all other for all four case types.
+dd_base_viz <- dd_base %>% 
+  mutate(., col_selected_country = factor(ifelse(country_region == selected_country, status, "all"), 
+         levels = c("confirmed", "active", "recovered", "deaths", "all"))) %>% 
+  mutate(., status = factor(status, levels = c("confirmed", "active", "recovered", "deaths"))) %>% 
+  mutate(., size_viz = ifelse(country_region == selected_country, 0.8, 1.5))
+
+dd_base_viz_selected <- dd_base_viz %>% 
+  filter(., country_region == selected_country) %>% 
+  group_by(., status) %>% 
+  filter(., time_ind == max(time_ind)) %>% 
+  ungroup()
+
+p_selected_vs_all_lin <- ggplot() +
+  geom_line(data = dd_base_viz,
+            aes(x = time_ind, y = cases_all, group = as.factor(country_region),
+                colour = "#FFFFFF"), alpha = 0.4) +
+  geom_line(data = filter(dd_base_viz, country_region == selected_country), 
+            aes(x = time_ind, y = cases_all, colour = status)) +
+  # scale_y_log10() +
+  scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+  facet_wrap(~ status, scales = "free") +
+  labs(x = "Days since first time 20 or more case were recorded", 
+       y = "",
+       title = "How do countries compare for each status?",
+       subtitle = expression("Here goes the subtitle!"),
+       caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The world Bank") +
+  theme_TMM_base(); p_selected_vs_all_lin
+
+p_selected_vs_all_log <- ggplot() +
+  geom_line(data = dd_base_viz,
+            aes(x = time_ind, y = cases_all, group = as.factor(country_region),
+                colour = "#FFFFFF"), 
+            alpha = 0.4,
+            size = 0.5) +
+  geom_line(data = filter(dd_base_viz, country_region == selected_country), 
+            aes(x = time_ind, y = cases_all, colour = status),
+            size = 1.1) +
+  geom_text(data = dd_base_viz_selected, 
+            aes(x = time_ind, y = cases_all, 
+                label = paste(paste(round(cases_all/1000, 1), "K"), status, sep='\n'), 
+                colour = status,
+                fontface= 2),
+            vjust = unit(0.8, "mm"),
+            hjust = unit(-0.2, "mm"),
+            size = 3.0) +
+  # geom_text(data = dd_base_viz_selected, 
+  #           aes(x = time_ind, y = cases_all, label = status, colour = status),
+  #           vjust = unit(2.0, "mm"),
+  #           hjust = unit(-0.3, "mm"),
+  #           size = 3.5) +
+  scale_y_log10() +
+  scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+  facet_wrap(~ status, scales = "free") +
+  coord_cartesian(xlim = c(0, 130)) +
+  labs(x = "", 
+       y = "",
+       title = paste("Case numbers for", selected_country),
+       subtitle = "Temporal course of case numbers when first time exceeded 20.",
+       caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The world Bank") +
+  theme(strip.background = element_blank(),
+        strip.text = element_blank(),
+        panel.spacing = unit(1, "lines")) +
+  theme_TMM_base(); p_selected_vs_all_log
+
+ggsave(paste("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Case numbers for ", selected_country, ".png", sep = ""),
+       plot = p_selected_vs_all_log,
+       width = 30, height = 24, units = "cm", dpi = 300)
+
+
+
 
 
 # logistic growth (4 parameters)
@@ -358,7 +432,7 @@ plot_pred_lin <- ggplot() +
                       aesthetics = c("colour", "fill")) +
   labs(x = "Days since first reported case", 
        y = "",
-       title = "Comparison of models",
+       title = paste("Comparison of models for", selected_country),
        subtitle = expression("How do various sigmoid models describe reported cases?"),
        caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank"); plot_pred_lin
 
@@ -556,7 +630,7 @@ plot_pred_lin <- ggplot() +
   labs(x = "Days since min 20 cases confirmed for the first time", 
        y = "",
        title = paste("Comparison of models for", selected_country),
-       subtitle = expression("How do various sigmoid models describe and predict fatalities?"),
+       subtitle = "How do various sigmoid models describe and predict fatalities?",
        caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank"); plot_pred_lin
 
 

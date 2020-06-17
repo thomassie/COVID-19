@@ -59,32 +59,6 @@ write.csv(dd, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/
 sessionInfo()
 
 
-single_mutate <- quote({
-  dd <- dd_org_confirmed %>% 
-    left_join(., dd_org_deaths, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
-    left_join(., dd_org_recovered, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
-    mutate(active = confirmed - deaths - recovered,
-           Date = mdy(Date)) %>% 
-           # country_check = ifelse("Country/Region" %in% "Germany", "Yes, it's Germany!", "Unfortunately not, sorry!"),
-           # counry_check_diff = ifelse(grepl("not", country_check), "hot")) %>% 
-    pivot_longer(., cols = c(confirmed, deaths, recovered, active), names_to = "status", values_to = "cases") %>% 
-    clean_names() 
-})
-
-multiple_mutate <- quote({
-  dd <- dd_org_confirmed %>% 
-    left_join(., dd_org_deaths, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
-    left_join(., dd_org_recovered, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
-    mutate(active = confirmed - deaths - recovered) %>% 
-    mutate(Date = mdy(Date)) %>% 
-    # mutate(country_check = ifelse("Country/Region" %in% "Germany", "Yes, it's Germany!", "Unfortunately not, sorry!")) %>% 
-    # mutate(counry_check_diff = ifelse(grepl("not", country_check), "hot")) %>% 
-    pivot_longer(., cols = c(confirmed, deaths, recovered, active), names_to = "status", values_to = "cases") %>% 
-    clean_names() 
-})
-
-microbenchmark::microbenchmark(single_mutate, multiple_mutate)
-
 # 
 # # Experimental... ;)
 # library(gganimate)

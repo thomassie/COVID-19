@@ -22,14 +22,17 @@ dd_pop <- read_csv2("~/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Dem
   mutate(., year = year(dmy(as.character(zeit)))) %>% 
   separate(., name_landkreis, into = c("name", "type"), sep = "\\, ", remove = TRUE) %>% 
   filter(., !is.na(population)) %>% 
-  filter(., !str_detect(type, "\\(b")) %>% 
-  group_by(name) %>% 
+  # filter(., !str_detect(type, "\\(b")) %>% 
+  group_by(id_landkreis) %>% 
   filter(., population != "-") %>% 
   filter(., year == max(year) & population != "-") %>% 
   ungroup() %>% 
   rename(., year_most_recent = year) %>% 
   dplyr::select(., -zeit) %>% 
   arrange(., id_landkreis)
+
+
+length(unique(dd_pop$id_landkreis))
 
 
 # # Population data for each county.
@@ -52,6 +55,9 @@ dd_pop <- read_csv2("~/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Dem
 write_csv(dd_pop, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Time series --- Germany/COVID_Demographics_Germany_TMM.csv")
 
 str(dd_pop)
+
+
+sessionInfo()
 
 
 # # My credentials:
