@@ -54,11 +54,13 @@ p_01 <- ggplotly(dd %>%
 
 
 # Export to .csv file.
-write.csv(dd, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Time series --- global/NEW_COVID_Time_series_TMM.csv",
-          row.names=FALSE)
+write_csv(dd, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Time series --- global/NEW_COVID_Time_series_TMM.csv")
 
 sessionInfo()
 
+dd_pop <- read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Supplementary information/WorldPop_2018_orig.csv")
+dd_pop <- dd_pop[, 2:length(dd_pop)] %>% 
+  write_csv(., "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Supplementary information/WorldPop_2018.csv")
 
 # 
 # # Experimental... ;)
