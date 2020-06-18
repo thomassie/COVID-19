@@ -86,8 +86,12 @@ param_crit <- 20
 dd_base <- dd %>% 
   group_by(., date, country_region, status) %>% 
   summarise(., cases_all = sum(cases)) %>% 
+  ungroup(.) %>% 
   left_join(., dd_pop, by = c("country_region" = "country")) %>%  # Check that all countries are matched!!!
-  mutate(., cases_all_diff = cases_all - dplyr::lag(cases_all, order_by = date, country_region, status)) %>% 
+  group_by(., status, country_region) %>%
+  mutate(., cases_all_diff = cases_all - dplyr::lag(x = cases_all, n = 1, order_by = c(date))) %>% 
+  ungroup(.) %>% 
+  group_by(., country_region) %>% 
   mutate(., cases_all_rel_ck = cases_all / population_total *100000) %>% 
   mutate(., cases_all_diff_rel_ck = cases_all_rel_ck - lag(cases_all_rel_ck)) %>%
   ungroup(.) %>% 
@@ -101,10 +105,9 @@ dd_base <- dd %>%
 
 str(dd_base)
 
-order_by=name
-
-dff <- filter(dd_base, country_region %in% c("France")) %>% 
-  dplyr::select(., c(date, country_region, status, cases_all, cases_all_diff)) 
+# Just a test...
+# dff <- filter(dd_base, country_region %in% c("France")) %>% 
+#   dplyr::select(., c(date, country_region, status, cases_all, cases_all_diff)) 
 
 
 
@@ -170,7 +173,7 @@ dd_model <- filter(dd_base, country_region == selected_country & status == selec
 # Plotting the country selected against all other for all four case types.
 dd_base_viz <- dd_base %>% 
   mutate(., col_selected_country = factor(ifelse(country_region == selected_country, status, "all"), 
-         levels = c("confirmed", "active", "recovered", "deaths", "all"))) %>% 
+                                          levels = c("confirmed", "active", "recovered", "deaths", "all"))) %>% 
   mutate(., status = factor(status, levels = c("confirmed", "active", "recovered", "deaths"))) %>% 
   mutate(., size_viz = ifelse(country_region == selected_country, 0.8, 1.5))
 
@@ -188,7 +191,7 @@ p_selected_vs_all_lin <- ggplot() +
                 colour = "#FFFFFF"), 
             alpha = 0.5,
             size = 0.5) +
-  geom_line(data = filter(dd_base_viz, country_region == selected_country), 
+  geom_line(data = filter(dd_base_viz, country_region %in% selected_country), 
             aes(x = time_ind, y = cases_all, colour = status),
             size = 1.0,
             alpha = 0.9) +
@@ -203,14 +206,12 @@ p_selected_vs_all_lin <- ggplot() +
             vjust = unit(0.8, "mm"),
             hjust = unit(-0.2, "mm"),
             size = 3.0) +
-  # geom_text(data = dd_base_viz_selected, 
-  #           aes(x = time_ind, y = cases_all, label = status, colour = status),
-  #           vjust = unit(2.0, "mm"),
-  #           hjust = unit(-0.3, "mm"),
-  #           size = 3.5) +
   scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
   facet_wrap(~ status, scales = "free") +
   coord_cartesian(xlim = c(0, 160)) +
+  # scale_y_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma_format(big.mark = "'",
+                                                   decimal.mark = ".")) +
   labs(x = "", 
        y = "",
        title = paste("Case numbers for", selected_country),
@@ -218,7 +219,7 @@ p_selected_vs_all_lin <- ggplot() +
        caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
   theme(strip.background = element_blank(),
         strip.text = element_blank(),
-        panel.spacing = unit(1, "lines")) +
+        panel.spacing = unit(1.5, "lines")) +
   theme_TMM_base(); p_selected_vs_all_lin
 
 ggsave(paste("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Accumulated case numbers for ", selected_country, " - linear representation", ".png", sep = ""),
@@ -233,13 +234,13 @@ p_selected_vs_all_log <- ggplot() +
                 colour = "#FFFFFF"), 
             alpha = 0.5,
             size = 0.5) +
-  geom_line(data = filter(dd_base_viz, country_region == selected_country), 
+  geom_line(data = filter(dd_base_viz, country_region %in% selected_country), 
             aes(x = time_ind, y = cases_all, colour = status),
             size = 1.0,
             alpha = 0.9) +
   geom_point(data = dd_base_viz_selected, 
-            aes(x = time_ind, y = cases_all,colour = status),
-            size = 1.4) +
+             aes(x = time_ind, y = cases_all,colour = status),
+             size = 1.4) +
   geom_text(data = dd_base_viz_selected, 
             aes(x = time_ind, y = cases_all, 
                 label = paste(paste(round(cases_all/1000, 1), "K"), status, sep = "\n"), 
@@ -248,12 +249,8 @@ p_selected_vs_all_log <- ggplot() +
             vjust = unit(0.8, "mm"),
             hjust = unit(-0.2, "mm"),
             size = 3.0) +
-  # geom_text(data = dd_base_viz_selected, 
-  #           aes(x = time_ind, y = cases_all, label = status, colour = status),
-  #           vjust = unit(2.0, "mm"),
-  #           hjust = unit(-0.3, "mm"),
-  #           size = 3.5) +
-  scale_y_log10() +
+  scale_y_log10(labels = scales::comma_format(big.mark = "'",
+                                              decimal.mark = ".")) +
   scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
   facet_wrap(~ status, scales = "free") +
   coord_cartesian(xlim = c(0, 160)) +
@@ -264,7 +261,7 @@ p_selected_vs_all_log <- ggplot() +
        caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
   theme(strip.background = element_blank(),
         strip.text = element_blank(),
-        panel.spacing = unit(1, "lines")) +
+        panel.spacing = unit(1.5, "lines")) +
   theme_TMM_base(); p_selected_vs_all_log
 
 ggsave(paste("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Accumulated case numbers for ", selected_country, " - logarithmic representation", ".png", sep = ""),
@@ -279,7 +276,7 @@ p_selected_vs_all_diff_lin <- ggplot() +
                 colour = "#FFFFFF"), 
             alpha = 0.5,
             size = 0.5) +
-  geom_line(data = filter(dd_base_viz, country_region == selected_country), 
+  geom_line(data = filter(dd_base_viz, country_region %in% selected_country), 
             aes(x = time_ind, y = cases_all_diff, colour = status),
             size = 1.0,
             alpha = 0.9) +
@@ -294,6 +291,51 @@ p_selected_vs_all_diff_lin <- ggplot() +
             vjust = unit(0.8, "mm"),
             hjust = unit(-0.2, "mm"),
             size = 3.0) +
+  # scale_y_log10() +
+  scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+  facet_wrap(~ status, scales = "free") +
+  coord_cartesian(xlim = c(0, 160)) +
+  scale_y_continuous(labels = scales::comma_format(big.mark = "'",
+                                                   decimal.mark = ".")) +
+  labs(x = "", 
+       y = "",
+       title = paste("Case numbers for", selected_country),
+       subtitle = paste("Temporal course of case numbers when first time exceeded 20", " (", dd_base_viz_selected$date[1], ").", sep = ""),
+       caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
+  theme(strip.background = element_blank(),
+        strip.text = element_blank(),
+        panel.spacing = unit(1.5, "lines")) +
+  theme_TMM_base(); p_selected_vs_all_diff_lin
+
+ggsave(paste("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Changes in case numbers for ", selected_country, " - linear representation", ".png", sep = ""),
+       plot = p_selected_vs_all_diff_lin,
+       width = 30, height = 27, units = "cm", dpi = 300)
+
+
+# Linear plot of daily changes in chases.
+p_selected_vs_all_diff_log <- ggplot() +
+  geom_line(data = dd_base_viz,
+            aes(x = time_ind, y = cases_all_diff, group = as.factor(country_region),
+                colour = "#FFFFFF"), 
+            alpha = 0.5,
+            size = 0.5) +
+  geom_line(data = filter(dd_base_viz, country_region %in% selected_country), 
+            aes(x = time_ind, y = cases_all_diff, colour = status),
+            size = 1.0,
+            alpha = 0.9) +
+  geom_point(data = dd_base_viz_selected, 
+             aes(x = time_ind, y = cases_all_diff, colour = status),
+             size = 1.4) +
+  geom_text(data = dd_base_viz_selected, 
+            aes(x = time_ind, y = cases_all_diff, 
+                label = paste(cases_all_diff, status, sep = "\n"), 
+                colour = status,
+                fontface= 2),
+            vjust = unit(0.8, "mm"),
+            hjust = unit(-0.2, "mm"),
+            size = 3.0) +
+  scale_y_log10(labels = scales::comma_format(big.mark = "'",
+                                              decimal.mark = ".")) +
   scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
   facet_wrap(~ status, scales = "free") +
   coord_cartesian(xlim = c(0, 160)) +
@@ -304,12 +346,108 @@ p_selected_vs_all_diff_lin <- ggplot() +
        caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
   theme(strip.background = element_blank(),
         strip.text = element_blank(),
-        panel.spacing = unit(1, "lines")) +
-  theme_TMM_base(); p_selected_vs_all_diff_lin
+        panel.spacing = unit(1.5, "lines")) +
+  theme_TMM_base(); p_selected_vs_all_diff_log
 
-ggsave(paste("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Changes in case numbers for ", selected_country, " - linear representation", ".png", sep = ""),
-       plot = p_selected_vs_all_diff_lin,
+ggsave(paste("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Changes in case numbers for ", selected_country, " - logarithmic representation", ".png", sep = ""),
+       plot = p_selected_vs_all_diff_log,
        width = 30, height = 27, units = "cm", dpi = 300)
+
+
+# Linear plot of relative accumulated cases.
+p_selected_vs_all_rel_lin <- ggplot() +
+  geom_line(data = dd_base_viz,
+            aes(x = time_ind, y = cases_all_rel_ck, group = as.factor(country_region),
+                colour = "#FFFFFF"), 
+            alpha = 0.5,
+            size = 0.5) +
+  geom_line(data = filter(dd_base_viz, country_region %in% selected_country), 
+            aes(x = time_ind, y = cases_all_rel_ck, colour = status),
+            size = 1.0,
+            alpha = 0.9) +
+  geom_point(data = dd_base_viz_selected, 
+             aes(x = time_ind, y = cases_all_rel_ck, colour = status),
+             size = 1.4) +
+  geom_text(data = dd_base_viz_selected, 
+            aes(x = time_ind, y = cases_all_rel_ck, 
+                label = paste(cases_all_rel_ck, status, sep = "\n"), 
+                colour = status,
+                fontface= 2),
+            vjust = unit(0.8, "mm"),
+            hjust = unit(-0.2, "mm"),
+            size = 3.0) +
+  # scale_y_log10() +
+  scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+  facet_wrap(~ status, scales = "free") +
+  coord_cartesian(xlim = c(0, 160)) +
+  scale_y_continuous(labels = scales::comma_format(big.mark = "'",
+                                                   decimal.mark = ".")) +
+  labs(x = "", 
+       y = "",
+       title = paste("Relative case numbers for", selected_country),
+       subtitle = paste("Temporal course of case numbers when first time exceeded 20", " (", dd_base_viz_selected$date[1], ").", sep = ""),
+       caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
+  theme(strip.background = element_blank(),
+        strip.text = element_blank(),
+        panel.spacing = unit(1.5, "lines")) +
+  theme_TMM_base(); p_selected_vs_all_rel_lin
+
+ggsave(paste("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Relative case numbers for ", selected_country, " - linear representation", ".png", sep = ""),
+       plot = p_selected_vs_all_rel_lin,
+       width = 30, height = 27, units = "cm", dpi = 300)
+
+
+# Linear plot of daily changes in chases.
+p_selected_vs_all_rel_log <- ggplot() +
+  geom_line(data = dd_base_viz,
+            aes(x = time_ind, y = cases_all_rel_ck, group = as.factor(country_region),
+                colour = "#FFFFFF"), 
+            alpha = 0.5,
+            size = 0.5) +
+  geom_line(data = filter(dd_base_viz, country_region %in% selected_country), 
+            aes(x = time_ind, y = cases_all_rel_ck, colour = status),
+            size = 1.0,
+            alpha = 0.9) +
+  geom_point(data = dd_base_viz_selected, 
+             aes(x = time_ind, y = cases_all_rel_ck, colour = status),
+             size = 1.4) +
+  geom_text(data = dd_base_viz_selected, 
+            aes(x = time_ind, y = cases_all_rel_ck, 
+                label = paste(cases_all_rel_ck, status, sep = "\n"), 
+                colour = status,
+                fontface= 2),
+            vjust = unit(0.8, "mm"),
+            hjust = unit(-0.2, "mm"),
+            size = 3.0) +
+  scale_y_log10(labels = scales::comma_format(big.mark = "'",
+                                              decimal.mark = ".")) +
+  scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+  facet_wrap(~ status, scales = "free") +
+  coord_cartesian(xlim = c(0, 160)) +
+  labs(x = "", 
+       y = "",
+       title = paste("Relative case numbers for", selected_country),
+       subtitle = paste("Temporal course of case numbers when first time exceeded 20", " (", dd_base_viz_selected$date[1], ").", sep = ""),
+       caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
+  theme(strip.background = element_blank(),
+        strip.text = element_blank(),
+        panel.spacing = unit(1.5, "lines")) +
+  theme_TMM_base(); p_selected_vs_all_rel_log
+
+ggsave(paste("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Relative case numbers for ", selected_country, " - logarithmic representation", ".png", sep = ""),
+       plot = p_selected_vs_all_rel_log,
+       width = 30, height = 27, units = "cm", dpi = 300)
+
+
+
+# fig <- plot_ly(
+#   data = filter(dd_base_viz, region %in% c("Latin America & Caribbean") & status == "deaths"),
+#   labels = ~country_region,
+#   parents = ~region,
+#   values = ~cases_all,
+#   type = 'sunburst',
+#   branchvalues = 'total'
+# ); fig
 
 
 
