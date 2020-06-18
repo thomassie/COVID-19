@@ -54,7 +54,8 @@ p_01 <- ggplotly(dd %>%
 
 
 # Export to .csv file.
-write.csv(dd, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Time series --- global/NEW_COVID_Time_series_TMM.csv")
+write.csv(dd, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Time series --- global/NEW_COVID_Time_series_TMM.csv",
+          row.names=FALSE)
 
 sessionInfo()
 
