@@ -58,6 +58,8 @@ write_csv(dd, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/
 
 sessionInfo()
 
+
+
 dd_pop <- read_csv("/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Supplementary information/WorldPop_2018_orig.csv")
 dd_pop <- dd_pop[, 2:length(dd_pop)] %>% 
   write_csv(., "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Supplementary information/WorldPop_2018.csv")
