@@ -1,0 +1,17 @@
+
+
+body {
+	background-color: #D8D4CD;
+}
+body, label, input, button, select { 
+	font-family: 'SF Pro Rounded';
+}
+
+.main-sidebar {
+        background-color: #333333;
+      }
+
+.panel-header .logo {
+	font-weight: medium;
+	font-size: 32px;
+}

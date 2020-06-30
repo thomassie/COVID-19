@@ -162,7 +162,7 @@ ggplotly(p_test)
 
 #Fit sigmoidal model!!!
 t_max <- 200
-selected_country <- "Germany"
+selected_country <- "US"
 selected_status <- "deaths"
 time_pred <- seq(0, t_max, 1)
 
@@ -283,12 +283,17 @@ p_selected_vs_all_diff_lin <- ggplot() +
   geom_point(data = dd_base_viz_selected, 
              aes(x = time_ind, y = cases_all_diff, colour = status),
              size = 1.4) +
+  geom_hline(data = dd_base_viz_selected, 
+             aes(yintercept = dd_base_viz_selected$cases_all_diff, group = status),
+             size = 0.5,
+             linetype = "dashed",
+             colour = "#7F8182") +
   geom_text(data = dd_base_viz_selected, 
             aes(x = time_ind, y = cases_all_diff, 
                 label = paste(cases_all_diff, status, sep = "\n"), 
                 colour = status,
                 fontface= 2),
-            vjust = unit(0.8, "mm"),
+            vjust = unit(0.5, "mm"),
             hjust = unit(-0.2, "mm"),
             size = 3.0) +
   # scale_y_log10() +
@@ -326,6 +331,11 @@ p_selected_vs_all_diff_log <- ggplot() +
   geom_point(data = dd_base_viz_selected, 
              aes(x = time_ind, y = cases_all_diff, colour = status),
              size = 1.4) +
+  geom_hline(data = dd_base_viz_selected, 
+             aes(yintercept = dd_base_viz_selected$cases_all_diff, group = status),
+             size = 0.5,
+             linetype = "dashed",
+             colour = "#7F8182") +
   geom_text(data = dd_base_viz_selected, 
             aes(x = time_ind, y = cases_all_diff, 
                 label = paste(cases_all_diff, status, sep = "\n"), 
