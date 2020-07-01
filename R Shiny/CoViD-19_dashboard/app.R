@@ -694,7 +694,6 @@ server <- function(input, output) {
                           panel.spacing = unit(1.5, "lines")) +
                     theme_TMM_01()
                 
-                
             } else {    # if values should be relative
                 
                 # A function which accounts for whether other countries than the selected one are shown, too.
