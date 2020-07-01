@@ -367,7 +367,7 @@ server <- function(input, output) {
     })
     
     
-    # To show top 5 countries acording to daily changes in case numbers.
+    # To show top 5 countries according to daily changes in case numbers.
     dd_base_viz_ranked_diff <- eventReactive(input$show_button, {
         if (input$check_type == "absolute values") {
             dd_base_viz() %>% 
@@ -642,9 +642,11 @@ server <- function(input, output) {
                                           colour = "#FFFFFF"),
                                       hjust = unit(-0.2, "mm"),
                                       size = 3,
-                                      alpha = 0.7) 
+                                      alpha = 0.7) +
+                            scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
                     } else {
-                        ggplot()
+                        ggplot() +
+                            scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
                     }
                 }
                 
@@ -676,7 +678,7 @@ server <- function(input, output) {
                               vjust = unit(1.2, "mm"),
                               hjust = unit(-0.2, "mm"),
                               size = 3.0) +
-                    scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+                    # scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
                     facet_wrap(~ status, scales = "free") +
                     coord_cartesian(xlim = c(0, 160)) +
                     # scale_y_continuous(labels = scales::comma) +
@@ -685,7 +687,7 @@ server <- function(input, output) {
                     labs(x = "", 
                          y = "",
                          title = paste("Daily changes in case numbers for", input$country),
-                         subtitle = paste("Temporal course of case numbers when first time exceeded ", input$param_crit, " (", dd_base_viz_selected()$date[1], ").", sep = ""),
+                         subtitle = paste("Temporal course of case numbers when first time exceeded ", input$param_crit, " (as of ", dd_base_viz_selected()$date[1], ").", sep = ""),
                          caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
                     theme(strip.background = element_blank(),
                           strip.text = element_blank(),
@@ -710,9 +712,11 @@ server <- function(input, output) {
                                           colour = "#FFFFFF"),
                                       hjust = unit(-0.2, "mm"),
                                       size = 3,
-                                      alpha = 0.7)
+                                      alpha = 0.7) +
+                            scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
                     } else {
-                        ggplot()
+                        ggplot() +
+                            scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
                     }
                 }
                 
@@ -741,7 +745,7 @@ server <- function(input, output) {
                               vjust = unit(1.2, "mm"),
                               hjust = unit(-0.2, "mm"),
                               size = 3.0) +
-                    scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+                    # scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
                     facet_wrap(~ status, scales = "free") +
                     coord_cartesian(xlim = c(0, 160)) +
                     # scale_y_continuous(labels = scales::comma) +
@@ -775,9 +779,11 @@ server <- function(input, output) {
                                       colour = "#FFFFFF"),
                                   hjust = unit(-0.2, "mm"),
                                   size = 3,
-                                  alpha = 0.7) 
+                                  alpha = 0.7) +
+                        scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
                 } else {
-                    ggplot()
+                    ggplot() +
+                        scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
                 }
             }
             
@@ -809,10 +815,11 @@ server <- function(input, output) {
                               vjust = unit(1.2, "mm"),
                               hjust = unit(-0.2, "mm"),
                               size = 3.0) +
-                    scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+                    # scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
                     facet_wrap(~ status, scales = "free") +
                     # scale_x_date(limits = c(min(date), max(date))) +
-                    scale_x_date(date_labels = "%m/%y") +
+                    scale_x_date(date_labels = "%m/%y",
+                                 expand = c(0, 50)) +
                     # scale_y_continuous(labels = scales::comma) +
                     scale_y_continuous(labels = scales::comma_format(big.mark = "'",
                                                                      decimal.mark = ".")) +
@@ -837,15 +844,17 @@ server <- function(input, output) {
                                           colour = "#FFFFFF"), 
                                       alpha = 0.5,
                                       size = 0.5) +
-                            geom_text(data = dd_base_viz_ranked(),
+                            geom_text(data = dd_base_viz_ranked_diff(),
                                       aes(x = date, y = cases_all_diff_rel_ck, group = as.factor(country_region),
                                           label = country_region,
                                           colour = "#FFFFFF"),
                                       hjust = unit(-0.2, "mm"),
                                       size = 3,
-                                      alpha = 0.7)
+                                      alpha = 0.7) +
+                            scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
                     } else {
-                        ggplot()
+                        ggplot() +
+                            scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
                     }
                 }
                 
@@ -874,10 +883,11 @@ server <- function(input, output) {
                               vjust = unit(1.2, "mm"),
                               hjust = unit(-0.2, "mm"),
                               size = 3.0) +
-                    scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+                    # scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
                     facet_wrap(~ status, scales = "free") +
                     # scale_x_date(limits = c(min(date), max(date))) +
-                    scale_x_date(date_labels = "%B/%y") +
+                    scale_x_date(date_labels = "%B/%y",
+                                 expand = c(0, 50)) +
                     # scale_y_continuous(labels = scales::comma) +
                     scale_y_continuous(labels = scales::comma_format(big.mark = "'",
                                                                      decimal.mark = ".")) +
