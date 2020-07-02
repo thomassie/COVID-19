@@ -15,6 +15,30 @@ library(waffle)
 
 
 
+# City mapper data (https://citymapper.com/cmi/about)
+# The Citymapper Mobility Index is calculated by comparing trips planned in the Citymapper app to a recent typical usage period. 
+# Trips planned ('Get Me Somewhere' and related) are correlated to trips taken (GO mode). Typical usage period is defined as 
+# 4 weeks between Jan 6th and Feb 2nd, 2020. To better capture typical usage in certain cities we are using different periods in 
+# Paris (Feb 3rd to March 1st) and Hong Kong and Singapore (both Dec 2nd to Dec 22nd). A day is defined as midnight to midnight 
+# UTC, thus for certain cities may not correspond with calendar days. We update the data every day at 7am UTC.
+# Our users are public transport users and also use us for walking, cycling, and some micromobility and cabs. We are not used 
+# for driving. We do not track the demographics of our users. We have enough data in our published cities to be confident that 
+# it represents a real change in behaviour. However, it is a sample set of general mobility and may not represent the real world 
+# exactly.
+# Journalists and public interest researchers may use this information as long as they attribute it to Citymapper and link to 
+# Citymapper.com/CMI. All others who wish to use this information, please contact us from our website.
+dd_cm <- read_csv(url("https://cdn.citymapper.com/data/cmi/Citymapper_Mobility_Index_20200701.csv"),
+                  skip = 3) %>% 
+    pivot_longer(., cols = -c("Date"), names_to = "city", values_to = "cm_index") %>% 
+    clean_names(.) %>% 
+    arrange(., city, date)
+
+
+# Data from the CORONAVIRUS GOVERNMENT RESPONSE TRACKER (GCRT)
+# https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker
+# Explanation of variables: https://github.com/OxCGRT/covid-policy-tracker/blob/master/documentation/codebook.md
+dd_ox_cgrt <- read_csv(url("https://raw.githubusercontent.com/OxCGRT/covid-policy-tracker/master/data/OxCGRT_latest.csv"))
+
 
 
 # Load basic data for case numbers.
@@ -79,7 +103,7 @@ dd_plus <- dd %>%
     mutate(., cases_all_diff = cases_all - dplyr::lag(x = cases_all, n = 1, order_by = c(date))) %>% 
     ungroup(.) %>% 
     group_by(., country_region) %>% 
-    mutate(., cases_all_rel_ck = cases_all / population_total *100000) %>% 
+    mutate(., cases_all_rel_ck = round((cases_all / population_total *100000), 2)) %>% 
     mutate(., cases_all_diff_rel_ck = cases_all_rel_ck - lag(cases_all_rel_ck)) %>%
     ungroup(.) %>% 
     group_by(., status, country_region) %>% 
@@ -397,7 +421,7 @@ server <- function(input, output) {
     data <- reactiveValues()
     
     
-    # All objects that are dependend on an event ('Update' button).
+    # All objects that are dependent on an event ('Update' button).
     observeEvent(input$show_button, {
         
         # -------------------------------------------------------   
@@ -526,105 +550,438 @@ server <- function(input, output) {
         # -------------------------------------------------------   
         # PLOT 2: Aggregated case numbers, logarithmic ----------
         
-        data$p02 <- if (input$check_type == "absolute values") {
-            ggplot() +
-                geom_line(data = dd_base_viz(),
-                          aes(x = time_ind, y = cases_all, group = as.factor(country_region),
-                              colour = "#FFFFFF"), 
-                          alpha = 0.5,
-                          size = 0.5) +
-                geom_text(data = dd_base_viz_ranked(),
-                          aes(x = time_ind, y = cases_all, group = as.factor(country_region),
-                              label = country_region,
-                              colour = "#FFFFFF"),
-                          hjust = unit(-0.2, "mm"),
-                          size = 3,
-                          alpha = 0.7) +
-                geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
-                          aes(x = time_ind, y = cases_all, colour = status),
-                          size = 1.0,
-                          alpha = 0.9) +
-                geom_point(data = dd_base_viz_selected(), 
-                           aes(x = time_ind, y = cases_all,colour = status),
-                           size = 1.4) +
-                geom_text(data = dd_base_viz_selected(), 
-                          aes(x = time_ind, y = cases_all, 
-                              label = paste(paste(round(cases_all/1000, 1), "K"), status, sep = "\n"), 
-                              colour = status,
-                              fontface= 2),
-                          vjust = unit(1.2, "mm"),
-                          hjust = unit(-0.2, "mm"),
-                          size = 3.0) +
-                scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
-                facet_wrap(~ status, scales = "free") +
-                coord_cartesian(xlim = c(0, 160)) +
-                # scale_y_continuous(labels = scales::comma) +
-                scale_y_log10(labels = scales::comma_format(big.mark = "'",
-                                                            decimal.mark = ".")) +
-                labs(x = "", 
-                     y = "",
-                     title = paste("Case numbers for", input$country),
-                     subtitle = paste("Temporal course of case numbers when first time exceeded ", input$param_crit, " (", dd_base_viz_selected()$date[1], ").", sep = ""),
-                     caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
-                theme(strip.background = element_blank(),
-                      strip.text = element_blank(),
-                      panel.spacing = unit(1.5, "lines")) +
-                theme_TMM_01()
+        # # Use date as x-axis.
+        # data$p02 <-  if (input$time_cat == "days") {
+        #     
+        #     # A function which accounts for whether other countries than the selected one are shown, too.
+        #     plot_others <- function() {
+        #         if (input$others_show == "yes" ) {
+        #             ggplot() +
+        #                 geom_line(data = dd_base_viz(),
+        #                           aes(x = time_ind, y = cases_all, group = as.factor(country_region),
+        #                               colour = "#FFFFFF"), 
+        #                           alpha = 0.5,
+        #                           size = 0.5) +
+        #                 geom_text(data = dd_base_viz_ranked(),
+        #                           aes(x = time_ind, y = cases_all, group = as.factor(country_region),
+        #                               label = country_region,
+        #                               colour = "#FFFFFF"),
+        #                           hjust = unit(-0.2, "mm"),
+        #                           size = 3,
+        #                           alpha = 0.7) +
+        #                 scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
+        #         } else {
+        #             ggplot() +
+        #                 scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
+        #         }
+        #     }
+        #     
+        #     # Use absolute values.
+        #     ggplot() +
+        #         geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
+        #                   aes(x = time_ind, y = cases_all, colour = status),
+        #                   size = 1.0,
+        #                   alpha = 0.9) +
+        #         geom_point(data = dd_base_viz_selected(), 
+        #                    aes(x = time_ind, y = cases_all,colour = status),
+        #                    size = 1.4) +
+        #         geom_text(data = dd_base_viz_selected(), 
+        #                   aes(x = time_ind, y = cases_all, 
+        #                       label = paste(paste(round(cases_all/1000, 1), "K"), status, sep = "\n"), 
+        #                       colour = status,
+        #                       fontface= 2),
+        #                   vjust = unit(1.2, "mm"),
+        #                   hjust = unit(-0.2, "mm"),
+        #                   size = 3.0) +
+        #         scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+        #         facet_wrap(~ status, scales = "free") +
+        #         coord_cartesian(xlim = c(0, 160)) +
+        #         # scale_y_continuous(labels = scales::comma) +
+        #         scale_y_log10(labels = scales::comma_format(big.mark = "'",
+        #                                                     decimal.mark = ".")) +
+        #         labs(x = "", 
+        #              y = "",
+        #              title = paste("Case numbers for", input$country),
+        #              subtitle = paste("Temporal course of case numbers when first time exceeded ", input$param_crit, " (", dd_base_viz_selected()$date[1], ").", sep = ""),
+        #              caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
+        #         theme(strip.background = element_blank(),
+        #               strip.text = element_blank(),
+        #               panel.spacing = unit(1.5, "lines")) +
+        #         theme_TMM_01()
+        #     
+        # } else {
+        #     
+        #     # A function which accounts for whether other countries than the selected one are shown, too.
+        #     plot_others <- function() {
+        #         if (input$others_show == "yes" ) {
+        #             ggplot() +
+        #                 geom_line(data = dd_base_viz(),
+        #                           aes(x = time_ind, y = cases_all_rel_ck, group = as.factor(country_region),
+        #                               colour = "#FFFFFF"), 
+        #                           alpha = 0.5,
+        #                           size = 0.5) +
+        #                 geom_text(data = dd_base_viz_ranked(),
+        #                           aes(x = time_ind, y = cases_all_rel_ck, group = as.factor(country_region),
+        #                               label = country_region,
+        #                               colour = "#FFFFFF"),
+        #                           hjust = unit(-0.2, "mm"),
+        #                           size = 3,
+        #                           alpha = 0.7) +
+        #                 scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
+        #         } else {
+        #             ggplot() +
+        #                 scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
+        #         }
+        #     }
+        #     
+        #     ggplot() +
+        #         geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
+        #                   aes(x = time_ind, y = cases_all_rel_ck, colour = status),
+        #                   size = 1.0,
+        #                   alpha = 0.9) +
+        #         geom_point(data = dd_base_viz_selected(), 
+        #                    aes(x = time_ind, y = cases_all_rel_ck,colour = status),
+        #                    size = 1.4) +
+        #         geom_text(data = dd_base_viz_selected(), 
+        #                   aes(x = time_ind, y = cases_all_rel_ck, 
+        #                       label = paste(round(cases_all_rel_ck, 2), status, sep = "\n"), 
+        #                       colour = status,
+        #                       fontface= 2),
+        #                   vjust = unit(1.2, "mm"),
+        #                   hjust = unit(-0.2, "mm"),
+        #                   size = 3.0) +
+        #         scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+        #         facet_wrap(~ status, scales = "free") +
+        #         coord_cartesian(xlim = c(0, 160)) +
+        #         # scale_y_continuous(labels = scales::comma) +
+        #         scale_y_log10(labels = scales::comma_format(big.mark = "'",
+        #                                                     decimal.mark = ".")) +
+        #         labs(x = "", 
+        #              y = "",
+        #              title = paste("Case numbers for", input$country),
+        #              subtitle = paste("Temporal course of case numbers when first time exceeded ", input$param_crit, " (", dd_base_viz_selected()$date[1], ").", sep = ""),
+        #              caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
+        #         theme(strip.background = element_blank(),
+        #               strip.text = element_blank(),
+        #               panel.spacing = unit(1.5, "lines")) +
+        #         theme_TMM_01()
+        # }
+
+        
+        # Use date as x-axis.
+        data$p02 <-  if (input$time_cat == "days") {
             
-        } else {
+            # Use absolute values.
+            if (input$check_type == "absolute values") {
+                
+                # A function which accounts for whether other countries than the selected one are shown, too.
+                plot_others <- function() {
+                    if (input$others_show == "yes" ) {
+                        ggplot() +
+                            geom_line(data = dd_base_viz(),
+                                      aes(x = time_ind, y = cases_all, group = as.factor(country_region),
+                                          colour = "#FFFFFF"), 
+                                      alpha = 0.5,
+                                      size = 0.5) +
+                            geom_text(data = dd_base_viz_ranked(),
+                                      aes(x = time_ind, y = cases_all, group = as.factor(country_region),
+                                          label = country_region,
+                                          colour = "#FFFFFF"),
+                                      hjust = unit(-0.2, "mm"),
+                                      size = 3,
+                                      alpha = 0.7) +
+                            scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
+                    } else {
+                        ggplot() +
+                            scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
+                    }
+                }
+                
+                plot_others() +
+                    geom_hline(yintercept = 0,
+                               size = 0.5,
+                               colour = "#7F8182") +
+                    geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
+                              aes(x = time_ind, y = cases_all, colour = status),
+                              size = 1.0,
+                              alpha = 0.9) +
+                    # geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
+                    #           aes(x = time_ind, y = cases_all_rollmean, colour = status),
+                    #           size = 1.0,
+                    #           alpha = 0.9) +
+                    geom_hline(data = dd_base_viz_selected_date(), 
+                               aes(yintercept = dd_base_viz_selected_date()$cases_all, group = status),
+                               size = 0.5,
+                               linetype = "dashed",
+                               colour = "#7F8182") +
+                    geom_point(data = dd_base_viz_selected_date(), 
+                               aes(x = time_ind, y = cases_all, colour = status),
+                               size = 2.5) +
+                    geom_text(data = dd_base_viz_selected_date(), 
+                              aes(x = time_ind, y = cases_all, 
+                                  label = paste(cases_all, status, sep = "\n"), 
+                                  colour = status,
+                                  fontface= 2),
+                              hjust = 1, 
+                              vjust = 0, 
+                              nudge_x = -0.1, 
+                              nudge_y = 0.5,
+                              # vjust = unit(1.2, "mm"),
+                              # hjust = unit(-0.2, "mm"),
+                              size = 3.0) +
+                    # scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+                    facet_wrap(~ status, scales = "free") +
+                    coord_cartesian(xlim = c(min(dd_base_viz()$time_ind), (max(dd_base_viz()$time_ind) + 25))) +
+                    # scale_y_continuous(labels = scales::comma) +
+                    scale_y_continuous(labels = scales::comma_format(big.mark = "'",
+                                                                     decimal.mark = ".")) +
+                    labs(x = "", 
+                         y = "",
+                         title = paste("Daily changes in case numbers for", input$country),
+                         subtitle = paste("Temporal course of case numbers when first time exceeded ", input$param_crit, "  (as of ", dd_base_viz_selected()$date[1], ").", sep = ""),
+                         caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
+                    theme(strip.background = element_blank(),
+                          strip.text = element_blank(),
+                          panel.spacing = unit(1.5, "lines")) +
+                    theme_TMM_01()
+                
+            } else {    # if values should be relative
+                
+                # A function which accounts for whether other countries than the selected one are shown, too.
+                plot_others <- function() {
+                    if (input$others_show == "yes" ) {
+                        ggplot() +
+                            geom_line(data = dd_base_viz(),
+                                      aes(x = time_ind, y = cases_all_rel_ck, group = as.factor(country_region),
+                                          colour = "#FFFFFF"), 
+                                      alpha = 0.5,
+                                      size = 0.5) +
+                            geom_text(data = dd_base_viz_ranked(),
+                                      aes(x = time_ind, y = cases_all_rel_ck, group = as.factor(country_region),
+                                          label = country_region,
+                                          colour = "#FFFFFF"),
+                                      hjust = unit(-0.2, "mm"),
+                                      size = 3,
+                                      alpha = 0.7) +
+                            scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
+                    } else {
+                        ggplot() +
+                            scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
+                    }
+                }
+                
+                plot_others() +
+                    geom_hline(yintercept = 0,
+                               size = 0.5,
+                               colour = "#7F8182") +
+                    geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
+                              aes(x = time_ind, y = cases_all_rel_ck, colour = status),
+                              size = 1.0,
+                              alpha = 0.9) +
+                    # geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
+                    #           aes(x = time_ind, y = cases_all_rel_ck_rollmean, colour = status),
+                    #           size = 1.0,
+                    #           alpha = 0.9) +
+                    geom_hline(data = dd_base_viz_selected_date(), 
+                               aes(yintercept = dd_base_viz_selected()$cases_all_rel_ck, group = status),
+                               size = 0.5,
+                               linetype = "dashed",
+                               colour = "#7F8182") +
+                    geom_point(data = dd_base_viz_selected_date(), 
+                               aes(x = time_ind, y = cases_all_rel_ck, colour = status),
+                               size = 2.5) +
+                    geom_text(data = dd_base_viz_selected(), 
+                              aes(x = time_ind, y = cases_all_rel_ck, 
+                                  label = paste(cases_all_rel_ck, status, sep = "\n"), 
+                                  colour = status,
+                                  fontface = 2,
+                                  group = as.factor(status),
+                              vjust = 0,
+                              hjust = 1,
+                              nudge_y = 5),
+                              size = 3.0) +
+                    # scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+                    facet_wrap(~ status, scales = "free") +
+                    coord_cartesian(xlim = c(min(dd_base_viz()$time_ind), (max(dd_base_viz()$time_ind) + 25))) +
+                    # scale_y_continuous(labels = scales::comma) +
+                    scale_y_continuous(labels = scales::comma_format(big.mark = "'",
+                                                                     decimal.mark = ".")) +
+                    labs(x = "", 
+                         y = "",
+                         title = paste("Daily changes in case numbers for", input$country),
+                         subtitle = paste("Temporal course of case numbers when first time exceeded ", input$param_crit, " (", dd_base_viz_selected()$date[1], ").", sep = ""),
+                         caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
+                    theme(strip.background = element_blank(),
+                          strip.text = element_blank(),
+                          panel.spacing = unit(1.5, "lines")) +
+                    theme_TMM_01()
+            }
             
-            ggplot() +
-                geom_line(data = dd_base_viz(),
-                          aes(x = time_ind, y = cases_all_rel_ck, group = as.factor(country_region),
-                              colour = "#FFFFFF"), 
-                          alpha = 0.5,
-                          size = 0.5) +
-                geom_text(data = dd_base_viz_ranked(),
-                          aes(x = time_ind, y = cases_all_rel_ck, group = as.factor(country_region),
-                              label = country_region,
-                              colour = "#FFFFFF"),
-                          hjust = unit(-0.2, "mm"),
-                          size = 3,
-                          alpha = 0.7) +
-                geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
-                          aes(x = time_ind, y = cases_all_rel_ck, colour = status),
-                          size = 1.0,
-                          alpha = 0.9) +
-                geom_point(data = dd_base_viz_selected(), 
-                           aes(x = time_ind, y = cases_all_rel_ck,colour = status),
-                           size = 1.4) +
-                geom_text(data = dd_base_viz_selected(), 
-                          aes(x = time_ind, y = cases_all_rel_ck, 
-                              label = paste(round(cases_all_rel_ck, 2), status, sep = "\n"), 
-                              colour = status,
-                              fontface= 2),
-                          vjust = unit(1.2, "mm"),
-                          hjust = unit(-0.2, "mm"),
-                          size = 3.0) +
-                scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
-                facet_wrap(~ status, scales = "free") +
-                coord_cartesian(xlim = c(0, 160)) +
-                # scale_y_continuous(labels = scales::comma) +
-                scale_y_log10(labels = scales::comma_format(big.mark = "'",
-                                                            decimal.mark = ".")) +
-                labs(x = "", 
-                     y = "",
-                     title = paste("Case numbers for", input$country),
-                     subtitle = paste("Temporal course of case numbers when first time exceeded ", input$param_crit, " (", dd_base_viz_selected()$date[1], ").", sep = ""),
-                     caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
-                theme(strip.background = element_blank(),
-                      strip.text = element_blank(),
-                      panel.spacing = unit(1.5, "lines")) +
-                theme_TMM_01()
-        }
+        } else {    # if x-axis should display the date instead of the days past since first n occurrences
+            
+            # A function which accounts for whether other countries than the selected one are shown, too.
+            plot_others <- function() {
+                if (input$others_show == "yes" ) {
+                    ggplot() +
+                        geom_line(data = dd_base_viz(),
+                                  aes(x = date, y = cases_all, group = as.factor(country_region),
+                                      colour = "#FFFFFF"), 
+                                  alpha = 0.5,
+                                  size = 0.5) +
+                        geom_text(data = dd_base_viz_ranked(),
+                                  aes(x = date, y = cases_all, group = as.factor(country_region),
+                                      label = country_region,
+                                      colour = "#FFFFFF"),
+                                  hjust = unit(-0.2, "mm"),
+                                  size = 3,
+                                  alpha = 0.7) +
+                        scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
+                } else {
+                    ggplot() +
+                        scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
+                }
+            }
+            
+            # Use 'date' as x-axis.
+            if (input$check_type == "absolute values") {
+                
+                plot_others() +
+                    geom_hline(yintercept = 0,
+                               size = 0.5,
+                               colour = "#7F8182") +
+                    geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
+                              aes(x = date, y = cases_all, colour = status),
+                              size = 1.0,
+                              alpha = 0.9) +
+                    # geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
+                    #           aes(x = date, y = cases_all_rollmean, colour = status),
+                    #           size = 1.0,
+                    #           alpha = 0.9) +
+                    geom_hline(data = dd_base_viz_selected_date(), 
+                               aes(yintercept = dd_base_viz_selected_date()$cases_all, group = status),
+                               size = 0.5,
+                               linetype = "dashed",
+                               colour = "#7F8182") +
+                    geom_point(data = dd_base_viz_selected_date(), 
+                               aes(x = date, y = cases_all, colour = status),
+                               size = 2.5) +
+                    # annotate("text",
+                    #          x = dd_base_viz_selected()$date,
+                    #          y = dd_base_viz_selected()$cases_all,
+                    #          label = dd_base_viz_selected()$cases_all,
+                    #          hjust = 0) +
+                    geom_text(data = dd_base_viz_selected(),
+                              aes(x = date, y = cases_all,
+                                  label = paste(cases_all, status, sep = "\n"),
+                                  colour = status,
+                                  fontface= 2),
+                              vjust = unit(1.2, "mm"),
+                              hjust = unit(-0.2, "mm"),
+                              size = 3.0) +
+                    # scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+                    facet_wrap(~ status, scales = "free") +
+                    # scale_x_date(limits = c(min(date), max(date))) +
+                    scale_x_date(date_labels = "%m/%y",
+                                 expand = c(0, 50)) +
+                    # scale_y_continuous(labels = scales::comma) +
+                    scale_y_continuous(labels = scales::comma_format(big.mark = "'",
+                                                                     decimal.mark = ".")) +
+                    labs(x = "", 
+                         y = "",
+                         title = paste("Daily changes in case numbers for", input$country),
+                         subtitle = paste("Temporal course of case numbers when first time exceeded ", input$param_crit, " (", dd_base_viz_selected()$date[1], ").", sep = ""),
+                         caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
+                    theme(strip.background = element_blank(),
+                          strip.text = element_blank(),
+                          panel.spacing = unit(1.5, "lines")) +
+                    theme_TMM_01()
+                
+            } else {    # if values should be relative
+                
+                # A function which accounts for whether other countries than the selected one are shown, too.
+                plot_others <- function() {
+                    if (input$others_show == "yes" ) {
+                        ggplot() +
+                            geom_line(data = dd_base_viz(),
+                                      aes(x = date, y = cases_all_rel_ck, group = as.factor(country_region),
+                                          colour = "#FFFFFF"), 
+                                      alpha = 0.5,
+                                      size = 0.5) +
+                            geom_text(data = dd_base_viz_ranked(),
+                                      aes(x = date, y = cases_all_rel_ck, group = as.factor(country_region),
+                                          label = country_region,
+                                          colour = "#FFFFFF"),
+                                      hjust = unit(-0.2, "mm"),
+                                      size = 3,
+                                      alpha = 0.7) +
+                            scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
+                    } else {
+                        ggplot() +
+                            scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
+                    }
+                }
+                
+                plot_others() +
+                    geom_hline(yintercept = 0,
+                               size = 0.5,
+                               colour = "#7F8182") +
+                    geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
+                              aes(x = date, y = cases_all_rel_ck, colour = status),
+                              size = 1.0,
+                              alpha = 0.9) +
+                    # geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
+                    #           aes(x = date, y = cases_all_rel_ck_rollmean, colour = status),
+                    #           size = 1.0,
+                    #           alpha = 0.9) +
+                    geom_hline(data = dd_base_viz_selected_date(), 
+                               aes(yintercept = dd_base_viz_selected()$cases_all_rel_ck, group = status),
+                               size = 0.5,
+                               linetype = "dashed",
+                               colour = "#7F8182") +
+                    geom_point(data = dd_base_viz_selected_date(), 
+                               aes(x = date, y = cases_all_rel_ck,colour = status),
+                               size = 2.5) +
+                    geom_text(data = dd_base_viz_selected(), 
+                              aes(x = date, y = cases_all_rel_ck, 
+                                  label = paste(cases_all_rel_ck, status, sep = "\n"), 
+                                  colour = status,
+                                  fontface= 2),
+                              nudge_x = 0, 
+                              nudge_y = 0,
+                              # vjust = unit(1.2, "mm"),
+                              # hjust = unit(-0.2, "mm"),
+                              size = 3.0) +
+                    # scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+                    facet_wrap(~ status, scales = "free") +
+                    # scale_x_date(limits = c(min(date), max(date))) +
+                    scale_x_date(date_labels = "%B/%y",
+                                 expand = c(0, 50)) +
+                    # scale_y_continuous(labels = scales::comma) +
+                    scale_y_continuous(labels = scales::comma_format(big.mark = "'",
+                                                                     decimal.mark = ".")) +
+                    labs(x = "", 
+                         y = "",
+                         title = paste("Daily changes in case numbers for", input$country),
+                         subtitle = paste("Temporal course of case numbers when first time exceeded ", input$param_crit, " (", dd_base_viz_selected()$date[1], ").", sep = ""),
+                         caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU) & The World Bank") +
+                    theme(strip.background = element_blank(),
+                          strip.text = element_blank(),
+                          panel.spacing = unit(1.5, "lines")) +
+                    theme_TMM_01()
+                
+            }   # closes if "absolute" or else
+            
+        }   # closes if "days" or else
         
         
+    
         # -------------------------------------------------------   
         # PLOT 3: Daily changes in case numbers, linear ---------
         
+        # Use date as x-axis.
         data$p03 <-  if (input$time_cat == "days") {
             
-            # Use date as x-axis.
+            # Use absolute values.
             if (input$check_type == "absolute values") {
                 
                 # A function which accounts for whether other countries than the selected one are shown, too.
@@ -651,6 +1008,9 @@ server <- function(input, output) {
                 }
                 
                 plot_others() +
+                    geom_hline(yintercept = 0,
+                               size = 0.5,
+                               colour = "#7F8182") +
                     geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
                               aes(x = time_ind, y = cases_all_diff, colour = status),
                               size = 0.5,
@@ -680,7 +1040,7 @@ server <- function(input, output) {
                               size = 3.0) +
                     # scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
                     facet_wrap(~ status, scales = "free") +
-                    coord_cartesian(xlim = c(0, 160)) +
+                    coord_cartesian(xlim = c(min(dd_base_viz()$time_ind), (max(dd_base_viz()$time_ind) + 25))) +
                     # scale_y_continuous(labels = scales::comma) +
                     scale_y_continuous(labels = scales::comma_format(big.mark = "'",
                                                                      decimal.mark = ".")) +
@@ -720,6 +1080,9 @@ server <- function(input, output) {
                 }
                 
                 plot_others() +
+                    geom_hline(yintercept = 0,
+                               size = 0.5,
+                               colour = "#7F8182") +
                     geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
                               aes(x = time_ind, y = cases_all_diff_rel_ck, colour = status),
                               size = 0.5,
@@ -746,7 +1109,7 @@ server <- function(input, output) {
                               size = 3.0) +
                     # scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
                     facet_wrap(~ status, scales = "free") +
-                    coord_cartesian(xlim = c(0, 160)) +
+                    coord_cartesian(xlim = c(min(dd_base_viz()$time_ind), (max(dd_base_viz()$time_ind) + 25))) +
                     # scale_y_continuous(labels = scales::comma) +
                     scale_y_continuous(labels = scales::comma_format(big.mark = "'",
                                                                      decimal.mark = ".")) +
@@ -790,6 +1153,9 @@ server <- function(input, output) {
             if (input$check_type == "absolute values") {
                 
                 plot_others() +
+                    geom_hline(yintercept = 0,
+                               size = 0.5,
+                               colour = "#7F8182") +
                     geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
                               aes(x = date, y = cases_all_diff, colour = status),
                               size = 0.5,
@@ -858,6 +1224,9 @@ server <- function(input, output) {
                 }
                 
                 plot_others() +
+                    geom_hline(yintercept = 0,
+                               size = 0.5,
+                               colour = "#7F8182") +
                     geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
                               aes(x = date, y = cases_all_diff_rel_ck, colour = status),
                               size = 0.5,
