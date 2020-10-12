@@ -12,6 +12,7 @@ library(drc)
 library(forcats)
 library(shiny)
 library(waffle)
+library(leaflet)
 
 
 
@@ -111,7 +112,9 @@ dd_plus <- dd %>%
     mutate(., cases_all_diff_rollmean = zoo::rollmean(cases_all_diff, k = 7, fill = NA, align = "right")) %>% 
     mutate(., cases_all_rel_ck_rollmean = zoo::rollmean(cases_all_rel_ck, k = 7, fill = NA, align = "right")) %>% 
     mutate(., cases_all_diff_rel_ck_rollmean = zoo::rollmean(cases_all_diff_rel_ck, k = 7, fill = NA, align = "right")) %>% 
-    ungroup(.)
+    ungroup(.) #%>% 
+# mutate_if(., is.numeric, ~replace_na(.x, 0))    # Check if this is really needed!!!
+
 
 # dd_countries_notjoined_dd <- unique(as.character(dd$country_region)[as.character(dd$country_region) %in% dd_pop$country == FALSE])
 # dd_countries_notjoined_dd_pop <- unique(as.character(filter(dd_pop, region != "Aggregates")$country)[as.character(filter(dd_pop, region != "Aggregate")$country) %in% dd$country_region == FALSE])
@@ -153,7 +156,7 @@ theme_TMM_01 <- function() {
         axis.ticks = element_line(colour = col_grid_ticks, size = 0.2),
         axis.ticks.length = unit(3, "mm"),
         axis.line = element_blank(),
-        plot.title = element_text(face = "plain", hjust = 0, vjust = -0, colour = "#3C3C3C", size = 30, margin=margin(10,0,8,)),
+        plot.title = element_text(face = "plain", hjust = 0, vjust = -0, colour = "#3C3C3C", size = 30, margin=margin(10,0,8,0)),
         plot.subtitle = element_text(hjust = 0, vjust = -1, colour = "#3C3C3C", size = 12, margin=margin(0,0,30,0)),
         plot.caption = element_text(size = 8, hjust = 1, vjust = -0.1, colour = "#7F8182"),
         panel.background = element_rect(fill = col_background),
@@ -205,6 +208,8 @@ f_waffle_country <- function(c, d) {
 
 
 
+
+
 # ----------------------------------------------------
 # ------------------------ 1 -------------------------
 # ----------------------------------------------------
@@ -226,73 +231,92 @@ ui <- fluidPage(
     
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
+        
         sidebarPanel(
+            
             dateInput("date",
                       label = "Select a date",
                       min = min(dd$date), max = max(dd$date),
                       format = "dd/mm/yy",
                       startview = 'year', weekstart = 1,
-                      value = lubridate::today(),
+                      value = lubridate::today()
             ),
+            
             selectInput("country", 
                         "Select a country",
                         choices = unique(dd$country_region),
                         selected = "Germany"
             ),
+            
             sliderInput("param_crit", 
                         "Select a minimum case number",
                         min = 0, max = 300,
                         step = 5,
                         value = 50, 
-                        ticks = FALSE,
+                        ticks = FALSE
             ),
+            
             radioButtons("check_type",
                          "Choose between absolute and relative numbers",
                          c("absolute values", "relative values (per 100'000)"),
                          "absolute values", inline = FALSE
             ),
+            
             radioButtons("time_cat",
                          "Choose between date or days since first n cases",
                          c("date", "days"),
                          "date", inline = FALSE
             ),
+            
             radioButtons("others_show",
                          "Show other countries?",
                          c("yes", "no"),
                          "yes", inline = FALSE
             ),
+            
+            sliderInput("top_ns", 
+                        "Show top n countries!",
+                        min = 10, max = 30,
+                        step = 1,
+                        value = 20, 
+                        ticks = FALSE
+            ),
+            
             actionButton("show_button", "Update")
             
         ),
         
+        
         # Show a plot of the generated distribution
         mainPanel(
+            
             tabsetPanel(
+                
                 tabPanel("Proportional", 
-                         plotOutput("p00_PropWaffle", width = "529px", height = "670px"),
+                         plotOutput("p00_PropWaffle", width = "530px", height = "671px"),
                          downloadButton("download_p00", "Download")),
+                
                 tabPanel("Total cases (linear)", 
                          plotOutput("p01_PlotCasesLin", width = "1100px", height = "850px"),
                          downloadButton("download_p01", "Download")),
+                
                 tabPanel("Total cases (log10)",
                          plotOutput("p02_PlotCasesLog", width = "1100px", height = "850px"),
                          downloadButton("download_p02", "Download")),
+                
                 tabPanel("Daily changes (linear)", 
                          plotOutput("p03_PlotCasesDiffLin", width = "1100px", height = "850px"),
-                         downloadButton("download_p03", "Download")),
-                tabPanel("Ranked by...", 
-                         plotOutput("p04_RankedCountries", width = "1100px", height = "850px"),
-                         downloadButton("download_p04", "Download"))
+                         downloadButton("download_p03", "Download"))
+                
+                # tabPanel("Ranked by...", 
+                #          plotOutput("p04_RankedCountries", width = "1100px", height = "850px"),
+                #          downloadButton("download_p04", "Download"))
                 # tabPanel("relative & logarithmic & relative", plotOutput("PlotCasesLinRel", width = "1100px", height = "850px"))
                 # tabPanel("Absolute numbers", plotlyOutput("casesPlot"))
             )
         )
     )
 )
-
-
-
-
 
 
 
@@ -329,6 +353,13 @@ server <- function(input, output) {
             ungroup(.)
     }) 
     
+    # Check whether cutting works as expected.
+    # dd_cut_crit <- dd_plus %>%
+    #     group_by(., country_region, status) %>%
+    #     filter(., cases_all >= 50) %>%
+    #     mutate(., time_ind = as.numeric(difftime(date, min(date), units = "days"))) %>%
+    #     ungroup(.)
+    
     
     # Plotting the country selected against all other for all four case types.
     dd_base_viz <- eventReactive(input$show_button, {
@@ -338,6 +369,13 @@ server <- function(input, output) {
             mutate(., status = factor(status, levels = c("confirmed", "active", "recovered", "deaths"))) %>%
             mutate(., size_viz = ifelse(country_region == input$country, 0.8, 1.5))
     })
+    
+    # Check whether this part works!
+    # dd_base_viz <- dd_cut_crit %>%
+    #         mutate(., col_selected_country = factor(ifelse(country_region == "Germany", status, "all"),
+    #                                                 levels = c("confirmed", "active", "recovered", "deaths", "all"))) %>%
+    #         mutate(., status = factor(status, levels = c("confirmed", "active", "recovered", "deaths"))) %>%
+    #         mutate(., size_viz = ifelse(country_region == "Germany", 0.8, 1.5))
     
     
     # Plotting circles at the end of each line plot (max(time_ind)).
@@ -349,6 +387,13 @@ server <- function(input, output) {
             ungroup()
     })
     
+    # Check whether this part works!
+    # dd_base_viz_selected <- dd_cut_crit %>%
+    #         filter(., country_region == "Germany") %>%
+    #         group_by(., status) %>%
+    #         filter(., time_ind == max(time_ind)) %>%
+    #         ungroup()
+    
     
     # Allow selecting/highlighting a specific date (input$date).
     dd_base_viz_selected_date <- eventReactive(input$show_button, {
@@ -358,6 +403,13 @@ server <- function(input, output) {
             filter(., date == input$date) %>%
             ungroup()
     })
+    
+    # Check whether this part works!
+    # dd_base_viz_selected_date <- dd_cut_crit %>%
+    #         filter(., country_region == "Germany") %>%
+    #         group_by(., status) %>%
+    #         filter(., date == max(date)) %>%   # changed just for this check
+    #         ungroup()
     
     
     # Vector used for waffle plot (for country).    
@@ -379,7 +431,7 @@ server <- function(input, output) {
                 group_by(., status) %>% 
                 top_n(., 5, cases_all) %>% 
                 ungroup(.) %>% 
-                arrange(., status)
+                dplyr::arrange(., status, desc(cases_all))
         } else {
             dd_base_viz() %>% 
                 filter(., country_region != input$country) %>%
@@ -389,7 +441,7 @@ server <- function(input, output) {
                 group_by(., status) %>% 
                 top_n(., 5, cases_all_rel_ck) %>% 
                 ungroup(.) %>% 
-                arrange(., status)  
+                dplyr::arrange(., status, desc(cases_all_rel_ck))
         }
     })
     
@@ -405,7 +457,7 @@ server <- function(input, output) {
                 group_by(., status) %>% 
                 top_n(., 5, cases_all_diff) %>% 
                 ungroup(.) %>% 
-                arrange(., status)
+                arrange(., status, desc(cases_all_diff))
         } else {
             dd_base_viz() %>% 
                 filter(., country_region != input$country) %>%
@@ -415,20 +467,33 @@ server <- function(input, output) {
                 group_by(., status) %>% 
                 top_n(., 5, cases_all_diff_rel_ck) %>% 
                 ungroup(.) %>% 
-                arrange(., status)  
+                arrange(., status, desc(cases_all_diff_rel_ck))  
         }
     })
     
     
-    # Data to be used in ranked bar chart(s).
-    dd_bars <- eventReactive(input$show_button, {
-        dd_plus %>% 
-            filter(., date == input$date) %>% 
-            group_by(., status) %>% 
-            slice_max(., order_by(cases_all), n = 10) %>% 
-            arrange(., cases_all)
-        ungroup(.)
+    
+    # To show top n countries according to aggregated case numbers.
+    dd_plus_ranked <- eventReactive(input$show_button, {
+        if (input$check_type == "absolute values") {
+            dd_plus() %>% 
+                filter(., date == input$date) %>% 
+                group_by(., status) %>% 
+                lice_max(., order_by = cases_all, n = input$top_ns) %>% 
+                ungroup(.) %>% 
+                dplyr::arrange(., status, desc(cases_all))
+        } else {
+            dd_plus() %>% 
+                filter(., date == input$date) %>% 
+                group_by(., status) %>% 
+                lice_max(., order_by = cases_all_rel_ck, n = input$top_ns) %>% 
+                ungroup(.) %>% 
+                dplyr::arrange(., status, desc(cases_all_rel_ck))
+        }
     })
+    
+    
+    
     
     
     
@@ -446,26 +511,31 @@ server <- function(input, output) {
         
         data$p00 <- {
             iron(
-                waffle(dd_waffle_country_vec(), 
-                       rows = 10, 
+                waffle(dd_waffle_country_vec(),
+                       rows = 10,
                        colors = c("#D8A94F", "#A44A51", "#6378AC"),
-                       use_glyph = "male", glyph_size = 12.0 , 
+                       use_glyph = "male", glyph_size = 12.0 ,
+                       # title = "Cases for Germany",
                        legend_pos="bottom") +
-                    labs(title = paste("A proportional perspective for ", input$country, sep = ""),
-                         subtitle = paste("Contribution of active and recovered cases as well as fatalities", "to the total number of confirmed cases.", sep = " \n"),
+                    # facet_wrap(~ status) +
+                    labs(title = paste("A proportional perspective for ", input$country, sep = "\n"),
+                         subtitle = paste("Contribution of active and recovered cases as well as fatalities to the total", paste("number of confirmed cases.  (as of ", input$date, ")", sep = ""), sep = "\n"),
                          caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU)") +
+                    # theme_TMM_01() +
                     theme_void() +
                     theme(text = element_text(family = "SF Pro Rounded"),
                           panel.spacing = unit(20, "mm"),
                           legend.position = "none",
                           legend.text = element_text(colour="#666666", size = 8),
                           legend.key.size = unit(5, "mm"),
-                          axis.title.x = element_text(margin = margin(20, 0, 0, 0)), 
+                          axis.title.x = element_text(margin = margin(20, 0, 0, 0)),
                           axis.title.y = element_text(margin = margin(0, 20, 0, 0)),
                           plot.background = element_rect(fill = col_background, colour = col_background),
-                          plot.title = element_text(face = "plain", hjust = 0.00, vjust = -0.0, colour = "#3C3C3C", size = 30, margin = margin(10,0,8,)),
-                          plot.subtitle = element_text(hjust = 0.00, vjust = -1, colour = "#3C3C3C", size = 12, margin = margin(0,0,30,0)),
-                          plot.caption = element_text(size = 8, hjust = 1, vjust = -0.1, colour = "#7F8182", margin = margin(10,0,10,0)))
+                          # margin(t, r, b, l)
+                          plot.margin = unit(c(0.2, 0.5, 0.2, 0.5), "cm"),
+                          plot.title = element_text(face = "plain", hjust = 0.0, vjust = -0.0, colour = "#3C3C3C", size = 30, margin = margin(10,0,8,0)),
+                          plot.subtitle = element_text(hjust = 0.0, vjust = -1.0, colour = "#3C3C3C", size = 12, margin = margin(0,0,30,0)),
+                          plot.caption = element_text(size = 8, hjust = 0.95, vjust = -0.1, colour = "#7F8182", margin = margin(10,0,10,0)))
             )
         }
         
@@ -515,7 +585,7 @@ server <- function(input, output) {
                     #           size = 1.0,
                     #           alpha = 0.9) +
                     geom_hline(data = dd_base_viz_selected_date(), 
-                               aes(yintercept = dd_base_viz_selected_date()$cases_all, group = status),
+                               aes(yintercept = cases_all, group = status),
                                size = 0.5,
                                linetype = "dashed",
                                colour = "#7F8182") +
@@ -588,7 +658,7 @@ server <- function(input, output) {
                     #           size = 1.0,
                     #           alpha = 0.9) +
                     geom_hline(data = dd_base_viz_selected_date(), 
-                               aes(yintercept = dd_base_viz_selected()$cases_all_rel_ck, group = status),
+                               aes(yintercept = cases_all_rel_ck, group = status),
                                size = 0.5,
                                linetype = "dashed",
                                colour = "#7F8182") +
@@ -603,7 +673,7 @@ server <- function(input, output) {
                                   group = as.factor(status),
                                   vjust = 0,
                                   hjust = 1,
-                                  nudge_y = 5),
+                                  nudge_y = 0.5),
                               size = 3.0) +
                     # scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
                     facet_wrap(~ status, scales = "free") +
@@ -663,7 +733,7 @@ server <- function(input, output) {
                     #           size = 1.0,
                     #           alpha = 0.9) +
                     geom_hline(data = dd_base_viz_selected_date(), 
-                               aes(yintercept = dd_base_viz_selected_date()$cases_all, group = status),
+                               aes(yintercept = cases_all, group = status),
                                size = 0.5,
                                linetype = "dashed",
                                colour = "#7F8182") +
@@ -739,12 +809,12 @@ server <- function(input, output) {
                     #           size = 1.0,
                     #           alpha = 0.9) +
                     geom_hline(data = dd_base_viz_selected_date(), 
-                               aes(yintercept = dd_base_viz_selected()$cases_all_rel_ck, group = status),
+                               aes(yintercept = cases_all_rel_ck, group = status),
                                size = 0.5,
                                linetype = "dashed",
                                colour = "#7F8182") +
                     geom_point(data = dd_base_viz_selected_date(), 
-                               aes(x = date, y = cases_all_rel_ck,colour = status),
+                               aes(x = date, y = cases_all_rel_ck, colour = status),
                                size = 2.5) +
                     geom_text(data = dd_base_viz_selected(), 
                               aes(x = date, y = cases_all_rel_ck, 
@@ -825,7 +895,7 @@ server <- function(input, output) {
                     #           size = 1.0,
                     #           alpha = 0.9) +
                     geom_hline(data = dd_base_viz_selected_date(), 
-                               aes(yintercept = dd_base_viz_selected_date()$cases_all, group = status),
+                               aes(yintercept = cases_all, group = status),
                                size = 0.5,
                                linetype = "dashed",
                                colour = "#7F8182") +
@@ -898,7 +968,7 @@ server <- function(input, output) {
                     #           size = 1.0,
                     #           alpha = 0.9) +
                     geom_hline(data = dd_base_viz_selected_date(), 
-                               aes(yintercept = dd_base_viz_selected()$cases_all_rel_ck, group = status),
+                               aes(yintercept = cases_all_rel_ck, group = status),
                                size = 0.5,
                                linetype = "dashed",
                                colour = "#7F8182") +
@@ -913,7 +983,7 @@ server <- function(input, output) {
                                   group = as.factor(status),
                                   vjust = 0,
                                   hjust = 1,
-                                  nudge_y = 5),
+                                  nudge_y = 0.5),
                               size = 3.0) +
                     # scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
                     facet_wrap(~ status, scales = "free") +
@@ -973,7 +1043,7 @@ server <- function(input, output) {
                     #           size = 1.0,
                     #           alpha = 0.9) +
                     geom_hline(data = dd_base_viz_selected_date(), 
-                               aes(yintercept = dd_base_viz_selected_date()$cases_all, group = status),
+                               aes(yintercept = cases_all, group = status),
                                size = 0.5,
                                linetype = "dashed",
                                colour = "#7F8182") +
@@ -1049,7 +1119,7 @@ server <- function(input, output) {
                     #           size = 1.0,
                     #           alpha = 0.9) +
                     geom_hline(data = dd_base_viz_selected_date(), 
-                               aes(yintercept = dd_base_viz_selected()$cases_all_rel_ck, group = status),
+                               aes(yintercept = cases_all_rel_ck, group = status),
                                size = 0.5,
                                linetype = "dashed",
                                colour = "#7F8182") +
@@ -1116,10 +1186,12 @@ server <- function(input, output) {
                                       size = 3,
                                       alpha = 0.7,
                                       check_overlap = TRUE) +
-                            scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
+                            scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+                            scale_fill_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
                     } else {
                         ggplot() +
-                            scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
+                            scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51")) +
+                            scale_fill_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
                     }
                 }
                 
@@ -1127,6 +1199,9 @@ server <- function(input, output) {
                     geom_hline(yintercept = 0,
                                size = 0.5,
                                colour = "#7F8182") +
+                    geom_area(data = filter(dd_base_viz(), country_region %in% input$country), 
+                              aes(x = time_ind, y = cases_all_diff, fill = status),
+                              alpha = 0.2) +
                     geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
                               aes(x = time_ind, y = cases_all_diff, colour = status),
                               size = 0.5,
@@ -1139,7 +1214,7 @@ server <- function(input, output) {
                     #            aes(x = time_ind, y = cases_all_diff,colour = status),
                     #            size = 1.4) +
                     geom_hline(data = dd_base_viz_selected_date(), 
-                               aes(yintercept = dd_base_viz_selected_date()$cases_all_diff, group = status),
+                               aes(yintercept = cases_all_diff, group = status),
                                size = 0.5,
                                linetype = "dashed",
                                colour = "#7F8182") +
@@ -1189,10 +1264,12 @@ server <- function(input, output) {
                                       size = 3,
                                       alpha = 0.7,
                                       check_overlap = TRUE) +
-                            scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
+                            scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+                            scale_fill_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
                     } else {
                         ggplot() +
-                            scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
+                            scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51")) +
+                            scale_fill_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
                     }
                 }
                 
@@ -1200,6 +1277,9 @@ server <- function(input, output) {
                     geom_hline(yintercept = 0,
                                size = 0.5,
                                colour = "#7F8182") +
+                    geom_area(data = filter(dd_base_viz(), country_region %in% input$country), 
+                              aes(x = time_ind, y = cases_all_diff_rel_ck, fill = status),
+                              alpha = 0.2) +
                     geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
                               aes(x = time_ind, y = cases_all_diff_rel_ck, colour = status),
                               size = 0.5,
@@ -1209,7 +1289,7 @@ server <- function(input, output) {
                               size = 1.0,
                               alpha = 0.9) +
                     geom_hline(data = dd_base_viz_selected_date(), 
-                               aes(yintercept = dd_base_viz_selected()$cases_all_diff_rel_ck, group = status),
+                               aes(yintercept = cases_all_diff_rel_ck, group = status),
                                size = 0.5,
                                linetype = "dashed",
                                colour = "#7F8182") +
@@ -1260,10 +1340,12 @@ server <- function(input, output) {
                                   size = 3,
                                   alpha = 0.7,
                                   check_overlap = TRUE) +
-                        scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
+                        scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+                        scale_fill_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
                 } else {
                     ggplot() +
-                        scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
+                        scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51")) +
+                        scale_fill_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
                 }
             }
             
@@ -1274,6 +1356,9 @@ server <- function(input, output) {
                     geom_hline(yintercept = 0,
                                size = 0.5,
                                colour = "#7F8182") +
+                    geom_area(data = filter(dd_base_viz(), country_region %in% input$country), 
+                              aes(x = date, y = cases_all_diff, fill = status),
+                              alpha = 0.2) +
                     geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
                               aes(x = date, y = cases_all_diff, colour = status),
                               size = 0.5,
@@ -1283,7 +1368,7 @@ server <- function(input, output) {
                               size = 1.0,
                               alpha = 0.9) +
                     geom_hline(data = dd_base_viz_selected_date(), 
-                               aes(yintercept = dd_base_viz_selected_date()$cases_all_diff, group = status),
+                               aes(yintercept = cases_all_diff, group = status),
                                size = 0.5,
                                linetype = "dashed",
                                colour = "#7F8182") +
@@ -1335,10 +1420,12 @@ server <- function(input, output) {
                                       size = 3,
                                       alpha = 0.7,
                                       check_overlap = TRUE) +
-                            scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
+                            scale_colour_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC")) +
+                            scale_fill_manual(values = c("#FFFFFF", "#D8A94F", "#4E4E4C", "#A44A51", "#6378AC"))
                     } else {
                         ggplot() +
-                            scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
+                            scale_colour_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51")) +
+                            scale_fill_manual(values = c("#4E4E4C", "#D8A94F", "#6378AC", "#A44A51"))
                     }
                 }
                 
@@ -1346,6 +1433,9 @@ server <- function(input, output) {
                     geom_hline(yintercept = 0,
                                size = 0.5,
                                colour = "#7F8182") +
+                    geom_area(data = filter(dd_base_viz(), country_region %in% input$country), 
+                              aes(x = date, y = cases_all_diff_rel_ck, fill = status),
+                              alpha = 0.2) +
                     geom_line(data = filter(dd_base_viz(), country_region %in% input$country), 
                               aes(x = date, y = cases_all_diff_rel_ck, colour = status),
                               size = 0.5,
@@ -1355,7 +1445,7 @@ server <- function(input, output) {
                               size = 1.0,
                               alpha = 0.9) +
                     geom_hline(data = dd_base_viz_selected_date(), 
-                               aes(yintercept = dd_base_viz_selected()$cases_all_diff_rel_ck, group = status),
+                               aes(yintercept = cases_all_diff_rel_ck, group = status),
                                size = 0.5,
                                linetype = "dashed",
                                colour = "#7F8182") +
@@ -1392,20 +1482,35 @@ server <- function(input, output) {
             
         }   # closes if "days" or else
         
-        # -------------------------------------------------------   
+        # -------------------------------------------------------
         # PLOT 4: Ranked ---------
-        data$p04 <- if (input$check_type == "absolute values") {
-        } else {
-            ggplot(data = dd_bars,
-                   aes(x = country_region, 
-                       y = cases_all, 
-                       fill = status)) +
-                geom_column() +
-                coord_flip() +
-                facet_wrap(., ~ status)
-        }
+        # data$p04 <- dd_plus_ranked %>% 
+        #     ggplot(.,
+        #            aes(x = country_region,
+        #                y = cases_all,
+        #                fill = status)) +
+        #         geom_column() +
+        #         coord_flip() +
+        #         facet_wrap(., ~ status)
         
     })
+    
+    # 
+    # dd_plus_ranked <- dd_plus %>% 
+    #             filter(., date == max(date)) %>% 
+    #             group_by(., status) %>% 
+    #             slice_max(., order_by = cases_all, n = 20, with_ties = FALSE) %>% 
+    #             ungroup(.) %>% 
+    #             dplyr::arrange(., status, desc(cases_all))
+    # 
+    # ggplot(data = dd_plus_ranked,
+    #        aes(x = fct_reorder(country_region, cases_all),
+    #            y = cases_all,
+    #            fill = status)) +
+    #     geom_bar(stat = "identity") +
+    #     coord_flip() +
+    #     # facet_wrap(~status)
+    #     facet_grid(status~., scales = "free", space = "free")
     
     
     # Linear plot to compare daily changes in case numbers for countries.
@@ -1456,25 +1561,27 @@ server <- function(input, output) {
                               # title = "Cases for Germany",
                               legend_pos="bottom") +
                            # facet_wrap(~ status) +
-                           labs(title = paste("A proportional perspective for ", input$country, sep = ""),
-                                subtitle = paste("Contribution of active and recovered cases as well as fatalities", "to the total number of confirmed cases.", sep = " \n"),
+                           labs(title = paste("A proportional perspective for ", input$country, sep = "\n"),
+                                subtitle = paste("Contribution of active and recovered cases as well as fatalities to the total", paste("number of confirmed cases.  (as of ", input$date, ")", sep = ""), sep = "\n"),
                                 caption = "Source: Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU)") +
                            # theme_TMM_01() +
                            theme_void() +
                            theme(text = element_text(family = "SF Pro Rounded"),
                                  panel.spacing = unit(20, "mm"),
                                  legend.position = "none",
-                                 legend.text = element_text(colour="#666666", size = 8),
+                                 legend.text = element_text(colour="#666666", size = 10),
                                  legend.key.size = unit(5, "mm"),
                                  axis.title.x = element_text(margin = margin(20, 0, 0, 0)),
                                  axis.title.y = element_text(margin = margin(0, 20, 0, 0)),
                                  plot.background = element_rect(fill = col_background, colour = col_background),
-                                 plot.title = element_text(face = "plain", hjust = 0.05, vjust = -0, colour = "#3C3C3C", size = 30, margin = margin(10,0,8,)),
-                                 plot.subtitle = element_text(hjust = 0.04, vjust = -1, colour = "#3C3C3C", size = 12, margin = margin(0,0,30,0)),
+                                 # margin(t, r, b, l)
+                                 plot.margin = unit(c(0.2, 0.5, 0.2, 0.5), "cm"),
+                                 plot.title = element_text(face = "plain", hjust = 0.0, vjust = -0.0, colour = "#3C3C3C", size = 30, margin = margin(10,0,8,0)),
+                                 plot.subtitle = element_text(hjust = 0.0, vjust = -1.0, colour = "#3C3C3C", size = 12, margin = margin(0,0,30,0)),
                                  plot.caption = element_text(size = 8, hjust = 0.95, vjust = -0.1, colour = "#7F8182", margin = margin(10,0,10,0)))
                    ),
                    # scale = 1,
-                   width = 200,
+                   width = 250,
                    height = 300,
                    units = c("mm"),
                    dpi = 300,
@@ -1547,24 +1654,24 @@ server <- function(input, output) {
     
     # Linear plot to compare daily changes in case numbers for countries.
     
-    # Render 'p04' for Shiny app.
-    output$p04_RankedCountries <- renderPlot({ data$p04 })
-    
-    # Make 'p04' for download.
-    output$download_p04 <- downloadHandler(
-        filename = function() { paste("Ranked countries", "png", sep = ".") },
-        content = function(file) {
-            ggsave(file, 
-                   plot = data$p04,
-                   # scale = 1,
-                   width = 400,
-                   height = 300,
-                   units = c("mm"),
-                   dpi = 300,
-                   device = "png")
-        }
-    )
-    
+    # # Render 'p04' for Shiny app.
+    # output$p04_RankedCountries <- renderPlot({ data$p04 })
+    # 
+    # # Make 'p04' for download.
+    # output$download_p04 <- downloadHandler(
+    #     filename = function() { paste("Ranked countries", "png", sep = ".") },
+    #     content = function(file) {
+    #         ggsave(file, 
+    #                plot = data$p04,
+    #                # scale = 1,
+    #                width = 400,
+    #                height = 300,
+    #                units = c("mm"),
+    #                dpi = 300,
+    #                device = "png")
+    #     }
+    # )
+    # 
     
     
     
@@ -1587,3 +1694,18 @@ server <- function(input, output) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
+
+
+
+
+
+# 
+# dd_plus %>%
+#     # filter(., Date == max(Date)) %>% 
+#     leaflet() %>% 
+#     addTiles() %>% 
+#     # addProviderTiles("CartoDB") %>% 
+#     addMarkers(lng = 10.427656, lat = 47.544612)
+#     # setView(lng = 8.55,
+#     #         lat = 47.36667, zoom = 13)
+
