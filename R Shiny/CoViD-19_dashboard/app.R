@@ -43,23 +43,49 @@ dd_ox_cgrt <- read_csv(url("https://raw.githubusercontent.com/OxCGRT/covid-polic
 
 
 # Load basic data for case numbers.
+# dd_org_confirmed = read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")) %>% 
+#     # select(., -c("Province/State")) %>% 
+#     pivot_longer(., cols = -c("Country/Region", "Province/State", "Lat", "Long"), names_to = "Date", values_to = "confirmed")
+# 
+# dd_org_deaths = read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv")) %>% 
+#     # select(., -c("Province/State")) %>% 
+#     pivot_longer(., cols = -c("Country/Region", "Province/State", "Lat", "Long"), names_to = "Date", values_to = "deaths") 
+# 
+# dd_org_recovered = read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv")) %>% 
+#     # select(., -c("Province/State")) %>% 
+#     pivot_longer(., cols = -c("Country/Region", "Province/State", "Lat", "Long"), names_to = "Date", values_to = "recovered") 
+
 dd_org_confirmed = read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")) %>% 
     # select(., -c("Province/State")) %>% 
-    pivot_longer(., cols = -c("Country/Region", "Province/State", "Lat", "Long"), names_to = "Date", values_to = "confirmed")
+    pivot_longer(., cols = -c("Country/Region", "Province/State", "Lat", "Long"), names_to = "Date", values_to = "confirmed") %>% 
+    clean_names(.) %>% 
+    # group_by(., country_region, date, lat, long) %>% 
+    group_by(., country_region, date) %>% 
+    summarise(., confirmed = sum(confirmed))
 
 dd_org_deaths = read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv")) %>% 
     # select(., -c("Province/State")) %>% 
-    pivot_longer(., cols = -c("Country/Region", "Province/State", "Lat", "Long"), names_to = "Date", values_to = "deaths") 
+    pivot_longer(., cols = -c("Country/Region", "Province/State", "Lat", "Long"), names_to = "Date", values_to = "deaths") %>% 
+    clean_names(.) %>% 
+    # group_by(., country_region, date, lat, long) %>% 
+    group_by(., country_region, date) %>% 
+    summarise(., deaths = sum(deaths))
 
 dd_org_recovered = read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv")) %>% 
     # select(., -c("Province/State")) %>% 
-    pivot_longer(., cols = -c("Country/Region", "Province/State", "Lat", "Long"), names_to = "Date", values_to = "recovered") 
+    pivot_longer(., cols = -c("Country/Region", "Province/State", "Lat", "Long"), names_to = "Date", values_to = "recovered") %>% 
+    clean_names(.) %>% 
+    # group_by(., country_region, date, lat, long) %>% 
+    group_by(., country_region, date) %>% 
+    summarise(., recovered = sum(recovered))
 
 dd <- dd_org_confirmed %>% 
-    left_join(., dd_org_deaths, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
-    left_join(., dd_org_recovered, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
+    # left_join(., dd_org_deaths, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
+    # left_join(., dd_org_recovered, by = c("Country/Region", "Province/State", "Date", "Lat", "Long"), copy = FALSE, keep = FALSE) %>% 
+    left_join(., dd_org_deaths, by = c("country_region", "date"), copy = FALSE, keep = FALSE) %>% 
+    left_join(., dd_org_recovered, by = c("country_region", "date"), copy = FALSE, keep = FALSE) %>% 
     mutate(active = confirmed - deaths - recovered,
-           Date = mdy(Date)) %>% 
+           date = mdy(date)) %>% 
     pivot_longer(., cols = c(confirmed, deaths, recovered, active), names_to = "status", values_to = "cases") %>% 
     clean_names(.) %>% 
     mutate_if(., is.character, as.factor) %>% 

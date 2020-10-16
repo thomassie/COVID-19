@@ -3,6 +3,7 @@ rm(list = ls())
 library(tidyverse)
 library(janitor)
 library(rjson)
+library(geojsonR)
 library(wiesbaden)
 library(lubridate)
 
@@ -12,6 +13,19 @@ dd_case <- read_csv("https://opendata.arcgis.com/datasets/dd4580c810204019a7b8eb
   clean_names()
 
 write_csv(dd_case, "/Users/thomasmassie/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/R Code/Time series --- Germany/COVID_Time_series_Germany_TMM.csv")
+
+
+dd_hosp <- read_csv("https://raw.githubusercontent.com/entorb/COVID-19-Coronavirus-German-Regions/master/data/de-divi/downloaded/2020-10-14.csv")
+
+dd_rki_recent <- read_csv("https://opendata.arcgis.com/datasets/917fc37a709542548cc3be077a786c17_0.csv")
+
+
+file_js = FROM_GeoJson(url_file_string = "https://opendata.arcgis.com/datasets/917fc37a709542548cc3be077a786c17_0.geojson")
+dd_rki_all <- unlist(file_js$features)
+
+head(dd_)
+
+
 
 
 dd_pop <- read_csv2("~/Library/Mobile Documents/com~apple~CloudDocs/COVID-19/Demographic data/12411-0015_flat.csv") %>% 
