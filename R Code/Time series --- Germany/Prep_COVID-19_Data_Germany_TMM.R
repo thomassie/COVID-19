@@ -23,7 +23,7 @@ dd_rki_recent <- read_csv("https://opendata.arcgis.com/datasets/917fc37a70954254
 file_js = FROM_GeoJson(url_file_string = "https://opendata.arcgis.com/datasets/917fc37a709542548cc3be077a786c17_0.geojson")
 dd_rki_all <- unlist(file_js$features)
 
-head(dd_)
+head(dd_rki_all)
 
 
 
